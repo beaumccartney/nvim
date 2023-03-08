@@ -1,17 +1,14 @@
 -- TODO:
--- - mini.nvim
--- - telescope
--- - rip shit from doom like a degen
--- - save file keybind
--- - vertico from doom
--- - keybinds (maybe there's a plugin or something to wrap this and make
---             it less verbose????)
+-- figure out gitgutter and other gutter things - atm they cover the lin nums
+-- which is really annoying
+-- language server?? ngl i'm halfway to not even bothering
 
 -- NOTE: I've added notes to plugins below that can be replaced by mini in case
 -- they aren't good ('mini-replaceable')
 
-local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
+-- bootstrap package manager (ngl it works nice)
+local lazypath = vim.fn.stdpath( 'data' ) .. '/lazy/lazy.nvim'
+if not vim.loop.fs_stat( lazypath ) then
     vim.fn.system({
         'git',
         'clone',
@@ -33,7 +30,7 @@ require'lazy'.setup({
     {
         'folke/which-key.nvim',
         config = function()
-            vim.o.timeout = true
+            vim.o.timeout    = true
             vim.o.timeoutlen = 300
             require'which-key'.setup()
         end,
@@ -44,7 +41,7 @@ require'lazy'.setup({
         'folke/todo-comments.nvim',
         dependencies = 'nvim-lua/plenary.nvim',
         config = function()
-            require('todo-comments').setup()
+            require('todo-comments').setup { signs = false }
         end,
     },
 
@@ -73,13 +70,13 @@ require'lazy'.setup({
         run    = ':TSUpdate',
         config = function()
             require'nvim-treesitter.configs'.setup {
-                ensure_installed = 'all',
-                highlight        = { enable = true, },
+                ensure_installed      = 'all',
+                highlight             = { enable = true, },
                 incremental_selection = { -- thanks again fraser
                     keymaps = {
                         -- <enter> to select and expand selection via syntax
                         -- <shift+enter> to shrink and deselect
-                        init_selection = '<CR>',
+                        init_selection   = '<CR>',
                         node_incremental = '<CR>',
                         node_decremental = '<S-CR>',
                     },
@@ -101,6 +98,12 @@ require'lazy'.setup({
                 }
             }
         end
+    },
+
+    {
+        'nvim-treesitter/nvim-treesitter-context',
+        dependencies = 'nvim-treesitter',
+        config       = function() require'treesitter-context'.setup() end,
     },
 
     -- NOTE: mini-replaceable?

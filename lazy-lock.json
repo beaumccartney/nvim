@@ -13,6 +13,7 @@
   "neogit": { "branch": "master", "commit": "c4068a22a60981f1bedd9672cdad34b79411ed7a" },
   "nvim-surround": { "branch": "main", "commit": "a207e3b9906f86ecf48a90d94bb2eb703c141798" },
   "nvim-treesitter": { "branch": "master", "commit": "d086563c02a582a552086ea94bfabd5f49d6872a" },
+  "nvim-treesitter-context": { "branch": "master", "commit": "a7463ae4a5f68d42bd053afbfbd125f89cb6042b" },
   "nvim-ts-rainbow": { "branch": "master", "commit": "840039440e012ad798ef31349b93a5d4365023ff" },
   "nvim-web-devicons": { "branch": "master", "commit": "4af94fec29f508159ceab5413383e5dedd6c24e3" },
   "plenary.nvim": { "branch": "master", "commit": "253d34830709d690f013daf2853a9d21ad7accab" },
