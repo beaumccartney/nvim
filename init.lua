@@ -1,23 +1,73 @@
-require'packer'.startup(function(use)
-    use 'wbthomason/packer.nvim'
+-- TODO:
+-- - mini.nvim
+-- - telescope
+-- - rip shit from doom like a degen
+-- - save file keybind
+-- - vertico from doom
+-- - keybinds (maybe there's a plugin or something to wrap this and make
+--             it less verbose????)
 
-    use {
+-- NOTE: I've added notes to plugins below that can be replaced by mini in case
+-- they aren't good ("mini-replaceable")
+
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
+end
+vim.opt.rtp:prepend(lazypath)
+
+require'lazy'.setup({
+    {
+        "FraserLee/ScratchPad",
+        config = function() vim.g.scratchpad_autostart = 0 end,
+    },
+
+    {
+        "folke/which-key.nvim",
+        config = function()
+            vim.o.timeout = true
+            vim.o.timeoutlen = 300
+            require("which-key").setup()
+        end,
+    },
+
+    {
+        -- TODO: search these with telescope
+        "folke/todo-comments.nvim",
+        dependencies = "nvim-lua/plenary.nvim",
+        config = function()
+            require("todo-comments").setup()
+        end,
+    },
+
+    {
+        -- NOTE: mini-replaceable
         'numToStr/Comment.nvim',
         config = function() require'Comment'.setup() end
-    }
+    },
 
-    use {
+    -- NOTE: mini-replaceable
+    -- vim-unimpaired
+    {
         'tummetott/unimpaired.nvim',
         config = function() require'unimpaired'.setup{} end
-    }
+    },
 
-    use {
+    -- NOTE: mini-replaceable
+    -- vim-surround
+    {
         'kylechui/nvim-surround',
         config = function() require'nvim-surround'.setup{} end
-    }
+    },
 
-    use {
-        disable = true,
+    {
         'nvim-treesitter/nvim-treesitter',
         run    = ':TSUpdate',
         config = function()
@@ -26,61 +76,70 @@ require'packer'.startup(function(use)
                 highlight        = { enable = true, },
             }
         end
-    }
+    },
 
-    use {
-        disable = true,
+    {
         'mrjones2014/nvim-ts-rainbow',
         after   = 'nvim-treesitter',
         config  = function()
             require'nvim-treesitter.configs'.setup {
-                rainbow {
+                rainbow = {
                     enable         = true,
                     extended_mode  = true,
                     max_file_lines = 1000,
                 }
             }
         end
-    }
+    },
 
-    use {
+    -- NOTE: mini-replaceable?
+    {
         -- TODO: configure
-        disable = true,
+        enabled = false,
         'nvim-treesitter/nvim-treesitter-textobjects',
         after   = 'nvim-treesitter',
         config  = function()
-            require'nvim-treesitter.configs'.setup { }
+            require'nvim-treesitter.configs'.setup {}
         end
-    }
+    },
 
-    use {
+    -- NOTE: mini-replaceable
+    {
+        -- TODO: configure + keybinds
         'nvim-telescope/telescope.nvim',
-        requires = 'nvim-lua/plenary.nvim',
-    }
+        dependencies = 'nvim-lua/plenary.nvim',
+    },
 
-    use {
+    -- statusline
+    -- NOTE: mini-replaceable
+    {
         'nvim-lualine/lualine.nvim',
         config = function() require'lualine'.setup() end,
-    }
+    },
 
     -- TODO: keybindings??
-    use {"chrisgrieser/nvim-genghis", requires = "stevearc/dressing.nvim"}
+    -- vim-eunuch
+    { "chrisgrieser/nvim-genghis", dependencies = "stevearc/dressing.nvim" },
 
-    use 'gruvbox-community/gruvbox'
+    {
+	    'TimUntersberger/neogit',
+	    dependencies = 'nvim-lua/plenary.nvim',
+        config = function()
+            require'neogit'.setup { disable_commit_confirmation = true, }
+        end
+    },
 
-    use 'tommcdo/vim-lion'
-    use 'justinmk/vim-sneak'
-    use 'mg979/vim-visual-multi'
+    'gruvbox-community/gruvbox',
 
-    use 'tpope/vim-fugitive'
-    use 'tpope/vim-rhubarb'
-    use 'shumphrey/fugitive-gitlab.vim'
-    use 'junegunn/gv.vim'
+    -- TODO: replace
+    'tommcdo/vim-lion',
+    'justinmk/vim-sneak',
+    'mg979/vim-visual-multi',
 
-    use 'mbbill/undotree'
+    'mbbill/undotree',
 
-    use 'jansedivy/jai.vim'
-end)
+    'jansedivy/jai.vim',
+})
 
 vim.opt.termguicolors = true
 vim.opt.nu            = true
