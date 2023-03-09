@@ -18,7 +18,7 @@ if not vim.loop.fs_stat( lazypath ) then
         lazypath,
     })
 end
-vim.opt.rtp:prepend(lazypath)
+vim.opt.rtp:prepend( lazypath )
 
 require'lazy'.setup({
     -- TODO: tell fraser that the autostart doesn't respect the minwidth
@@ -28,6 +28,7 @@ require'lazy'.setup({
     },
 
     {
+        enabled = false,
         'folke/which-key.nvim',
         config = function()
             vim.o.timeout    = true
@@ -126,6 +127,15 @@ require'lazy'.setup({
         },
     },
 
+    {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        build = 'make',
+        config = function()
+            require'telescope'.setup()
+            require'telescope'.load_extension('fzf')
+        end
+    },
+
     -- statusline
     -- NOTE: mini-replaceable
     {
@@ -177,7 +187,46 @@ require'lazy'.setup({
     'mbbill/undotree',
 
     'jansedivy/jai.vim',
+
+    'neovim/nvim-lspconfig',
+
+    'p00f/clangd_extensions.nvim',
 })
+
+-- lsp stuff
+-- Mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+local opts = { noremap=true, silent=true }
+
+vim.keymap.set('n',  '<space>e',  vim.diagnostic.open_float,  opts)
+vim.keymap.set('n',  '[d',        vim.diagnostic.goto_prev,   opts)
+vim.keymap.set('n',  ']d',        vim.diagnostic.goto_next,   opts)
+vim.keymap.set('n',  '<space>q',  vim.diagnostic.setloclist,  opts)
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  local bufopts = { noremap=true, silent=true, buffer=bufnr }
+
+  vim.keymap.set('n',  '<leader>gD',   vim.lsp.buf.declaration,      bufopts)
+  vim.keymap.set('n',  'I',            vim.lsp.buf.hover,            bufopts)
+  vim.keymap.set('n',  '<C-k>',        vim.lsp.buf.signature_help,   bufopts)
+  vim.keymap.set('n',  '<space>rn',    vim.lsp.buf.rename,           bufopts)
+  vim.keymap.set('n',  '<space>ca',    vim.lsp.buf.code_action,      bufopts)
+end
+
+local lsp_servers = { 'bashls', 'cmake', 'hls', 'lua_ls', 'pyright', 'vimls', 'zls' }
+
+for _, server in pairs( lsp_servers ) do
+    require'lspconfig'[server].setup { on_attach = on_attach }
+end
+
+require'clangd_extensions'.setup { server = { on_attach = on_attach, } }
 
 vim.opt.termguicolors  = true
 vim.opt.nu             = true
@@ -215,8 +264,8 @@ vim.keymap.set( 'v',  '<leader>p',   '"*p',    { noremap=true, silent=true } )
 vim.keymap.set( 'n',  '<leader>p',   '"*p',    { noremap=true, silent=true } )
 
 -- keymaps for miscellaneous plugins
-vim.keymap.set( 'n',  '<leader>gg',  ':Neogit<CR>',      { noremap=true } )
-vim.keymap.set( 'n',  'cc',          ':ScratchPad<CR>',  { noremap=true } )
+vim.keymap.set( 'n', '<leader>gg', ':Neogit<CR>',     { noremap=true } )
+vim.keymap.set( 'n', '<leader>cc', ':ScratchPad<CR>', { noremap=true } )
 
 -- telescope maps
 local builtin = require('telescope.builtin')
@@ -242,7 +291,7 @@ vim.keymap.set( 'n',  '<leader>ts',   builtin .treesitter,            {} )
 vim.cmd([[
     augroup highlight_yank
         autocmd!
-        autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 100})
+        autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
     augroup END
 
     colorscheme gruvbox
@@ -251,7 +300,7 @@ vim.cmd([[
 
     " thanks a bunch fraser
     " https://github.com/FraserLee/dotfiles/blob/master/.vimrc#LL298-L323C40
-    function! TabAlign(zs)
+    function! TabAlign( zs )
         " get the character under the cursor
         let c = matchstr(getline('.'), '\%' . col('.') . 'c.')
         let pos = getpos(".") " save the position of the cursor
@@ -275,7 +324,7 @@ vim.cmd([[
     " while <leader>T will align stuff like
     " aaaaaa,  aaa,  aaaaaa
     " b,       b,    b
-    noremap <leader>t :call TabAlign(0)<cr>
-    noremap <leader>T :call TabAlign(1)<cr>
+    noremap <leader>t :call TabAlign( 0 )<cr>
+    noremap <leader>T :call TabAlign( 1 )<cr>
 ]])
 
