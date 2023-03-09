@@ -1,10 +1,6 @@
 -- TODO:
 -- figure out gitgutter and other gutter things - atm they cover the lin nums
 -- which is really annoying
--- language server?? ngl i'm halfway to not even bothering
-
--- NOTE: I've added notes to plugins below that can be replaced by mini in case
--- they aren't good ('mini-replaceable')
 
 -- bootstrap package manager (ngl it works nice)
 local lazypath = vim.fn.stdpath( 'data' ) .. '/lazy/lazy.nvim'
@@ -144,13 +140,11 @@ require'lazy'.setup({
         config = function() require'lualine'.setup() end,
     },
 
-    {
-	    'TimUntersberger/neogit',
-	    dependencies = 'nvim-lua/plenary.nvim',
-        config = function()
-            require'neogit'.setup { disable_commit_confirmation = true, }
-        end
-    },
+    -- all hail fugitive
+    'tpope/vim-fugitive',
+    'junegunn/gv.vim',
+    'tpope/vim-rhubarb',
+    'shumphrey/fugitive-gitlab.vim',
 
     {
         'echasnovski/mini.ai',
@@ -267,6 +261,19 @@ vim.keymap.set( 'n',  '<leader>p',   '"*p',    { noremap=true, silent=true } )
 vim.keymap.set( 'n', '<leader>gg', ':Neogit<CR>',     { noremap=true } )
 vim.keymap.set( 'n', '<leader>cc', ':ScratchPad<CR>', { noremap=true } )
 
+vim.keymap.set( 'n', '<leader>gg', ':Git<CR>',        { noremap=true } )
+
+-- git log stuff
+vim.keymap.set( 'n', '<leader>gl', ':GV<CR>',         { noremap=true } )
+vim.keymap.set( 'n', '<leader>GL', ':GV',             { noremap=true } )
+
+vim.keymap.set( 'n', '<leader>gv', ':GV!<CR>',        { noremap=true } )
+vim.keymap.set( 'n', '<leader>GV', ':GV!',            { noremap=true } )
+
+vim.keymap.set( 'n', '<leader>gp', ':GV --patch<CR>', { noremap=true } )
+
+vim.keymap.set( 'v', '<leader>gl', ':GV<CR>',         { noremap=true } )
+vim.keymap.set( 'v', '<leader>GL', ':GV',             { noremap=true } )
 -- telescope maps
 local builtin = require('telescope.builtin')
 vim.keymap.set( 'n',  '<leader>ff',   builtin .find_files,            {} )
