@@ -291,8 +291,34 @@ vim.keymap.set( 'n',  '<leader>gr',   builtin .lsp_references,        {} )
 vim.keymap.set( 'n',  '<leader>gd',   builtin .lsp_definitions,       {} )
 vim.keymap.set( 'n',  '<leader>gi',   builtin .lsp_implementations,   {} )
 vim.keymap.set( 'n',  '<leader>gtd',  builtin .lsp_type_definitions,  {} )
+-- thanks again fraser
+function write_centered_line( text )
+    local c = vim.fn.col('.')
+    local line = vim.fn.getline('.')
 
-vim.keymap.set( 'n',  '<leader>ts',   builtin .treesitter,            {} )
+    -- make the text either an empty string, or pad it with spaces
+    text = (text == nil or text == '') and '' or ' ' .. text .. ' '
+    -- if the line doesn't end in a space, add one
+    if line:sub(-1) ~= ' ' and line:len() > 0 then
+        line = line .. ' '
+    end
+
+    local line_length = string.len(line)
+    local dash_length = 80 - line_length
+
+    local left = math.floor(dash_length / 2) - math.floor(string.len(text) / 2)
+    local right = dash_length - left - string.len(text)
+
+    local new_line = line .. string.rep('-', left) .. text .. string.rep('-', right)
+    vim.fn.setline('.', new_line)
+end
+
+function WriteCenteredLine()
+    local text = vim.fn.input( 'Comment text: ')
+    write_centered_line( " " .. text .. " " )
+end
+
+vim.keymap.set( 'n', '<leader>l', WriteCenteredLine, {} )
 
 -- run all vimscript stuffs
 vim.cmd([[
