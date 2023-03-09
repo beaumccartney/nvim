@@ -197,26 +197,26 @@ require'lazy'.setup({
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
 
-vim.keymap.set('n',  '<space>e',  vim.diagnostic.open_float,  opts)
-vim.keymap.set('n',  '[d',        vim.diagnostic.goto_prev,   opts)
-vim.keymap.set('n',  ']d',        vim.diagnostic.goto_next,   opts)
-vim.keymap.set('n',  '<space>q',  vim.diagnostic.setloclist,  opts)
+vim.keymap.set( 'n',  '<space>e',  vim.diagnostic.open_float,  opts )
+vim.keymap.set( 'n',  '[d',        vim.diagnostic.goto_prev,   opts )
+vim.keymap.set( 'n',  ']d',        vim.diagnostic.goto_next,   opts )
+vim.keymap.set( 'n',  '<space>q',  vim.diagnostic.setloclist,  opts )
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
+local on_attach = function( client, bufnr )
   -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  vim.api.nvim_buf_set_option( bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc' )
 
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   local bufopts = { noremap=true, silent=true, buffer=bufnr }
 
-  vim.keymap.set('n',  '<leader>gD',   vim.lsp.buf.declaration,      bufopts)
-  vim.keymap.set('n',  'I',            vim.lsp.buf.hover,            bufopts)
-  vim.keymap.set('n',  '<C-k>',        vim.lsp.buf.signature_help,   bufopts)
-  vim.keymap.set('n',  '<space>rn',    vim.lsp.buf.rename,           bufopts)
-  vim.keymap.set('n',  '<space>ca',    vim.lsp.buf.code_action,      bufopts)
+  vim.keymap.set( 'n',  '<leader>gD',   vim.lsp.buf.declaration,      bufopts )
+  vim.keymap.set( 'n',  'I',            vim.lsp.buf.hover,            bufopts )
+  vim.keymap.set( 'n',  '<C-k>',        vim.lsp.buf.signature_help,   bufopts )
+  vim.keymap.set( 'n',  '<space>rn',    vim.lsp.buf.rename,           bufopts )
+  vim.keymap.set( 'n',  '<space>ca',    vim.lsp.buf.code_action,      bufopts )
 end
 
 local lsp_servers = { 'bashls', 'cmake', 'hls', 'pyright', 'vimls', 'zls' }
@@ -248,22 +248,16 @@ vim.opt.swapfile       = false
 vim.opt.clipboard      = 'unnamedplus'
 
 vim.opt.incsearch      = true
--- vim.opt.nohlsearch  = true
 vim.opt.ignorecase     = true
 vim.opt.smartcase      = true
+vim.opt.hlsearch       = false
 
 vim.g.mapleader        = ' '
 
 -- keymaps for built in things
-vim.keymap.set( 'n',  '<leader>fs',  ':w<CR>', { noremap=true, silent=true } )
-vim.keymap.set( 'n',  'Y',           'y$',     { noremap=true, silent=true } )
-vim.keymap.set( 'v',  '<leader>y',   '"*y',    { noremap=true, silent=true } )
-vim.keymap.set( 'n',  '<leader>y',   '"*y',    { noremap=true, silent=true } )
-vim.keymap.set( 'v',  '<leader>p',   '"*p',    { noremap=true, silent=true } )
-vim.keymap.set( 'n',  '<leader>p',   '"*p',    { noremap=true, silent=true } )
+vim.keymap.set( 'n', '<leader>fs', ':w<CR>', { noremap=true,             } )
+vim.keymap.set( 'n', 'Y',          'y$',     { noremap=true, silent=true } )
 
--- keymaps for miscellaneous plugins
-vim.keymap.set( 'n', '<leader>gg', ':Neogit<CR>',     { noremap=true } )
 vim.keymap.set( 'n', '<leader>cc', ':ScratchPad<CR>', { noremap=true } )
 
 vim.keymap.set( 'n', '<leader>gg', ':Git<CR>',        { noremap=true } )
@@ -279,23 +273,27 @@ vim.keymap.set( 'n', '<leader>gp', ':GV --patch<CR>', { noremap=true } )
 
 vim.keymap.set( 'v', '<leader>gl', ':GV<CR>',         { noremap=true } )
 vim.keymap.set( 'v', '<leader>GL', ':GV',             { noremap=true } )
+
 -- telescope maps
 local builtin = require('telescope.builtin')
-vim.keymap.set( 'n',  '<leader>ff',   builtin .find_files,            {} )
-vim.keymap.set( 'n',  '<leader>fg',   builtin .git_files,             {} )
+vim.keymap.set( 'n', '<leader>ff',  builtin .find_files,           {} )
+vim.keymap.set( 'n', '<leader>fg',  builtin .git_files,            {} )
 
-vim.keymap.set( 'n',  '<leader>/',    builtin .live_grep,             {} )
-vim.keymap.set( 'n',  '<leader>*',    builtin .grep_string,           {} )
+vim.keymap.set( 'n', '<leader>/',   builtin .live_grep,            {} )
+vim.keymap.set( 'n', '<leader>*',   builtin .grep_string,          {} )
 
-vim.keymap.set( 'n',  '<leader>mp',   builtin .man_pages,             {} )
-vim.keymap.set( 'n',  '<leader>ma',   builtin .marks,                 {} )
-vim.keymap.set( 'n',  '<leader>vo',   builtin .vim_options,           {} )
-vim.keymap.set( 'n',  '<leader>km',   builtin .keymaps,               {} )
+vim.keymap.set( 'n', '<leader>mp',  builtin .man_pages,            {} )
+vim.keymap.set( 'n', '<leader>ma',  builtin .marks,                {} )
+vim.keymap.set( 'n', '<leader>vo',  builtin .vim_options,          {} )
+vim.keymap.set( 'n', '<leader>km',  builtin .keymaps,              {} )
 
-vim.keymap.set( 'n',  '<leader>gr',   builtin .lsp_references,        {} )
-vim.keymap.set( 'n',  '<leader>gd',   builtin .lsp_definitions,       {} )
-vim.keymap.set( 'n',  '<leader>gi',   builtin .lsp_implementations,   {} )
-vim.keymap.set( 'n',  '<leader>gtd',  builtin .lsp_type_definitions,  {} )
+vim.keymap.set( 'n', '<leader>gr',  builtin .lsp_references,       {} )
+vim.keymap.set( 'n', '<leader>gd',  builtin .lsp_definitions,      {} )
+vim.keymap.set( 'n', '<leader>gi',  builtin .lsp_implementations,  {} )
+vim.keymap.set( 'n', '<leader>gtd'  builtin .lsp_type_definitions, {} )
+
+vim.keymap.set( 'n', '<leader>ts',  builtin .treesitter,           {} )
+
 -- thanks again fraser
 function write_centered_line( text )
     local c = vim.fn.col('.')
