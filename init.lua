@@ -19,13 +19,7 @@ vim.opt.rtp:prepend( lazypath )
 
 require'lazy'.setup({
     -- center screen and scratchpad to expand working memory
-    {
-        'FraserLee/ScratchPad',
-        config = function()
-            vim.g.scratchpad_minwidth  = 20
-            vim.g.scratchpad_autostart = 0
-        end,
-    },
+    'FraserLee/ScratchPad',
 
     -- fish for keybinds - will go once I know my keybinds well
     {
