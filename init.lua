@@ -70,6 +70,8 @@ require'lazy'.setup({
         'nvim-treesitter/nvim-treesitter',
         run    = ':TSUpdate',
         config = function()
+            require'nvim-treesitter.install'.prefer_git = false
+
             require'nvim-treesitter.configs'.setup {
                 ensure_installed      = 'all',
                 highlight             = { enable = true, },
@@ -132,7 +134,7 @@ require'lazy'.setup({
     -- fzf syntax in fuzzy-finding
     {
         'nvim-telescope/telescope-fzf-native.nvim',
-        build = 'make',
+        build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build',
         config = function()
             require'telescope'.setup()
             require'telescope'.load_extension('fzf')
