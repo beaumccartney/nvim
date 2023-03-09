@@ -204,7 +204,6 @@ require'lazy'.setup({
     -- switch things easily
     -- TODO: keybindings
     {
-        enabled = false,
         'gbprod/substitute.nvim',
         config = function() require'substitute'.setup() end,
     },
