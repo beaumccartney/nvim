@@ -300,7 +300,6 @@ vim.opt.colorcolumn    = '80'
 vim.opt.hidden         = true
 vim.opt.cmdheight      = 2
 vim.opt.swapfile       = false
-vim.opt.clipboard      = 'unnamedplus'
 
 vim.opt.incsearch      = true
 vim.opt.ignorecase     = true
@@ -313,6 +312,8 @@ vim.g.mapleader        = ' '
 vim.keymap.set( 'n', '<leader>fs', ':w<CR>',  { noremap=true,             } ) -- save file
 vim.keymap.set( 'n', '<leader>bd', ':bd<CR>', { noremap=true,             } ) -- close buffer
 vim.keymap.set( 'n', 'Y',          'y$',      { noremap=true, silent=true } ) -- yank to end of line
+vim.keymap.set( 'n', '<leader>y',  '"*y',     { noremap=true, silent=true } ) -- yank to clipboard
+vim.keymap.set( 'n', '<leader>p',  '"*p',     { noremap=true, silent=true } ) -- put from clipboard
 
 -- jk fixes (thanks yet again fraser)
 vim.api.nvim_set_keymap('n', 'j', '<Plug>(accelerated_jk_gj)', {})
