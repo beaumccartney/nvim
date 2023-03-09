@@ -171,6 +171,11 @@ require'lazy'.setup({
         config = function() require'mini.trailspace'.setup() end,
     },
 
+    {
+        'echasnovski/mini.align',
+        config = function() require'mini.align'.setup() end,
+    },
+
     'gruvbox-community/gruvbox',
 
     -- TODO: replace
