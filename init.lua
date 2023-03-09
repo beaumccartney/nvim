@@ -219,7 +219,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n',  '<space>ca',    vim.lsp.buf.code_action,      bufopts)
 end
 
-local lsp_servers = { 'bashls', 'cmake', 'hls', 'lua_ls', 'pyright', 'vimls', 'zls' }
+local lsp_servers = { 'bashls', 'cmake', 'hls', 'pyright', 'vimls', 'zls' }
 
 for _, server in pairs( lsp_servers ) do
     require'lspconfig'[server].setup { on_attach = on_attach }
