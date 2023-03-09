@@ -390,6 +390,7 @@ end
 vim.keymap.set( 'n', '<leader>l', WriteCenteredLine, {} )
 
 -- run all vimscript stuffs
+-- TODO: factor this out into lua
 vim.cmd([[
     augroup highlight_yank
         autocmd!
