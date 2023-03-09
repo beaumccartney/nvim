@@ -1,6 +1,7 @@
 -- TODO:
--- figure out gitgutter and other gutter things - atm they cover the lin nums
--- which is really annoying
+-- submodes of some kind
+-- copilot???
+-- fix centered line
 
 -- bootstrap package manager (ngl it works nice)
 local lazypath = vim.fn.stdpath( 'data' ) .. '/lazy/lazy.nvim'
@@ -17,22 +18,22 @@ end
 vim.opt.rtp:prepend( lazypath )
 
 require'lazy'.setup({
-    -- TODO: tell fraser that the autostart doesn't respect the minwidth
+    -- center screen and scratchpad to expand working memory
     {
         'FraserLee/ScratchPad',
-        config = function() vim.g.scratchpad_minwidth = 20 end,
-    },
-
-    {
-        enabled = false,
-        'folke/which-key.nvim',
         config = function()
-            vim.o.timeout    = true
-            vim.o.timeoutlen = 300
-            require'which-key'.setup()
+            vim.g.scratchpad_minwidth  = 20
+            vim.g.scratchpad_autostart = 0
         end,
     },
 
+    -- fish for keybinds - will go once I know my keybinds well
+    {
+        'folke/which-key.nvim',
+        config = function() require'which-key'.setup() end
+    },
+
+    -- highlight and search todo comments
     {
         -- TODO: search these with telescope
         'folke/todo-comments.nvim',
@@ -43,25 +44,28 @@ require'lazy'.setup({
     },
 
     -- NOTE: mini-replaceable
-    -- vim-commentary
+    -- comment things - can respect tree-sitter or other things
     {
         'numToStr/Comment.nvim',
         config = function() require'Comment'.setup() end
     },
 
     -- vim-unimpaired
+    -- REVIEW: should I get rid of or modify this?
+    -- e.g. cursorline and cursor column
     {
         'tummetott/unimpaired.nvim',
         config = function() require'unimpaired'.setup() end
     },
 
     -- NOTE: mini-replaceable
-    -- vim-surround
+    -- surround things
     {
         'kylechui/nvim-surround',
         config = function() require'nvim-surround'.setup() end
     },
 
+    -- everything
     {
         'nvim-treesitter/nvim-treesitter',
         run    = ':TSUpdate',
@@ -70,6 +74,7 @@ require'lazy'.setup({
                 ensure_installed      = 'all',
                 highlight             = { enable = true, },
                 incremental_selection = { -- thanks again fraser
+                    enable = true,
                     keymaps = {
                         -- <enter> to select and expand selection via syntax
                         -- <shift+enter> to shrink and deselect
@@ -83,6 +88,7 @@ require'lazy'.setup({
     },
 
     -- NOTE: make sure this is maintained every once in a while
+    -- rainbow parens
     {
         'mrjones2014/nvim-ts-rainbow',
         dependencies = 'nvim-treesitter',
@@ -114,8 +120,8 @@ require'lazy'.setup({
         end
     },
 
+    -- fuzzy-find files and strings
     {
-        -- TODO: configure + keybinds
         'nvim-telescope/telescope.nvim',
         dependencies = {
             'nvim-lua/plenary.nvim',
@@ -123,6 +129,7 @@ require'lazy'.setup({
         },
     },
 
+    -- fzf syntax in fuzzy-finding
     {
         'nvim-telescope/telescope-fzf-native.nvim',
         build = 'make',
@@ -132,12 +139,16 @@ require'lazy'.setup({
         end
     },
 
-    -- statusline
-    -- NOTE: mini-replaceable
+    -- evilline
     {
-        'nvim-lualine/lualine.nvim',
-        dependencies = 'kyazdani42/nvim-web-devicons',
-        config = function() require'lualine'.setup() end,
+        'windwp/windline.nvim',
+        config = function() require'wlsample.evil_line' end
+    },
+
+    -- git-gutter
+    {
+        'lewis6991/gitsigns.nvim',
+        config = function() require'gitsigns'.setup() end
     },
 
     -- all hail fugitive
@@ -146,49 +157,93 @@ require'lazy'.setup({
     'tpope/vim-rhubarb',
     'shumphrey/fugitive-gitlab.vim',
 
+    -- additional textobject keys after "a" and "i" e.g. <something>[a|i]q where q is quote text object
     {
         'echasnovski/mini.ai',
         config = function() require'mini.ai'.setup() end,
     },
 
+    -- align stuff - great interactivity and keybinds
+    {
+        'echasnovski/mini.align',
+        config = function() require'mini.align'.setup() end,
+    },
+
+    -- highlight word under cursor
     {
         'echasnovski/mini.cursorword',
         config = function() require'mini.cursorword'.setup() end,
     },
 
+    -- operations on the indent of the cursor - helps when there's no tree-sitter
     {
         'echasnovski/mini.indentscope',
         config = function() require'mini.indentscope'.setup() end,
     },
 
+    -- good f/F/t/T keys - not confined to line and can keep mashing ; or ,
     {
         'echasnovski/mini.jump',
         config = function() require'mini.jump'.setup() end,
     },
 
+    -- start screen when I don't start with someth
+    {
+        'echasnovski/mini.starter',
+        config = function() require'mini.starter'.setup() end,
+    },
+
+    -- highlight and trim trailing whitespace
     {
         'echasnovski/mini.trailspace',
         config = function() require'mini.trailspace'.setup() end,
     },
 
+    -- switch things easily
+    -- TODO: keybindings
     {
-        'echasnovski/mini.align',
-        config = function() require'mini.align'.setup() end,
+        enabled = false,
+        'gbprod/substitute.nvim',
+        config = function() require'substitute'.setup() end,
     },
 
     'gruvbox-community/gruvbox',
 
     -- TODO: replace
     'godlygeek/tabular', -- NOTE: mini-replaceable
-    -- 'justinmk/vim-sneak',
+    -- XXX: mini-jump remapes ; and , so they don't work with this
+    'justinmk/vim-sneak', -- like mini.jump, but for two character patterns
     'mg979/vim-visual-multi',
 
-    'mbbill/undotree',
+    -- highlight cursor after large jump
+    'rainbowhxch/beacon.nvim',
 
+    -- fast j and k YEAH BUDDY
+
+    -- holding j, k, w, b, W, B, etc goes fast after a while
+    {
+        'rainbowhxch/accelerated-jk.nvim',
+        config = function()
+            require'accelerated-jk'.setup {
+                acceleration_motions = { 'w', 'b', 'W', 'B' },
+            }
+        end
+    },
+
+    -- jai syntax-highlighting + folds + whatever
     'jansedivy/jai.vim',
 
     'neovim/nvim-lspconfig',
 
+    {
+        enabled = false,
+        'github/copilot.vim',
+        config = function()
+            -- TODO: 
+        end,
+    },
+
+    -- inlay hints for c++
     'p00f/clangd_extensions.nvim',
 })
 
@@ -197,10 +252,10 @@ require'lazy'.setup({
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
 
-vim.keymap.set( 'n',  '<space>e',  vim.diagnostic.open_float,  opts )
-vim.keymap.set( 'n',  '[d',        vim.diagnostic.goto_prev,   opts )
-vim.keymap.set( 'n',  ']d',        vim.diagnostic.goto_next,   opts )
-vim.keymap.set( 'n',  '<space>q',  vim.diagnostic.setloclist,  opts )
+vim.keymap.set( 'n', '<space>e', vim.diagnostic.open_float, opts )
+vim.keymap.set( 'n', '[d',       vim.diagnostic.goto_prev,  opts )
+vim.keymap.set( 'n', ']d',       vim.diagnostic.goto_next,  opts )
+vim.keymap.set( 'n', '<space>q', vim.diagnostic.setloclist, opts )
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -212,11 +267,11 @@ local on_attach = function( client, bufnr )
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   local bufopts = { noremap=true, silent=true, buffer=bufnr }
 
-  vim.keymap.set( 'n',  '<leader>gD',   vim.lsp.buf.declaration,      bufopts )
-  vim.keymap.set( 'n',  'I',            vim.lsp.buf.hover,            bufopts )
-  vim.keymap.set( 'n',  '<C-k>',        vim.lsp.buf.signature_help,   bufopts )
-  vim.keymap.set( 'n',  '<space>rn',    vim.lsp.buf.rename,           bufopts )
-  vim.keymap.set( 'n',  '<space>ca',    vim.lsp.buf.code_action,      bufopts )
+  vim.keymap.set( 'n', '<leader>gD', vim.lsp.buf.declaration,    bufopts )
+  vim.keymap.set( 'n', 'leader<i>',  vim.lsp.buf.hover,          bufopts )
+  vim.keymap.set( 'n', '<C-k>',      vim.lsp.buf.signature_help, bufopts )
+  vim.keymap.set( 'n', '<space>rn',  vim.lsp.buf.rename,         bufopts )
+  vim.keymap.set( 'n', '<space>ca',  vim.lsp.buf.code_action,    bufopts )
 end
 
 local lsp_servers = { 'bashls', 'cmake', 'hls', 'pyright', 'vimls', 'zls' }
@@ -240,8 +295,6 @@ vim.opt.smarttab       = true
 vim.opt.cindent        = true
 vim.opt.scrolloff      = 10
 vim.opt.colorcolumn    = '80'
-vim.opt.signcolumn     = 'yes'
-vim.opt.signcolumn     = 'number'
 vim.opt.hidden         = true
 vim.opt.cmdheight      = 2
 vim.opt.swapfile       = false
@@ -255,10 +308,18 @@ vim.opt.hlsearch       = false
 vim.g.mapleader        = ' '
 
 -- keymaps for built in things
-vim.keymap.set( 'n', '<leader>fs', ':w<CR>', { noremap=true,             } )
-vim.keymap.set( 'n', 'Y',          'y$',     { noremap=true, silent=true } )
+vim.keymap.set( 'n', '<leader>fs', ':w<CR>',  { noremap=true,             } ) -- save file
+vim.keymap.set( 'n', '<leader>bd', ':bd<CR>', { noremap=true,             } ) -- close buffer
+vim.keymap.set( 'n', 'Y',          'y$',      { noremap=true, silent=true } ) -- yank to end of line
 
-vim.keymap.set( 'n', '<leader>cc', ':ScratchPad<CR>', { noremap=true } )
+-- jk fixes (thanks yet again fraser)
+vim.api.nvim_set_keymap('n', 'j', '<Plug>(accelerated_jk_gj)', {})
+vim.api.nvim_set_keymap('n', 'k', '<Plug>(accelerated_jk_gk)', {})
+
+vim.api.nvim_set_keymap('v', 'j', 'gj', {})
+vim.api.nvim_set_keymap('v', 'k', 'gk', {})
+
+vim.keymap.set( 'n', '<leader>ss', ':ScratchPad<CR>', { noremap=true } )
 
 vim.keymap.set( 'n', '<leader>gg', ':Git<CR>',        { noremap=true } )
 
@@ -276,25 +337,26 @@ vim.keymap.set( 'v', '<leader>GL', ':GV',             { noremap=true } )
 
 -- telescope maps
 local builtin = require('telescope.builtin')
-vim.keymap.set( 'n', '<leader>ff',  builtin .find_files,           {} )
-vim.keymap.set( 'n', '<leader>fg',  builtin .git_files,            {} )
+vim.keymap.set( 'n', '<leader>ff',  builtin.find_files,           {} )
+vim.keymap.set( 'n', '<leader>fg',  builtin.git_files,            {} )
 
-vim.keymap.set( 'n', '<leader>/',   builtin .live_grep,            {} )
-vim.keymap.set( 'n', '<leader>*',   builtin .grep_string,          {} )
+vim.keymap.set( 'n', '<leader>/',   builtin.live_grep,            {} )
+vim.keymap.set( 'n', '<leader>*',   builtin.grep_string,          {} )
 
-vim.keymap.set( 'n', '<leader>mp',  builtin .man_pages,            {} )
-vim.keymap.set( 'n', '<leader>ma',  builtin .marks,                {} )
-vim.keymap.set( 'n', '<leader>vo',  builtin .vim_options,          {} )
-vim.keymap.set( 'n', '<leader>km',  builtin .keymaps,              {} )
+vim.keymap.set( 'n', '<leader>mp',  builtin.man_pages,            {} )
+vim.keymap.set( 'n', '<leader>ma',  builtin.marks,                {} )
+vim.keymap.set( 'n', '<leader>vo',  builtin.vim_options,          {} )
+vim.keymap.set( 'n', '<leader>km',  builtin.keymaps,              {} )
 
-vim.keymap.set( 'n', '<leader>gr',  builtin .lsp_references,       {} )
-vim.keymap.set( 'n', '<leader>gd',  builtin .lsp_definitions,      {} )
-vim.keymap.set( 'n', '<leader>gi',  builtin .lsp_implementations,  {} )
-vim.keymap.set( 'n', '<leader>gtd'  builtin .lsp_type_definitions, {} )
+vim.keymap.set( 'n', '<leader>gr',  builtin.lsp_references,       {} )
+vim.keymap.set( 'n', '<leader>gd',  builtin.lsp_definitions,      {} )
+vim.keymap.set( 'n', '<leader>gi',  builtin.lsp_implementations,  {} )
+vim.keymap.set( 'n', '<leader>gtd', builtin.lsp_type_definitions, {} )
 
-vim.keymap.set( 'n', '<leader>ts',  builtin .treesitter,           {} )
+-- vim.keymap.set( 'n', '<leader>ts',  builtin.treesitter,           {} )
 
 -- thanks again fraser
+-- XXX: doesn't write a comment!
 function write_centered_line( text )
     local c = vim.fn.col('.')
     local line = vim.fn.getline('.')
@@ -321,6 +383,7 @@ function WriteCenteredLine()
     write_centered_line( " " .. text .. " " )
 end
 
+-- TODO: insert mode mapping for this
 vim.keymap.set( 'n', '<leader>l', WriteCenteredLine, {} )
 
 -- run all vimscript stuffs
@@ -336,6 +399,7 @@ vim.cmd([[
 
     " thanks a bunch fraser
     " https://github.com/FraserLee/dotfiles/blob/master/.vimrc#LL298-L323C40
+    " TODO: replace with a lua version backed by something that isn't tabular
     function! TabAlign( zs )
         " get the character under the cursor
         let c = matchstr(getline('.'), '\%' . col('.') . 'c.')
