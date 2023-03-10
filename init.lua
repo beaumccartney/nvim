@@ -26,7 +26,10 @@ require'lazy'.setup({
         'folke/todo-comments.nvim',
         dependencies = 'nvim-lua/plenary.nvim',
         config = function()
-            require('todo-comments').setup { signs = false }
+            require('todo-comments').setup {
+                signs = false,
+                keywords = { TODO = { alt = { "REVIEW" }, }, },
+            }
         end,
     },
 
@@ -45,11 +48,10 @@ require'lazy'.setup({
         config = function() require'unimpaired'.setup() end
     },
 
-    -- NOTE: mini-replaceable
     -- surround things
     {
-        'kylechui/nvim-surround',
-        config = function() require'nvim-surround'.setup() end
+        'echasnovski/mini.surround',
+        config = function() require'mini.surround'.setup() end,
     },
 
     -- everything
