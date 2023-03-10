@@ -16,7 +16,7 @@ if not vim.loop.fs_stat( lazypath ) then
 end
 vim.opt.rtp:prepend( lazypath )
 
-require'lazy'.setup({
+require'lazy'.setup {
     -- center screen and scratchpad to expand working memory
     'FraserLee/ScratchPad',
 
@@ -252,7 +252,7 @@ require'lazy'.setup({
 
     -- inlay hints for c++
     'p00f/clangd_extensions.nvim',
-})
+}
 
 -- lsp stuff
 -- Mappings.
