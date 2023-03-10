@@ -340,6 +340,7 @@ vim.keymap.set( 'n', '<leader>mp',  builtin.man_pages,            {} )
 vim.keymap.set( 'n', '<leader>ma',  builtin.marks,                {} )
 vim.keymap.set( 'n', '<leader>vo',  builtin.vim_options,          {} )
 vim.keymap.set( 'n', '<leader>km',  builtin.keymaps,              {} )
+vim.keymap.set( 'n', '<leader>ht',  builtin.help_tags,            {} )
 
 vim.keymap.set( 'n', '<leader>gr',  builtin.lsp_references,       {} )
 vim.keymap.set( 'n', '<leader>gd',  builtin.lsp_definitions,      {} )
