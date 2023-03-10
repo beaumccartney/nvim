@@ -197,10 +197,6 @@ require'lazy'.setup({
 
     'gruvbox-community/gruvbox',
 
-    -- TODO: replace
-    'godlygeek/tabular', -- NOTE: mini-replaceable
-    -- XXX: mini-jump remapes ; and , so they don't work with this
-    'justinmk/vim-sneak', -- like mini.jump, but for two character patterns
     'mg979/vim-visual-multi',
 
     -- highlight cursor after large jump
@@ -387,35 +383,5 @@ vim.cmd([[
     colorscheme gruvbox
 
     syntax on
-
-    " thanks a bunch fraser
-    " https://github.com/FraserLee/dotfiles/blob/master/.vimrc#LL298-L323C40
-    " TODO: replace with a lua version backed by something that isn't tabular
-    function! TabAlign( zs )
-        " get the character under the cursor
-        let c = matchstr(getline('.'), '\%' . col('.') . 'c.')
-        let pos = getpos(".") " save the position of the cursor
-
-        " if the character needs to be escaped, put a backslash in front of it
-        " Todo: add more characters that need escaping
-        if matchstr(c, '[\\\/\.]') != ''
-            let c = '\' . c
-        endif
-
-        " Tabularize with that character
-        if a:zs | :execute ":Tabularize /" . c . "\\zs"
-        else    | :execute ":Tabularize /" . c
-        endif
-        call setpos('.', pos) " Restore the cursor position
-    endfunction
-
-    " <leader>t will align stuff like
-    " aaaaaa | aaa | aaaaaa
-    " b      | b   | b
-    " while <leader>T will align stuff like
-    " aaaaaa,  aaa,  aaaaaa
-    " b,       b,    b
-    noremap <leader>t :call TabAlign( 0 )<cr>
-    noremap <leader>T :call TabAlign( 1 )<cr>
 ]])
 
