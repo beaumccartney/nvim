@@ -311,8 +311,6 @@ vim.api.nvim_set_keymap('v', 'k', 'gk', {})
 
 vim.keymap.set( 'n', '<leader>ss', ':ScratchPad<CR>', { noremap=true } )
 
-vim.keymap.set( 'n', '<leader>gg', ':Git<CR>',        { noremap=true } )
-
 -- git log stuff
 vim.keymap.set( 'n', '<leader>gl', ':GV<CR>',         { noremap=true } )
 vim.keymap.set( 'n', '<leader>GL', ':GV',             { noremap=true } )
