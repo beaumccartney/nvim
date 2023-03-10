@@ -16,6 +16,13 @@ if not vim.loop.fs_stat( lazypath ) then
 end
 vim.opt.rtp:prepend( lazypath )
 
+-- TODO: factor into lua and put somewhere reasonable ffs
+-- copilot stuffs
+vim.cmd([[
+    let g:copilot_no_tab_map = v:true
+    imap <silent><script><expr> <C-j> copilot#Accept("\<CR>")
+]])
+
 require'lazy'.setup {
     -- center screen and scratchpad to expand working memory
     'FraserLee/ScratchPad',
@@ -239,16 +246,7 @@ require'lazy'.setup {
 
     'neovim/nvim-lspconfig',
 
-    {
-        'github/copilot.vim',
-        config = function()
-            -- TODO: factor into lua
-            vim.cmd([[
-                let g:copilot_no_tab_map = v:true
-                imap <silent><script><expr> <C-j> copilot#Accept("\<CR>")
-            ]])
-        end,
-    },
+    'github/copilot.vim',
 
     -- inlay hints for c++
     'p00f/clangd_extensions.nvim',
