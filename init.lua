@@ -20,6 +20,12 @@ require'lazy'.setup({
     -- center screen and scratchpad to expand working memory
     'FraserLee/ScratchPad',
 
+    -- TODO: window submode and a whole lot of other stuff
+    {
+        enabled = false,
+        'Iron-E/nvim-libmodal',
+    },
+
     -- highlight and search todo comments
     {
         -- TODO: search these with telescope
