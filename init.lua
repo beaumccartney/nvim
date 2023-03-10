@@ -21,12 +21,6 @@ require'lazy'.setup({
     -- center screen and scratchpad to expand working memory
     'FraserLee/ScratchPad',
 
-    -- fish for keybinds - will go once I know my keybinds well
-    {
-        'folke/which-key.nvim',
-        config = function() require'which-key'.setup() end
-    },
-
     -- highlight and search todo comments
     {
         -- TODO: search these with telescope
