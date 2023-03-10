@@ -1,7 +1,6 @@
 -- TODO:
 -- submodes of some kind
--- copilot???
--- fix centered line
+-- centered line comments
 
 -- bootstrap package manager (ngl it works nice)
 local lazypath = vim.fn.stdpath( 'data' ) .. '/lazy/lazy.nvim'
