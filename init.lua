@@ -56,7 +56,9 @@ require'lazy'.setup({
     -- surround things
     {
         'echasnovski/mini.surround',
-        config = function() require'mini.surround'.setup() end,
+        config = function()
+            require'mini.surround'.setup { respect_selection_type = true, }
+        end,
     },
 
     -- everything
