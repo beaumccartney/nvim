@@ -33,7 +33,6 @@ require'lazy'.setup({
         end,
     },
 
-    -- NOTE: mini-replaceable
     -- comment things - can respect tree-sitter or other things
     {
         'numToStr/Comment.nvim',
@@ -205,7 +204,6 @@ require'lazy'.setup({
     'rainbowhxch/beacon.nvim',
 
     -- fast j and k YEAH BUDDY
-
     -- holding j, k, w, b, W, B, etc goes fast after a while
     {
         'rainbowhxch/accelerated-jk.nvim',
