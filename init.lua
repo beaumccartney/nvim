@@ -348,7 +348,9 @@ vim.keymap.set( 'n', '<leader>gd',  builtin.lsp_definitions,      {} )
 vim.keymap.set( 'n', '<leader>gi',  builtin.lsp_implementations,  {} )
 vim.keymap.set( 'n', '<leader>gtd', builtin.lsp_type_definitions, {} )
 
--- vim.keymap.set( 'n', '<leader>ts',  builtin.treesitter,           {} )
+vim.keymap.set( 'n', '<leader>td',  ':TodoTelescope<CR>',         {} )
+
+vim.keymap.set( 'n', '<leader>ts',  builtin.treesitter,           {} )
 
 -- thanks again fraser
 -- XXX: doesn't write a comment!
