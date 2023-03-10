@@ -2,6 +2,9 @@
 -- submodes of some kind
 -- centered line comments
 
+-- apparently I have to put this before the package manager
+vim.g.mapleader = ' '
+
 -- bootstrap package manager (ngl it works nice)
 local lazypath = vim.fn.stdpath( 'data' ) .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat( lazypath ) then
@@ -308,8 +311,6 @@ vim.opt.incsearch      = true
 vim.opt.ignorecase     = true
 vim.opt.smartcase      = true
 vim.opt.hlsearch       = false
-
-vim.g.mapleader        = ' '
 
 -- keymaps for built in things
 vim.keymap.set( 'n', '<leader>fs', ':w<CR>',  { noremap=true,             } ) -- save file
