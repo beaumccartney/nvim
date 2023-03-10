@@ -110,11 +110,23 @@ require'lazy'.setup({
     -- NOTE: mini-replaceable?
     {
         -- TODO: configure
-        enabled = false,
         'nvim-treesitter/nvim-treesitter-textobjects',
         after  = 'nvim-treesitter',
         config = function()
-            require'nvim-treesitter.configs'.setup()
+            require'nvim-treesitter.configs'.setup {
+                textobjects = {
+                    select = {
+                        enable  = true,
+                        keymaps = {
+                            ['af'] = '@function.outer',
+                            ['if'] = '@function.inner',
+
+                            ['ac'] = '@class.outer',
+                            ['ic'] = '@class.inner',
+                        },
+                    }
+                }
+            }
         end
     },
 
