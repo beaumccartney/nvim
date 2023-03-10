@@ -351,7 +351,9 @@ vim.keymap.set( 'n', '<leader>gtd', builtin.lsp_type_definitions, {} )
 
 -- thanks again fraser
 -- XXX: doesn't write a comment!
-function write_centered_line( text )
+-- TODO: comment with this
+function write_centered_line()
+    local text = " " .. vim.fn.input( 'Comment text: ') .. " "
     local c = vim.fn.col('.')
     local line = vim.fn.getline('.')
 
@@ -372,13 +374,9 @@ function write_centered_line( text )
     vim.fn.setline('.', new_line)
 end
 
-function WriteCenteredLine()
-    local text = vim.fn.input( 'Comment text: ')
-    write_centered_line( " " .. text .. " " )
-end
-
 -- TODO: insert mode mapping for this
-vim.keymap.set( 'n', '<leader>l', WriteCenteredLine, {} )
+vim.keymap.set( 'n', '<leader>l', write_centered_line,                         {} )
+vim.keymap.set( 'i', '<C-l>',     '<c-\\><c-o>:lua write_centered_line()<CR>', {} )
 
 -- run all vimscript stuffs
 -- TODO: factor this out into lua
