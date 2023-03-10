@@ -373,7 +373,6 @@ function write_centered_line()
     vim.fn.setline('.', new_line)
 end
 
--- TODO: insert mode mapping for this
 vim.keymap.set( 'n', '<leader>l', write_centered_line,                         {} )
 vim.keymap.set( 'i', '<C-l>',     '<c-\\><c-o>:lua write_centered_line()<CR>', {} )
 
