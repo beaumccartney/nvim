@@ -323,6 +323,12 @@ vim.keymap.set( 'n', '<leader>gp', ':GV --patch<CR>', { noremap=true } )
 vim.keymap.set( 'v', '<leader>gl', ':GV<CR>',         { noremap=true } )
 vim.keymap.set( 'v', '<leader>GL', ':GV',             { noremap=true } )
 
+-- REVIEW: I may get away with only the visual mode binding
+vim.keymap.set( "n", "cx",  "<cmd>lua require('substitute.exchange').operator()<cr>", { noremap = true } )
+vim.keymap.set( "n", "cxx", "<cmd>lua require('substitute.exchange').line()<cr>",     { noremap = true } )
+vim.keymap.set( "x", "X",   "<cmd>lua require('substitute.exchange').visual()<cr>",   { noremap = true } )
+vim.keymap.set( "n", "cxc", "<cmd>lua require('substitute.exchange').cancel()<cr>",   { noremap = true } )
+
 -- telescope maps
 local builtin = require('telescope.builtin')
 vim.keymap.set( 'n', '<leader>ff',  builtin.find_files,           {} )
