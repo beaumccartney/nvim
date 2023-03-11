@@ -99,14 +99,6 @@ require'lazy'.setup {
     },
 
     {
-        'HiPhish/nvim-ts-rainbow2',
-        dependencies = 'nvim-treesitter',
-        config = function()
-            require'nvim-treesitter.configs'.setup { rainbow = { enable = true, } }
-        end
-    },
-
-    {
         'nvim-treesitter/nvim-treesitter-context',
         dependencies = 'nvim-treesitter',
         config       = function() require'treesitter-context'.setup() end,
