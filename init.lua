@@ -27,6 +27,8 @@ vim.opt.rtp:prepend( lazypath )
 -- TODO: factor into lua and put somewhere reasonable ffs
 -- copilot stuffs
 vim.cmd([[
+    let g:scratchpad_autostart = 0
+
     let g:copilot_no_tab_map = v:true
     imap <silent><script><expr> <C-j> copilot#Accept("\<CR>")
 ]])
