@@ -294,16 +294,13 @@ vim.api.nvim_set_keymap('v', 'k', 'gk', {})
 vim.keymap.set( 'n', '<leader>ss', ':ScratchPad<CR>', { noremap=true } )
 
 -- git log stuff
-vim.keymap.set( 'n', '<leader>gl', ':GV<CR>',         { noremap=true } )
-vim.keymap.set( 'n', '<leader>GL', ':GV',             { noremap=true } )
+vim.keymap.set( { 'n', 'v' }, '<leader>gl', ':GV<CR>',  { noremap=true } )
+vim.keymap.set( { 'n', 'v' }, '<leader>GL', ':GV',      { noremap=true } )
 
-vim.keymap.set( 'n', '<leader>gv', ':GV!<CR>',        { noremap=true } )
-vim.keymap.set( 'n', '<leader>GV', ':GV!',            { noremap=true } )
+vim.keymap.set( { 'n', 'v' }, '<leader>gv', ':GV!<CR>', { noremap=true } )
+vim.keymap.set( { 'n', 'v' }, '<leader>GV', ':GV!',     { noremap=true } )
 
-vim.keymap.set( 'n', '<leader>gp', ':GV --patch<CR>', { noremap=true } )
-
-vim.keymap.set( 'v', '<leader>gl', ':GV<CR>',         { noremap=true } )
-vim.keymap.set( 'v', '<leader>GL', ':GV',             { noremap=true } )
+vim.keymap.set( 'n', '<leader>gp', ':GV --patch<CR>',   { noremap=true } )
 
 -- REVIEW: I may get away with only the visual mode binding
 vim.keymap.set( "n", "cx",  "<cmd>lua require('substitute.exchange').operator()<cr>", { noremap = true } )
