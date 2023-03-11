@@ -117,29 +117,6 @@ require'lazy'.setup {
         config       = function() require'treesitter-context'.setup() end,
     },
 
-    -- NOTE: mini-replaceable?
-    {
-        -- TODO: configure
-        'nvim-treesitter/nvim-treesitter-textobjects',
-        config = function()
-            require'nvim-treesitter.configs'.setup {
-                textobjects = {
-                    select = {
-                        enable  = true,
-                        keymaps = {
-                            ['af'] = '@function.outer',
-                            ['if'] = '@function.inner',
-
-
-                            ['ac'] = '@class.outer',
-                            ['ic'] = '@class.inner',
-                        },
-                    }
-                }
-            }
-        end
-    },
-
     -- fuzzy-find files and strings
     {
         'nvim-telescope/telescope.nvim',
