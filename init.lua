@@ -84,11 +84,11 @@ require'lazy'.setup {
                 incremental_selection = { -- thanks again fraser
                     enable = true,
                     keymaps = {
-                        -- <enter> to select and expand selection via syntax
-                        -- <shift+enter> to shrink and deselect
-                        init_selection   = '<CR>',
-                        node_incremental = '<CR>',
-                        node_decremental = '<S-CR>',
+                        -- Alt-k to select and expand selection via syntax
+                        -- Alt-j to shrink and deselect
+                        init_selection   = '<M-k>',
+                        node_incremental = '<M-k>',
+                        node_decremental = '<M-j>',
                     },
                 },
             }
