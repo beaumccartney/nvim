@@ -54,7 +54,7 @@ require'lazy'.setup {
 
     -- comment things - can respect tree-sitter or other things
     {
-        'numToStr/Comment.nvim',
+       'numToStr/Comment.nvim',
         config = function() require'Comment'.setup() end
     },
 
