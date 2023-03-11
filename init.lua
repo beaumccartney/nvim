@@ -3,6 +3,7 @@
 -- centered line comments
 -- signature help
 -- undotree or telescope thing
+-- undodir
 -- no copilot by default, "manualcomplete" keybind for it
 -- vim.keymap.set() vs vim.api.nvim_set_keymap()
 
@@ -84,7 +85,10 @@ require'lazy'.setup {
 
             require'nvim-treesitter.configs'.setup {
                 ensure_installed      = 'all',
-                highlight             = { enable = true, },
+                highlight             = {
+                    enable = true,
+                    disable = { 'gitcommit' },
+                },
                 incremental_selection = { -- thanks again fraser
                     enable = true,
                     keymaps = {
