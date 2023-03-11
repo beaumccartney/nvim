@@ -249,6 +249,11 @@ local on_attach = function( client, bufnr )
   vim.keymap.set( 'n', '<C-k>',      vim.lsp.buf.signature_help, bufopts )
   vim.keymap.set( 'n', '<space>rn',  vim.lsp.buf.rename,         bufopts )
   vim.keymap.set( 'n', '<space>ca',  vim.lsp.buf.code_action,    bufopts )
+
+  vim.keymap.set( 'n', '<leader>gr',  builtin.lsp_references,       {} )
+  vim.keymap.set( 'n', '<leader>gd',  builtin.lsp_definitions,      {} )
+  vim.keymap.set( 'n', '<leader>gi',  builtin.lsp_implementations,  {} )
+  vim.keymap.set( 'n', '<leader>gtd', builtin.lsp_type_definitions, {} )
 end
 
 local lsp_servers = { 'bashls', 'cmake', 'hls', 'pyright', 'vimls', 'zls' }
@@ -258,28 +263,6 @@ for _, server in pairs( lsp_servers ) do
 end
 
 require'clangd_extensions'.setup { server = { on_attach = on_attach, } }
-
-vim.opt.termguicolors  = true
-vim.opt.nu             = true
-vim.opt.relativenumber = true
-
-vim.opt.tabstop        = 4
-vim.opt.softtabstop    = 4
-vim.opt.shiftwidth     = 4
-
-vim.opt.expandtab      = true
-vim.opt.smarttab       = true
-vim.opt.cindent        = true
-vim.opt.scrolloff      = 10
-vim.opt.colorcolumn    = '80'
-vim.opt.hidden         = true
-vim.opt.cmdheight      = 2
-vim.opt.swapfile       = false
-
-vim.opt.incsearch      = true
-vim.opt.ignorecase     = true
-vim.opt.smartcase      = true
-vim.opt.hlsearch       = false
 
 -- keymaps for built in things
 vim.keymap.set( 'n', '<leader>fs', ':w<CR>',  { noremap=true, } ) -- save file
@@ -329,14 +312,31 @@ vim.keymap.set( 'n', '<leader>vo',  builtin.vim_options,          {} )
 vim.keymap.set( 'n', '<leader>km',  builtin.keymaps,              {} )
 vim.keymap.set( 'n', '<leader>ht',  builtin.help_tags,            {} )
 
-vim.keymap.set( 'n', '<leader>gr',  builtin.lsp_references,       {} )
-vim.keymap.set( 'n', '<leader>gd',  builtin.lsp_definitions,      {} )
-vim.keymap.set( 'n', '<leader>gi',  builtin.lsp_implementations,  {} )
-vim.keymap.set( 'n', '<leader>gtd', builtin.lsp_type_definitions, {} )
-
 vim.keymap.set( 'n', '<leader>td',  ':TodoTelescope<CR>',         {} )
 
 vim.keymap.set( 'n', '<leader>ts',  builtin.treesitter,           {} )
+
+vim.opt.termguicolors  = true
+vim.opt.nu             = true
+vim.opt.relativenumber = true
+
+vim.opt.tabstop        = 4
+vim.opt.softtabstop    = 4
+vim.opt.shiftwidth     = 4
+
+vim.opt.expandtab      = true
+vim.opt.smarttab       = true
+vim.opt.cindent        = true
+vim.opt.scrolloff      = 10
+vim.opt.colorcolumn    = '80'
+vim.opt.hidden         = true
+vim.opt.cmdheight      = 2
+vim.opt.swapfile       = false
+
+vim.opt.incsearch      = true
+vim.opt.ignorecase     = true
+vim.opt.smartcase      = true
+vim.opt.hlsearch       = false
 
 -- thanks again fraser
 -- XXX: doesn't write a comment!
