@@ -95,19 +95,11 @@ require'lazy'.setup {
         end
     },
 
-    -- NOTE: make sure this is maintained every once in a while
-    -- rainbow parens
     {
-        'mrjones2014/nvim-ts-rainbow',
+        'HiPhish/nvim-ts-rainbow2',
         dependencies = 'nvim-treesitter',
-        config       = function()
-            require'nvim-treesitter.configs'.setup {
-                rainbow = {
-                    enable         = true,
-                    extended_mode  = true,
-                    max_file_lines = 1000,
-                }
-            }
+        config = function()
+            require'nvim-treesitter.configs'.setup { rainbow = { enable = true, } }
         end
     },
 
