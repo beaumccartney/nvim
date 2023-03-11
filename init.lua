@@ -1,6 +1,9 @@
 -- TODO:
 -- submodes of some kind
 -- centered line comments
+-- signature help
+-- undotree or telescope thing
+-- no copilot by default, "manualcomplete" keybind for it
 
 -- apparently I have to put this before the package manager
 vim.g.mapleader = ' '
