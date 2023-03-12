@@ -51,7 +51,7 @@ require'lazy'.setup {
         config = function()
             require('todo-comments').setup {
                 signs = false,
-                keywords = { TODO = { alt = { "REVIEW" }, }, },
+                keywords = { TODO = { alt = { 'REVIEW', 'INCOMPLETE' }, }, },
             }
         end,
     },
