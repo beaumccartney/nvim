@@ -342,6 +342,8 @@ vim.opt.ignorecase     = true
 vim.opt.smartcase      = true
 vim.opt.hlsearch       = false
 
+vim.opt.completeopt    = 'menu'
+
 -- thanks again fraser
 -- XXX: doesn't write a comment!
 -- TODO: comment with this
