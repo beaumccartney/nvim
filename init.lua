@@ -270,6 +270,7 @@ require'clangd_extensions'.setup { server = { on_attach = on_attach, } }
 
 -- keymaps for built in things
 vim.keymap.set( 'n', '<leader>fs', ':w<CR>',  { noremap=true, } ) -- save file
+vim.keymap.set( 'n', '<leader>sa', ':wa<CR>', { noremap=true, } ) -- save all files
 vim.keymap.set( 'n', '<leader>bd', ':bd<CR>', { noremap=true, } ) -- close buffer
 
 vim.keymap.set( 'n', 'Y',         'y$',   { noremap=true, silent=true } ) -- yank to end of line
