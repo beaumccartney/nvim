@@ -345,6 +345,8 @@ vim.opt.hlsearch       = false
 
 vim.opt.completeopt    = 'menu'
 
+vim.opt.foldenable     = false
+
 -- thanks again fraser
 -- XXX: doesn't write a comment!
 -- TODO: comment with this
@@ -381,8 +383,12 @@ vim.cmd([[
         autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
     augroup END
 
-    colorscheme gruvbox
+    augroup treesitter_folds
+        autocmd!
+        autocmd FileType * if luaeval('require("nvim-treesitter.parsers").has_parser()') | setlocal foldmethod=expr | setlocal foldexpr=nvim_treesitter#foldexpr() | endif
+    augroup END
 
     syntax on
+    colorscheme gruvbox
 ]])
 
