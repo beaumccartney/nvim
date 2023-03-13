@@ -388,7 +388,6 @@ vim.cmd([[
         autocmd FileType * if luaeval('require("nvim-treesitter.parsers").has_parser()') | setlocal foldmethod=expr | setlocal foldexpr=nvim_treesitter#foldexpr() | endif
     augroup END
 
-    syntax on
     colorscheme gruvbox
 ]])
 
