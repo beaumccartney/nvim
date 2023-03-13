@@ -87,8 +87,9 @@ require'lazy'.setup {
 
             require'nvim-treesitter.configs'.setup {
                 ensure_installed      = 'all',
+                indent                = { enable = true },
                 highlight             = {
-                    enable = true,
+                    enable  = true,
                     disable = { 'gitcommit' },
                 },
                 incremental_selection = { -- thanks again fraser
