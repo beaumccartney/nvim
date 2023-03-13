@@ -46,7 +46,6 @@ require'lazy'.setup {
 
     -- highlight and search todo comments
     {
-        -- TODO: search these with telescope
         'folke/todo-comments.nvim',
         dependencies = 'nvim-lua/plenary.nvim',
         config = function()
