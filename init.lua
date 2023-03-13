@@ -6,6 +6,7 @@
 -- undodir
 -- no copilot by default, "manualcomplete" keybind for it
 -- vim.keymap.set() vs vim.api.nvim_set_keymap()
+-- session reloading
 
 -- apparently I have to put this before the package manager
 vim.g.mapleader = ' '
