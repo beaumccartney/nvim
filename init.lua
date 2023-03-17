@@ -294,15 +294,17 @@ require'lazy'.setup {
     },
 }
 
+local make_keymap = vim.keymap.set
+
 -- lsp stuff
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
 
-vim.keymap.set( 'n', '<space>e', vim.diagnostic.open_float, opts )
-vim.keymap.set( 'n', '[d',       vim.diagnostic.goto_prev,  opts )
-vim.keymap.set( 'n', ']d',       vim.diagnostic.goto_next,  opts )
-vim.keymap.set( 'n', '<space>q', vim.diagnostic.setloclist, opts )
+make_keymap( 'n', '<space>e', vim.diagnostic.open_float, opts )
+make_keymap( 'n', '[d',       vim.diagnostic.goto_prev,  opts )
+make_keymap( 'n', ']d',       vim.diagnostic.goto_next,  opts )
+make_keymap( 'n', '<space>q', vim.diagnostic.setloclist, opts )
 
 local builtin = require('telescope.builtin')
 
@@ -316,16 +318,16 @@ local on_attach = function( client, bufnr )
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   local bufopts = { noremap=true, silent=true, buffer=bufnr }
 
-  vim.keymap.set( 'n', '<leader>gD', vim.lsp.buf.declaration,    bufopts )
-  vim.keymap.set( 'n', '<leader>i',  vim.lsp.buf.hover,          bufopts )
-  vim.keymap.set( 'n', '<C-k>',      vim.lsp.buf.signature_help, bufopts )
-  vim.keymap.set( 'n', '<space>rn',  vim.lsp.buf.rename,         bufopts )
-  vim.keymap.set( 'n', '<space>ca',  vim.lsp.buf.code_action,    bufopts )
+  make_keymap( 'n', '<leader>gD', vim.lsp.buf.declaration,    bufopts )
+  make_keymap( 'n', '<leader>i',  vim.lsp.buf.hover,          bufopts )
+  make_keymap( 'n', '<C-k>',      vim.lsp.buf.signature_help, bufopts )
+  make_keymap( 'n', '<space>rn',  vim.lsp.buf.rename,         bufopts )
+  make_keymap( 'n', '<space>ca',  vim.lsp.buf.code_action,    bufopts )
 
-  vim.keymap.set( 'n', '<leader>gr',  builtin.lsp_references,       {} )
-  vim.keymap.set( 'n', '<leader>gd',  builtin.lsp_definitions,      {} )
-  vim.keymap.set( 'n', '<leader>gi',  builtin.lsp_implementations,  {} )
-  vim.keymap.set( 'n', '<leader>gtd', builtin.lsp_type_definitions, {} )
+  make_keymap( 'n', '<leader>gr',  builtin.lsp_references,       {} )
+  make_keymap( 'n', '<leader>gd',  builtin.lsp_definitions,      {} )
+  make_keymap( 'n', '<leader>gi',  builtin.lsp_implementations,  {} )
+  make_keymap( 'n', '<leader>gtd', builtin.lsp_type_definitions, {} )
 end
 
 local lsp_servers = { 'bashls', 'cmake', 'hls', 'pyright', 'vimls', 'zls' }
@@ -337,74 +339,75 @@ end
 require'clangd_extensions'.setup { server = { on_attach = on_attach, } }
 
 -- keymaps for built in things
-vim.keymap.set( 'n', '<leader>fs', ':w<CR>',  { noremap=true, } ) -- save file
-vim.keymap.set( 'n', '<leader>sa', ':wa<CR>', { noremap=true, } ) -- save all files
-vim.keymap.set( 'n', '<leader>bd', ':bd<CR>', { noremap=true, } ) -- close buffer
+make_keymap( 'n', '<leader>fs', '<Cmd>w<CR>',  { noremap=true, } ) -- save file
+make_keymap( 'n', '<leader>sa', '<Cmd>wa<CR>', { noremap=true, } ) -- save all files
+make_keymap( 'n', '<leader>bd', '<Cmd>bd<CR>', { noremap=true, } ) -- close buffer
 
-vim.keymap.set( 'n', 'Y',         'y$',   { noremap=true, silent=true } ) -- yank to end of line
-vim.keymap.set( 'n', '<leader>Y', '"+y$', { noremap=true, silent=true } ) -- yank to end of line
+make_keymap( 'n', 'Y',         'y$',   { noremap=true, silent=true } ) -- yank to end of line
+make_keymap( 'n', '<leader>Y', '"+y$', { noremap=true, silent=true } ) -- yank to end of line
 
-vim.keymap.set( { 'n', 'v' }, '<leader>y', '"+y', { noremap=true, silent=true } ) -- yank to clipboard
-vim.keymap.set( { 'n', 'v' }, '<leader>p', '"+p', { noremap=true, silent=true } ) -- put from clipboard
+make_keymap( { 'n', 'v' }, '<leader>y', '"+y', { noremap=true, silent=true } ) -- yank to clipboard
+make_keymap( { 'n', 'v' }, '<leader>p', '"+p', { noremap=true, silent=true } ) -- put from clipboard
 
 -- jk fixes (thanks yet again fraser)
-vim.api.nvim_set_keymap('n', 'j', '<Plug>(accelerated_jk_gj)', {})
-vim.api.nvim_set_keymap('n', 'k', '<Plug>(accelerated_jk_gk)', {})
+make_keymap('n', 'j', '<Plug>(accelerated_jk_gj)', {})
+make_keymap('n', 'k', '<Plug>(accelerated_jk_gk)', {})
 
-vim.api.nvim_set_keymap('v', 'j', 'gj', {})
-vim.api.nvim_set_keymap('v', 'k', 'gk', {})
+make_keymap('v', 'j', 'gj', {})
+make_keymap('v', 'k', 'gk', {})
 
-vim.keymap.set( 'n', '<leader>ss', ':ScratchPad<CR>', { noremap=true } )
+make_keymap( 'n', '<leader>ss', '<Cmd>ScratchPad<CR>', { noremap=true } )
 
 -- git log stuff
-vim.keymap.set( { 'n', 'v' }, '<leader>gl', ':GV<CR>',  { noremap=true } )
-vim.keymap.set( { 'n', 'v' }, '<leader>GL', ':GV',      { noremap=true } )
+make_keymap( { 'n', 'v' }, '<leader>gl', '<Cmd>GV<CR>',  { noremap=true } )
+make_keymap( { 'n', 'v' }, '<leader>GL', ':GV',      { noremap=true } )
 
-vim.keymap.set( { 'n', 'v' }, '<leader>gv', ':GV!<CR>', { noremap=true } )
-vim.keymap.set( { 'n', 'v' }, '<leader>GV', ':GV!',     { noremap=true } )
+make_keymap( { 'n', 'v' }, '<leader>gv', '<Cmd>GV!<CR>', { noremap=true } )
+make_keymap( { 'n', 'v' }, '<leader>GV', ':GV!',     { noremap=true } )
 
-vim.keymap.set( 'n', '<leader>gp', ':GV --patch<CR>',   { noremap=true } )
+make_keymap( 'n', '<leader>gp', '<Cmd>GV --patch<CR>',   { noremap=true } )
 
 -- debugger stuff
 local dap = require'dap'
-vim.keymap.set('n', '<leader>dd', dap.continue,          { noremap=true } )
-vim.keymap.set('n', '<leader>dr', dap.restart,           { noremap=true } )
-vim.keymap.set('n', '<leader>DD', dap.clear_breakpoints, { noremap=true } )
-vim.keymap.set('n', '<leader>dt', dap.run_to_cursor,     { noremap=true } )
-vim.keymap.set('n', '<leader>dl', dap.step_over,         { noremap=true } )
-vim.keymap.set('n', '<leader>dj', dap.step_into,         { noremap=true } )
-vim.keymap.set('n', '<leader>dk', dap.step_out,          { noremap=true } )
-vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint, { noremap=true } )
-vim.keymap.set('n', '<leader>dB', dap.set_breakpoint,    { noremap=true } )
-vim.keymap.set('n', '<leader>DR', dap.repl.open,         { noremap=true } )
-vim.keymap.set('n', '<leader>dp', dap.run_last,          { noremap=true } )
-vim.keymap.set('v', '<leader>k',  require'dapui'.eval,   { noremap=true } )
+make_keymap('n', '<leader>dd', dap.continue,          { noremap=true } )
+make_keymap('n', '<leader>dr', dap.restart,           { noremap=true } )
+make_keymap('n', '<leader>DD', dap.clear_breakpoints, { noremap=true } )
+make_keymap('n', '<leader>dt', dap.run_to_cursor,     { noremap=true } )
+make_keymap('n', '<leader>dl', dap.step_over,         { noremap=true } )
+make_keymap('n', '<leader>dj', dap.step_into,         { noremap=true } )
+make_keymap('n', '<leader>dk', dap.step_out,          { noremap=true } )
+make_keymap('n', '<leader>db', dap.toggle_breakpoint, { noremap=true } )
+make_keymap('n', '<leader>dB', dap.set_breakpoint,    { noremap=true } )
+make_keymap('n', '<leader>DR', dap.repl.open,         { noremap=true } )
+make_keymap('n', '<leader>dp', dap.run_last,          { noremap=true } )
+make_keymap('v', '<leader>k',  require'dapui'.eval,   { noremap=true } )
 
-vim.keymap.set('n', '<leader>dc', '<Cmd>lua require"dap".terminate({}, {}, require"dapui".close())<CR>',        { noremap=true } ) -- TODO: don't close dapui this way ffs
-vim.keymap.set('n', '<leader>pl', '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>',   { noremap=true } )
+make_keymap('n', '<leader>dc', '<Cmd>lua require"dap".terminate({}, {}, require"dapui".close())<CR>',        { noremap=true } ) -- TODO: don't close dapui this way ffs
+make_keymap('n', '<leader>pl', '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>',   { noremap=true } )
 
 -- REVIEW: I may get away with only the visual mode binding
-vim.keymap.set( "n", "cx",  "<cmd>lua require('substitute.exchange').operator()<cr>", { noremap = true } )
-vim.keymap.set( "n", "cxx", "<cmd>lua require('substitute.exchange').line()<cr>",     { noremap = true } )
-vim.keymap.set( "x", "X",   "<cmd>lua require('substitute.exchange').visual()<cr>",   { noremap = true } )
-vim.keymap.set( "n", "cxc", "<cmd>lua require('substitute.exchange').cancel()<cr>",   { noremap = true } )
+local exchg = require'substitute.exchange'
+make_keymap( "n", "cx",  exchg.operator, { noremap = true } )
+make_keymap( "n", "cxx", exchg.line,     { noremap = true } )
+make_keymap( "x", "X",   exchg.visual,   { noremap = true } )
+make_keymap( "n", "cxc", exchg.cancel,   { noremap = true } )
 
 -- telescope maps
-vim.keymap.set( 'n', '<leader>ff',  builtin.find_files,           {} )
-vim.keymap.set( 'n', '<leader>gg',  builtin.git_files,            {} )
+make_keymap( 'n', '<leader>ff', builtin.find_files,       {} )
+make_keymap( 'n', '<leader>gg', builtin.git_files,        {} )
 
-vim.keymap.set( 'n', '<leader>/',   builtin.live_grep,            {} )
-vim.keymap.set( 'n', '<leader>*',   builtin.grep_string,          {} )
+make_keymap( 'n', '<leader>/',  builtin.live_grep,        {} )
+make_keymap( 'n', '<leader>*',  builtin.grep_string,      {} )
 
-vim.keymap.set( 'n', '<leader>mp',  builtin.man_pages,            {} )
-vim.keymap.set( 'n', '<leader>ma',  builtin.marks,                {} )
-vim.keymap.set( 'n', '<leader>vo',  builtin.vim_options,          {} )
-vim.keymap.set( 'n', '<leader>km',  builtin.keymaps,              {} )
-vim.keymap.set( 'n', '<leader>ht',  builtin.help_tags,            {} )
+make_keymap( 'n', '<leader>mp', builtin.man_pages,        {} )
+make_keymap( 'n', '<leader>ma', builtin.marks,            {} )
+make_keymap( 'n', '<leader>vo', builtin.vim_options,      {} )
+make_keymap( 'n', '<leader>km', builtin.keymaps,          {} )
+make_keymap( 'n', '<leader>ht', builtin.help_tags,        {} )
 
-vim.keymap.set( 'n', '<leader>td',  ':TodoTelescope<CR>',         {} )
+make_keymap( 'n', '<leader>td', '<Cmd>TodoTelescope<CR>', {} )
 
-vim.keymap.set( 'n', '<leader>ts',  builtin.treesitter,           {} )
+make_keymap( 'n', '<leader>ts', builtin.treesitter,       {} )
 
 vim.opt.termguicolors  = true
 vim.opt.nu             = true
@@ -457,8 +460,8 @@ function write_centered_line()
     vim.fn.setline('.', new_line)
 end
 
-vim.keymap.set( 'n', '<leader>l', write_centered_line,                         {} )
-vim.keymap.set( 'i', '<C-l>',     '<c-\\><c-o>:lua write_centered_line()<CR>', {} )
+make_keymap( 'n', '<leader>l', write_centered_line,                         {} )
+make_keymap( 'i', '<C-l>',     '<c-\\><c-o>:lua write_centered_line()<CR>', {} )
 
 -- run all vimscript stuffs
 -- TODO: factor this out into lua
