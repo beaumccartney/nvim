@@ -301,10 +301,10 @@ local make_keymap = vim.keymap.set
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
 
-make_keymap( 'n', '<space>e', vim.diagnostic.open_float, opts )
-make_keymap( 'n', '[d',       vim.diagnostic.goto_prev,  opts )
-make_keymap( 'n', ']d',       vim.diagnostic.goto_next,  opts )
-make_keymap( 'n', '<space>q', vim.diagnostic.setloclist, opts )
+make_keymap( 'n', '<leader>e', vim.diagnostic.open_float, opts )
+make_keymap( 'n', '[d',        vim.diagnostic.goto_prev,  opts )
+make_keymap( 'n', ']d',        vim.diagnostic.goto_next,  opts )
+make_keymap( 'n', '<leader>q', vim.diagnostic.setloclist, opts )
 
 local builtin = require('telescope.builtin')
 
@@ -321,8 +321,8 @@ local on_attach = function( client, bufnr )
   make_keymap( 'n', '<leader>gD', vim.lsp.buf.declaration,    bufopts )
   make_keymap( 'n', '<leader>i',  vim.lsp.buf.hover,          bufopts )
   make_keymap( 'n', '<C-k>',      vim.lsp.buf.signature_help, bufopts )
-  make_keymap( 'n', '<space>rn',  vim.lsp.buf.rename,         bufopts )
-  make_keymap( 'n', '<space>ca',  vim.lsp.buf.code_action,    bufopts )
+  make_keymap( 'n', '<leader>rn',  vim.lsp.buf.rename,         bufopts )
+  make_keymap( 'n', '<leader>ca',  vim.lsp.buf.code_action,    bufopts )
 
   make_keymap( 'n', '<leader>gr',  builtin.lsp_references,       {} )
   make_keymap( 'n', '<leader>gd',  builtin.lsp_definitions,      {} )
