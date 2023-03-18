@@ -399,7 +399,6 @@ make_keymap( 'n', '<leader>gg', builtin.git_files,   {} )
 make_keymap( 'n', '<leader>/',  builtin.live_grep,   {} )
 make_keymap( 'n', '<leader>*',  builtin.grep_string, {} )
 
-make_keymap( 'n', '<leader>mp', builtin.man_pages,        {} )
 make_keymap( 'n', '<leader>ma', builtin.marks,       {} )
 make_keymap( 'n', '<leader>vo', builtin.vim_options, {} )
 make_keymap( 'n', '<leader>km', builtin.keymaps,     {} )
