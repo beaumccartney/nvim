@@ -386,11 +386,11 @@ make_keymap('n', '<leader>dc', '<Cmd>lua require"dap".terminate({}, {}, require"
 make_keymap('n', '<leader>pl', '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>',   { noremap=true } )
 
 -- REVIEW: I may get away with only the visual mode binding
-local exchg = require'substitute.exchange'
-make_keymap( "n", "cx",  exchg.operator, { noremap = true } )
-make_keymap( "n", "cxx", exchg.line,     { noremap = true } )
-make_keymap( "x", "X",   exchg.visual,   { noremap = true } )
-make_keymap( "n", "cxc", exchg.cancel,   { noremap = true } )
+local exchange = require'substitute.exchange'
+make_keymap( "n", "cx",  exchange.operator, { noremap = true } )
+make_keymap( "n", "cxx", exchange.line,     { noremap = true } )
+make_keymap( "x", "X",   exchange.visual,   { noremap = true } )
+make_keymap( "n", "cxc", exchange.cancel,   { noremap = true } )
 
 -- telescope maps
 make_keymap( 'n', '<leader>ff', builtin.find_files,  {} )
