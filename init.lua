@@ -360,12 +360,12 @@ make_keymap( 'n', '<leader>ss', '<Cmd>ScratchPad<CR>', { noremap=true } )
 
 -- git log stuff
 make_keymap( { 'n', 'v' }, '<leader>gl', '<Cmd>GV<CR>',  { noremap=true } )
-make_keymap( { 'n', 'v' }, '<leader>GL', ':GV',      { noremap=true } )
+make_keymap( { 'n', 'v' }, '<leader>GL', ':GV',          { noremap=true } )
 
 make_keymap( { 'n', 'v' }, '<leader>gv', '<Cmd>GV!<CR>', { noremap=true } )
-make_keymap( { 'n', 'v' }, '<leader>GV', ':GV!',     { noremap=true } )
+make_keymap( { 'n', 'v' }, '<leader>GV', ':GV!',         { noremap=true } )
 
-make_keymap( 'n', '<leader>gp', '<Cmd>GV --patch<CR>',   { noremap=true } )
+make_keymap( 'n', '<leader>gp', '<Cmd>GV --patch<CR>', { noremap=true } )
 
 -- debugger stuff
 local dap = require'dap'
@@ -393,17 +393,17 @@ make_keymap( "x", "X",   exchg.visual,   { noremap = true } )
 make_keymap( "n", "cxc", exchg.cancel,   { noremap = true } )
 
 -- telescope maps
-make_keymap( 'n', '<leader>ff', builtin.find_files,       {} )
-make_keymap( 'n', '<leader>gg', builtin.git_files,        {} )
+make_keymap( 'n', '<leader>ff', builtin.find_files,  {} )
+make_keymap( 'n', '<leader>gg', builtin.git_files,   {} )
 
-make_keymap( 'n', '<leader>/',  builtin.live_grep,        {} )
-make_keymap( 'n', '<leader>*',  builtin.grep_string,      {} )
+make_keymap( 'n', '<leader>/',  builtin.live_grep,   {} )
+make_keymap( 'n', '<leader>*',  builtin.grep_string, {} )
 
 make_keymap( 'n', '<leader>mp', builtin.man_pages,        {} )
-make_keymap( 'n', '<leader>ma', builtin.marks,            {} )
-make_keymap( 'n', '<leader>vo', builtin.vim_options,      {} )
-make_keymap( 'n', '<leader>km', builtin.keymaps,          {} )
-make_keymap( 'n', '<leader>ht', builtin.help_tags,        {} )
+make_keymap( 'n', '<leader>ma', builtin.marks,       {} )
+make_keymap( 'n', '<leader>vo', builtin.vim_options, {} )
+make_keymap( 'n', '<leader>km', builtin.keymaps,     {} )
+make_keymap( 'n', '<leader>ht', builtin.help_tags,   {} )
 
 make_keymap( 'n', '<leader>td', '<Cmd>TodoTelescope<CR>', {} )
 
