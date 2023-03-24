@@ -349,6 +349,10 @@ make_keymap( 'n', '<leader>Y', '"+y$', { noremap=true, silent=true } ) -- yank t
 make_keymap( { 'n', 'v' }, '<leader>y', '"+y', { noremap=true, silent=true } ) -- yank to clipboard
 make_keymap( { 'n', 'v' }, '<leader>p', '"+p', { noremap=true, silent=true } ) -- put from clipboard
 
+-- change directory to current file - thanks fraser
+make_keymap( 'n', '<leader>cd', '<Cmd>cd %:p:h<CR>', { noremap=true } )
+make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>',    { noremap=true } )
+
 -- jk fixes (thanks yet again fraser)
 make_keymap('n', 'j', '<Plug>(accelerated_jk_gj)', {})
 make_keymap('n', 'k', '<Plug>(accelerated_jk_gk)', {})
