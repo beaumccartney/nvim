@@ -387,7 +387,7 @@ make_keymap('n', '<leader>dp', dap.run_last,          { noremap=true } )
 make_keymap('v', '<leader>k',  require'dapui'.eval,   { noremap=true } )
 
 make_keymap('n', '<leader>dc', '<Cmd>lua require"dap".terminate({}, {}, require"dapui".close())<CR>',        { noremap=true } ) -- TODO: don't close dapui this way ffs
-make_keymap('n', '<leader>pl', '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>',   { noremap=true } )
+-- make_keymap('n', '<leader>pl', '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>',   { noremap=true } ) -- TODO:
 
 -- REVIEW: I may get away with only the visual mode binding
 local exchange = require'substitute.exchange'
