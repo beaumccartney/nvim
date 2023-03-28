@@ -339,9 +339,10 @@ end
 require'clangd_extensions'.setup { server = { on_attach = on_attach, } }
 
 -- keymaps for built in things
-make_keymap( 'n', '<leader>fs', '<Cmd>w<CR>',  { noremap=true, } ) -- save file
-make_keymap( 'n', '<leader>sa', '<Cmd>wa<CR>', { noremap=true, } ) -- save all files
-make_keymap( 'n', '<leader>bd', '<Cmd>bd<CR>', { noremap=true, } ) -- close buffer
+make_keymap( 'n', '<leader>fs', '<Cmd>w<CR>',    { noremap=true, } ) -- save file
+make_keymap( 'n', '<leader>sa', '<Cmd>wa<CR>',   { noremap=true, } ) -- save all files
+make_keymap( 'n', '<leader>bd', '<Cmd>bd<CR>',   { noremap=true, } ) -- close buffer
+make_keymap( 'n', '<leader>te', '<Cmd>tabe<CR>', { noremap=true, } ) -- close buffer
 
 make_keymap( 'n', 'Y',         'y$',   { noremap=true, silent=true } ) -- yank to end of line
 make_keymap( 'n', '<leader>Y', '"+y$', { noremap=true, silent=true } ) -- yank to end of line
