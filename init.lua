@@ -439,35 +439,41 @@ vim.opt.completeopt    = 'menu'
 
 vim.opt.foldenable     = false
 
--- thanks again fraser
--- XXX: doesn't write a comment!
--- TODO: comment with this
 function write_centered_line()
-    local comment_text = vim.fn.input( 'Comment text: ' )
-    local c            = vim.fn.col( '.' )
-    local line         = vim.fn.getline( '.' )
+    -- https://github.com/numToStr/Comment.nvim - good plugin
+    local api = require( "Comment.api" )
+
+    -- uncomment line
+    -- HACK: just uncomment both linewise and blockwise ig
+    -- TODO: make it not throw errors when there's nothing to uncomment
+    api.uncomment.linewise()
+    api.uncomment.blockwise()
+
+    local line = vim.fn.trim( vim.fn.getline( '.' ) )
+
+    local comment_text = line ~= '' and line or vim.fn.input( 'Comment text: ' )
 
     -- make the comment_text either an empty string, or pad it with spaces
-    comment_text = comment_text == '' and '' or ' ' .. comment_text .. ' '
+    if comment_text ~= '' then comment_text = ' ' .. comment_text .. ' ' end
 
-    -- if the line doesn't end in a space, add one
-    if line:sub( -1 ) ~= ' ' and line:len() > 0 then line = line .. ' ' end
-
-    local line_length = string.len( line )
     local comment_len = string.len( comment_text )
-    local dash_length = 80 - line_length
+    local indent_len  = vim.fn.cindent( '.' )
+    local dash_len    = 74 - indent_len -- TODO: factor in commentstring
 
-    local half_dash_len    = math.floor( dash_length / 2 )
+    local half_dash_len    = math.floor( dash_len    / 2 )
     local half_comment_len = math.floor( comment_len / 2 )
 
     local num_left_dashes  = half_dash_len - half_comment_len
-    local num_right_dashes = dash_length - num_left_dashes - comment_len
+    local num_right_dashes = dash_len - num_left_dashes - comment_len
 
+    local leading_spaces    = string.rep( ' ', indent_len ) -- indent
     local left_dash_string  = string.rep( '-', num_left_dashes  )
     local right_dash_string = string.rep( '-', num_right_dashes )
 
-    local new_line = line .. left_dash_string .. comment_text .. right_dash_string
+    local new_line = leading_spaces .. left_dash_string .. comment_text .. right_dash_string
     vim.fn.setline( '.', new_line )
+
+    api.comment.blockwise()
 end
 
 make_keymap( 'n', '<leader>l', write_centered_line,                         {} )
