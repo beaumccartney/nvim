@@ -448,7 +448,7 @@ function write_centered_line()
     local line = vim.fn.getline('.')
 
     -- make the text either an empty string, or pad it with spaces
-    text = (text == nil or text == '') and '' or ' ' .. text .. ' '
+    text = text == '' and '' or ' ' .. text .. ' '
     -- if the line doesn't end in a space, add one
     if line:sub(-1) ~= ' ' and line:len() > 0 then
         line = line .. ' '
