@@ -355,11 +355,11 @@ make_keymap( 'n', '<leader>cd', '<Cmd>cd %:p:h<CR>', { noremap=true } )
 make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>',    { noremap=true } )
 
 -- jk fixes (thanks yet again fraser)
-make_keymap('n', 'j', '<Plug>(accelerated_jk_gj)', {})
-make_keymap('n', 'k', '<Plug>(accelerated_jk_gk)', {})
+make_keymap( 'n', 'j', '<Plug>(accelerated_jk_gj)', {} )
+make_keymap( 'n', 'k', '<Plug>(accelerated_jk_gk)', {} )
 
-make_keymap('v', 'j', 'gj', {})
-make_keymap('v', 'k', 'gk', {})
+make_keymap( 'v', 'j', 'gj', {} )
+make_keymap( 'v', 'k', 'gk', {} )
 
 make_keymap( 'n', '<leader>ss', '<Cmd>ScratchPad<CR>', { noremap=true } )
 
@@ -420,14 +420,14 @@ vim.opt.relativenumber = true
 vim.opt.tabstop        = 4
 vim.opt.softtabstop    = 4
 vim.opt.shiftwidth     = 4
-
 vim.opt.expandtab      = true
 vim.opt.smarttab       = true
 vim.opt.cindent        = true
+
 vim.opt.scrolloff      = 10
 vim.opt.colorcolumn    = '80'
+
 vim.opt.hidden         = true
-vim.opt.cmdheight      = 2
 vim.opt.swapfile       = false
 
 vim.opt.incsearch      = true
@@ -438,6 +438,8 @@ vim.opt.hlsearch       = false
 vim.opt.completeopt    = 'menu'
 
 vim.opt.foldenable     = false
+
+vim.opt.cmdheight      = 2
 
 function write_centered_line()
     -- https://github.com/numToStr/Comment.nvim - good plugin
@@ -466,7 +468,7 @@ function write_centered_line()
     local num_left_dashes  = half_dash_len - half_comment_len
     local num_right_dashes = dash_len - num_left_dashes - comment_len
 
-    local leading_spaces    = string.rep( ' ', indent_len ) -- indent
+    local leading_spaces    = string.rep( ' ', indent_len       ) -- indent
     local left_dash_string  = string.rep( '-', num_left_dashes  )
     local right_dash_string = string.rep( '-', num_right_dashes )
 
