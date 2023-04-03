@@ -49,7 +49,7 @@ require'lazy'.setup {
         'folke/todo-comments.nvim',
         dependencies = 'nvim-lua/plenary.nvim',
         config = function()
-            require('todo-comments').setup {
+            require'todo-comments'.setup {
                 signs = false,
                 keywords = { TODO = { alt = { 'REVIEW', 'INCOMPLETE' }, }, },
             }
@@ -59,7 +59,7 @@ require'lazy'.setup {
     -- comment things - can respect tree-sitter or other things
     {
        'numToStr/Comment.nvim',
-        config = function() require'Comment'.setup() end
+       config = function() require'Comment'.setup() end
     },
 
     -- vim-unimpaired
@@ -270,16 +270,16 @@ require'lazy'.setup {
         'rcarriga/nvim-dap-ui',
     	dependencies = { 'mfussenegger/nvim-dap' },
         config = function()
-            local dap, dapui = require("dap"), require("dapui")
+            local dap, dapui = require'dap', require'dapui'
             dapui.setup()
 
-            dap.listeners.after.event_initialized["dapui_config"] = function()
+            dap.listeners.after.event_initialized['dapui_config'] = function()
               dapui.open()
             end
-            dap.listeners.before.event_terminated["dapui_config"] = function()
+            dap.listeners.before.event_terminated['dapui_config'] = function()
               dapui.close()
             end
-            dap.listeners.before.event_exited["dapui_config"] = function()
+            dap.listeners.before.event_exited['dapui_config'] = function()
               dapui.close()
             end
         end
@@ -441,7 +441,7 @@ vim.opt.foldenable     = false
 
 function write_centered_line()
     -- https://github.com/numToStr/Comment.nvim - good plugin
-    local api = require( "Comment.api" )
+    local api = require'Comment.api'
 
     -- uncomment line
     -- HACK: just uncomment both linewise and blockwise ig
@@ -489,7 +489,7 @@ vim.cmd([[
 
     augroup treesitter_folds
         autocmd!
-        autocmd FileType * if luaeval('require("nvim-treesitter.parsers").has_parser()') | setlocal foldmethod=expr | setlocal foldexpr=nvim_treesitter#foldexpr() | endif
+        autocmd FileType * if luaeval('require"nvim-treesitter.parsers".has_parser()') | setlocal foldmethod=expr | setlocal foldexpr=nvim_treesitter#foldexpr() | endif
     augroup END
 
     colorscheme gruvbox
