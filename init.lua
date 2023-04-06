@@ -1,12 +1,9 @@
 -- TODO:
 -- submodes of some kind
--- centered line comments
 -- signature help
 -- undotree or telescope thing
 -- undodir
--- no copilot by default, "manualcomplete" keybind for it
 -- session reloading
--- remove telescope
 
 -- apparently I have to put this before the package manager
 vim.g.mapleader = ' '
@@ -37,12 +34,6 @@ vim.cmd([[
 require'lazy'.setup {
     -- center screen and scratchpad to expand working memory
     'FraserLee/ScratchPad',
-
-    -- TODO: window submode and a whole lot of other stuff
-    {
-        enabled = false,
-        'Iron-E/nvim-libmodal',
-    },
 
     -- highlight and search todo comments
     {
