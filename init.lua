@@ -225,7 +225,7 @@ require'lazy'.setup {
             {
                 id = 'cppdbg',
                 type = 'executable',
-                command = '/home/beaum/.vscode/extensions/ms-vscode.cpptools-1.14.4-linux-x64/debugAdapters/bin/OpenDebugAD7',
+                command = '/home/beaum/.vscode/extensions/ms-vscode.cpptools-1.14.5-linux-x64/debugAdapters/bin/OpenDebugAD7',
             }
 
             dap.configurations.c =
