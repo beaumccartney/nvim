@@ -211,6 +211,24 @@ require'lazy'.setup {
 
     'neovim/nvim-lspconfig',
 
+    {
+        "williamboman/mason.nvim",
+        build  = ":MasonUpdate",
+        config = function() require"mason".setup() end
+    },
+
+    {
+        "williamboman/mason-lspconfig.nvim",
+        config = function()
+            require"mason-lspconfig".setup{
+                ensure_installed = {
+                    "bashls", "pyright",
+                },
+            }
+        end
+    },
+
+
     'github/copilot.vim',
 
     -- inlay hints for c++
