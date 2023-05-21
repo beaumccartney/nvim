@@ -364,6 +364,8 @@ make_keymap( { 'n', 'v' }, '<leader>p', '"+p', { noremap=true, silent=true } ) -
 make_keymap( 'n', '<leader>cd', '<Cmd>cd %:p:h<CR>', { noremap=true } )
 make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>',    { noremap=true } )
 
+make_keymap( 'n', '<leader>w', '<Cmd>lua MiniTrailspace.trim()<CR>', {} )
+
 -- jk fixes (thanks yet again fraser)
 make_keymap( 'n', 'j', '<Plug>(accelerated_jk_gj)', {} )
 make_keymap( 'n', 'k', '<Plug>(accelerated_jk_gk)', {} )
