@@ -230,7 +230,7 @@ require'lazy'.setup {
 
 
     'github/copilot.vim',
-    'madox2/vim-ai',
+    -- 'madox2/vim-ai', -- requires python3 support
 
     -- inlay hints for c++
     'p00f/clangd_extensions.nvim',
