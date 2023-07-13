@@ -331,10 +331,10 @@ make_keymap( 'n', '<leader>gg', builtin.git_files,   {} )
 make_keymap( 'n', '<leader>/',  builtin.live_grep,   {} )
 make_keymap( 'n', '<leader>*',  builtin.grep_string, {} )
 
-make_keymap( 'n', '<leader>ma', builtin.marks,       {} )
-make_keymap( 'n', '<leader>vo', builtin.vim_options, {} )
-make_keymap( 'n', '<leader>km', builtin.keymaps,     {} )
-make_keymap( 'n', '<leader>ht', builtin.help_tags,   {} )
+make_keymap( 'n', '<leader>fm', builtin.marks,       {} )
+make_keymap( 'n', '<leader>fo', builtin.vim_options, {} )
+make_keymap( 'n', '<leader>fk', builtin.keymaps,     {} )
+make_keymap( 'n', '<leader>fh', builtin.help_tags,   {} )
 
 make_keymap( 'n', '<leader>td', '<Cmd>TodoTelescope<CR>', {} )
 
