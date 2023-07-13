@@ -8,6 +8,13 @@
 
 
 
+
+-- for mason and lspconfig
+local lsp_servers = { 'asm_lsp', 'astro', 'bashls', 'cmake', 'cssls', 'cssmodules_ls', 'elmls', 'html', 'hls', 'vtsls', 'pyright', 'taplo', 'tailwindcss', 'vimls' }
+
+
+
+
 -- apparently I have to put this before the package manager
 vim.g.mapleader = ' '
 
@@ -34,8 +41,6 @@ vim.cmd([[
     imap <silent><script><expr> <C-j> copilot#Accept("\<CR>")
 ]])
 
--- for mason and lspconfig
-local lsp_servers = { 'asm_lsp', 'astro', 'bashls', 'cmake', 'cssls', 'cssmodules_ls', 'elmls', 'html', 'hls', 'vtsls', 'pyright', 'taplo', 'tailwindcss', 'vimls' }
 
 
 require'lazy'.setup {
