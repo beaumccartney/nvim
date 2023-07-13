@@ -1,9 +1,12 @@
 -- TODO:
+-- mason automatic setup?
 -- submodes of some kind
 -- signature help
 -- undotree or telescope thing
 -- undodir
 -- session reloading
+
+
 
 -- apparently I have to put this before the package manager
 vim.g.mapleader = ' '
@@ -30,6 +33,10 @@ vim.cmd([[
     let g:copilot_no_tab_map = v:true
     imap <silent><script><expr> <C-j> copilot#Accept("\<CR>")
 ]])
+
+-- for mason and lspconfig
+local lsp_servers = { 'asm_lsp', 'astro', 'bashls', 'cmake', 'cssls', 'cssmodules_ls', 'elmls', 'html', 'hls', 'vtsls', 'pyright', 'taplo', 'tailwindcss', 'vimls' }
+
 
 require'lazy'.setup {
     -- center screen and scratchpad to expand working memory
@@ -221,9 +228,7 @@ require'lazy'.setup {
         "williamboman/mason-lspconfig.nvim",
         config = function()
             require"mason-lspconfig".setup{
-                ensure_installed = {
-                    "bashls", "pyright",
-                },
+                ensure_installed = lsp_servers,
             }
         end
     },
@@ -272,8 +277,6 @@ local on_attach = function( client, bufnr )
   make_keymap( 'n', '<leader>gi',  builtin.lsp_implementations,  {} )
   make_keymap( 'n', '<leader>gtd', builtin.lsp_type_definitions, {} )
 end
-
-local lsp_servers = { 'bashls', 'cmake', 'hls', 'pyright', 'vimls', 'zls' }
 
 for _, server in pairs( lsp_servers ) do
     require'lspconfig'[server].setup { on_attach = on_attach }
