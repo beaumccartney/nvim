@@ -235,73 +235,6 @@ require'lazy'.setup {
     -- inlay hints for c++
     'p00f/clangd_extensions.nvim',
 
-    -- debugger
-    {
-        'mfussenegger/nvim-dap',
-        config = function()
-            local dap = require'dap'
-            dap.adapters.cppdbg =
-            {
-                id = 'cppdbg',
-                type = 'executable',
-                command = '/home/beaum/.vscode/extensions/ms-vscode.cpptools-1.14.5-linux-x64/debugAdapters/bin/OpenDebugAD7',
-            }
-
-            dap.configurations.c =
-            {
-                {
-                    name    = "Launch file with args",
-                    type    = "cppdbg",
-                    request = "launch",
-                    program = function()
-                        return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-                    end,
-                    args = function()
-                        return { vim.fn.input('Arguments: ', '', 'file') }
-                    end,
-                    cwd           = '${workspaceFolder}',
-                    stopAtEntry   = true,
-                    setupCommands =
-                    {
-                        {
-                            text           = '-enable-pretty-printing',
-                            description    = 'enable pretty printing',
-                            ignoreFailures = false
-                        },
-                    },
-                },
-            }
-            dap.configurations.cpp = dap.configurations.c
-        end,
-    },
-
-    -- debug ui
-    {
-        'rcarriga/nvim-dap-ui',
-    	dependencies = { 'mfussenegger/nvim-dap' },
-        config = function()
-            local dap, dapui = require'dap', require'dapui'
-            dapui.setup()
-
-            dap.listeners.after.event_initialized['dapui_config'] = function()
-              dapui.open()
-            end
-            dap.listeners.before.event_terminated['dapui_config'] = function()
-              dapui.close()
-            end
-            dap.listeners.before.event_exited['dapui_config'] = function()
-              dapui.close()
-            end
-        end
-    },
-
-    {
-        'theHamsta/nvim-dap-virtual-text',
-    	dependencies = { 'mfussenegger/nvim-dap', 'nvim-treesitter/nvim-treesitter' },
-        config = function()
-            require'nvim-dap-virtual-text'.setup()
-        end
-    },
 }
 
 local make_keymap = vim.keymap.set
@@ -383,24 +316,6 @@ make_keymap( { 'n', 'v' }, '<leader>gv', '<Cmd>GV!<CR>', { noremap=true } )
 make_keymap( { 'n', 'v' }, '<leader>GV', ':GV!',         { noremap=true } )
 
 make_keymap( 'n', '<leader>gp', '<Cmd>GV --patch<CR>', { noremap=true } )
-
--- debugger stuff
-local dap = require'dap'
-make_keymap('n', '<leader>dd', dap.continue,          { noremap=true } )
-make_keymap('n', '<leader>dr', dap.restart,           { noremap=true } )
-make_keymap('n', '<leader>DD', dap.clear_breakpoints, { noremap=true } )
-make_keymap('n', '<leader>dt', dap.run_to_cursor,     { noremap=true } )
-make_keymap('n', '<leader>dl', dap.step_over,         { noremap=true } )
-make_keymap('n', '<leader>dj', dap.step_into,         { noremap=true } )
-make_keymap('n', '<leader>dk', dap.step_out,          { noremap=true } )
-make_keymap('n', '<leader>db', dap.toggle_breakpoint, { noremap=true } )
-make_keymap('n', '<leader>dB', dap.set_breakpoint,    { noremap=true } )
-make_keymap('n', '<leader>DR', dap.repl.open,         { noremap=true } )
-make_keymap('n', '<leader>dp', dap.run_last,          { noremap=true } )
-make_keymap('v', '<leader>k',  require'dapui'.eval,   { noremap=true } )
-
-make_keymap('n', '<leader>dc', '<Cmd>lua require"dap".terminate({}, {}, require"dapui".close())<CR>',        { noremap=true } ) -- TODO: don't close dapui this way ffs
--- make_keymap('n', '<leader>pl', '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>',   { noremap=true } ) -- TODO:
 
 -- REVIEW: I may get away with only the visual mode binding
 local exchange = require'substitute.exchange'
