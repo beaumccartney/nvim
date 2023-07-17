@@ -32,20 +32,12 @@ if not vim.loop.fs_stat( lazypath ) then
 end
 vim.opt.rtp:prepend( lazypath )
 
--- TODO: factor into lua and put somewhere reasonable ffs
--- copilot stuffs
-vim.cmd([[
-    let g:scratchpad_autostart = 0
-
-    let g:copilot_no_tab_map = v:true
-    imap <silent><script><expr> <C-j> copilot#Accept("\<CR>")
-]])
-
-
-
 require'lazy'.setup {
     -- center screen and scratchpad to expand working memory
-    'FraserLee/ScratchPad',
+    {
+        'FraserLee/ScratchPad',
+        config = function() vim.g.scratchpad_autostart = 0 end,
+    },
 
     -- highlight and search todo comments
     {
@@ -238,8 +230,12 @@ require'lazy'.setup {
         end
     },
 
-
-    'github/copilot.vim',
+    {
+        'zbirenbaum/copilot.lua',
+        config = function()
+            require'copilot'.setup { suggestion = { auto_trigger = false }, }
+        end
+    },
     -- 'madox2/vim-ai', -- requires python3 support
 
     -- inlay hints for c++

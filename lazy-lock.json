@@ -4,7 +4,7 @@
   "accelerated-jk.nvim": { "branch": "main", "commit": "8fb5dad4ccc1811766cebf16b544038aeeb7806f" },
   "beacon.nvim": { "branch": "main", "commit": "d02ee7dfcc999537c2f09abdf667aab52f8648f3" },
   "clangd_extensions.nvim": { "branch": "main", "commit": "6d0bf36870d15c0c2284f4b6693a66552a6bf127" },
-  "copilot.vim": { "branch": "release", "commit": "a4a6d6b3f9e284e7f5c849619e06cd228cad8abd" },
+  "copilot.lua": { "branch": "master", "commit": "e48bd7020a98be217d85c006a298656294fd6210" },
   "fugitive-gitlab.vim": { "branch": "master", "commit": "55fed481c0309b3405dd3d72921d687bf36873a8" },
   "gitsigns.nvim": { "branch": "main", "commit": "5a04466685008f29c71fa5ec25d421deb1c83fea" },
   "gruvbox": { "branch": "master", "commit": "2b5b1f777f0583ffb39086d6c16f39e6e37459c0" },
