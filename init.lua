@@ -1,16 +1,10 @@
 -- TODO:
--- mason automatic setup?
 -- submodes of some kind
 -- signature help
 -- undotree or telescope thing
 -- undodir
 -- session reloading
 
-
-
-
--- for mason and lspconfig
-local lsp_servers = { 'asm_lsp', 'astro', 'bashls', 'cmake', 'cssls', 'cssmodules_ls', 'elmls', 'html', 'hls', 'vtsls', 'pyright', 'taplo', 'tailwindcss', 'vimls' }
 
 
 
@@ -216,21 +210,6 @@ require'lazy'.setup {
     'neovim/nvim-lspconfig',
 
     {
-        "williamboman/mason.nvim",
-        build  = ":MasonUpdate",
-        config = function() require"mason".setup() end
-    },
-
-    {
-        "williamboman/mason-lspconfig.nvim",
-        config = function()
-            require"mason-lspconfig".setup{
-                ensure_installed = lsp_servers,
-            }
-        end
-    },
-
-    {
         'zbirenbaum/copilot.lua',
         config = function()
             require'copilot'.setup { suggestion = { auto_trigger = false }, }
@@ -279,6 +258,22 @@ local on_attach = function( client, bufnr )
   make_keymap( 'n', '<leader>gtd', builtin.lsp_type_definitions, {} )
 end
 
+local lsp_servers = {
+    -- 'asm_lsp',
+    'astro',
+    'bashls',
+    -- 'cmake',
+    'cssls',
+    'cssmodules_ls',
+    -- 'elmls',
+    'html',
+    -- 'hls',
+    'vtsls',
+    'pyright',
+    'prismals',
+    'tailwindcss',
+    'vimls'
+}
 for _, server in pairs( lsp_servers ) do
     require'lspconfig'[server].setup { on_attach = on_attach }
 end
