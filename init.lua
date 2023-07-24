@@ -254,6 +254,8 @@ require'lazy'.setup {
     -- inlay hints for c++
     'p00f/clangd_extensions.nvim',
 
+    'HiPhish/rainbow-delimiters.nvim',
+
 }
 
 local make_keymap = vim.keymap.set
