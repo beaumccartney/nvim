@@ -76,10 +76,7 @@ require'lazy'.setup {
 
             require'nvim-treesitter.configs'.setup {
                 ensure_installed      = 'all',
-                highlight             = {
-                    enable  = true,
-                    disable = { 'gitcommit' },
-                },
+                highlight             = { enable  = true, },
                 incremental_selection = { -- thanks again fraser
                     enable = true,
                     keymaps = {
