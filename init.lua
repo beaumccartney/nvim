@@ -186,7 +186,36 @@ require'lazy'.setup {
         config = function() require'substitute'.setup() end,
     },
 
-    'gruvbox-community/gruvbox',
+    {
+        'marko-cerovac/material.nvim',
+        config = function()
+            vim.g.material_style = "deep ocean"
+            require'material'.setup
+            {
+                plugins =
+                {
+                    -- Available plugins:
+                    -- "dap",
+                    -- "dashboard",
+                    "gitsigns",
+                    -- "hop",
+                    -- "indent-blankline",
+                    -- "lspsaga",
+                    "mini",
+                    -- "neogit",
+                    -- "neorg",
+                    -- "nvim-cmp",
+                    -- "nvim-navic",
+                    -- "nvim-tree",
+                    "nvim-web-devicons",
+                    -- "sneak",
+                    "telescope",
+                    -- "trouble",
+                    -- "which-key",
+                },
+            }
+        end
+    },
 
     'mg979/vim-visual-multi',
 
@@ -268,9 +297,11 @@ local lsp_servers = {
     -- 'elmls',
     'html',
     -- 'hls',
+    'rust_analyzer',
     'vtsls',
     'pyright',
     'prismals',
+    'quick_lint_js',
     'tailwindcss',
     'vimls'
 }
@@ -419,6 +450,6 @@ vim.cmd([[
         autocmd FileType * if luaeval('require"nvim-treesitter.parsers".has_parser()') | setlocal foldmethod=expr | setlocal foldexpr=nvim_treesitter#foldexpr() | endif
     augroup END
 
-    colorscheme gruvbox
+    colorscheme material
 ]])
 
