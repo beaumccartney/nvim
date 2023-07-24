@@ -192,6 +192,14 @@ require'lazy'.setup {
     },
 
     {
+        'sainnhe/gruvbox-material',
+        config = function()
+            vim.g.gruvbox_material_foreground = 'original'
+            vim.g.gruvbox_material_background = 'hard'
+        end
+    },
+
+    {
         'marko-cerovac/material.nvim',
         config = function()
             vim.g.material_style = "deep ocean"
@@ -457,6 +465,6 @@ vim.cmd([[
         autocmd FileType * if luaeval('require"nvim-treesitter.parsers".has_parser()') | setlocal foldmethod=expr | setlocal foldexpr=nvim_treesitter#foldexpr() | endif
     augroup END
 
-    colorscheme material
+    colorscheme gruvbox-material
 ]])
 
