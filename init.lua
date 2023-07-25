@@ -341,12 +341,14 @@ require'lazy'.setup {
                 -- Mappings.
                 -- See `:help vim.lsp.*` for documentation on any of the below functions
                 local bufopts = { noremap=true, silent=true, buffer=bufnr }
+                local lspbuf = vim.lsp.buf
 
-                make_keymap( 'n', '<leader>gD', vim.lsp.buf.declaration,    bufopts )
-                make_keymap( 'n', '<leader>i',  vim.lsp.buf.hover,          bufopts )
-                make_keymap( 'n', '<C-k>',      vim.lsp.buf.signature_help, bufopts )
-                make_keymap( 'n', '<leader>rn',  vim.lsp.buf.rename,         bufopts )
-                make_keymap( 'n', '<leader>ca',  vim.lsp.buf.code_action,    bufopts )
+                make_keymap( 'n', '<leader>gD', lspbuf.declaration,             bufopts )
+                make_keymap( 'n', '<leader>i',  lspbuf.hover,                   bufopts )
+                make_keymap( 'n', '<C-k>',      lspbuf.signature_help,          bufopts )
+                make_keymap( 'n', '<leader>rn', lspbuf.rename,                  bufopts )
+                make_keymap( 'n', '<leader>ca', lspbuf.code_action,             bufopts )
+                make_keymap( 'n', '<leader>F',  function() lspbuf.format { async = true } end, bufopts )
 
                 make_keymap( 'n', '<leader>gr',  builtin.lsp_references,       bufopts )
                 make_keymap( 'n', '<leader>gd',  builtin.lsp_definitions,      bufopts )
@@ -434,7 +436,7 @@ local builtin = require'telescope.builtin'
 make_keymap( 'n', '<leader>fs', '<Cmd>w<CR>',    { noremap=true, } ) -- save file
 make_keymap( 'n', '<leader>sa', '<Cmd>wa<CR>',   { noremap=true, } ) -- save all files
 make_keymap( 'n', '<leader>bd', '<Cmd>bd<CR>',   { noremap=true, } ) -- close buffer
-make_keymap( 'n', '<leader>te', '<Cmd>tabe<CR>', { noremap=true, } ) -- close buffer
+make_keymap( 'n', '<leader>te', '<Cmd>tabe<CR>', { noremap=true, } ) -- new tab
 
 make_keymap( 'n', 'Y',         'y$',   { noremap=true, silent=true } ) -- yank to end of line
 make_keymap( 'n', '<leader>Y', '"+y$', { noremap=true, silent=true } ) -- yank to end of line
