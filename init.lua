@@ -393,27 +393,6 @@ require'lazy'.setup {
         end
     },
 
-    {
-        'jose-elias-alvarez/null-ls.nvim',
-        dependencies = 'nvim-lua/plenary.nvim',
-        config = function()
-            local null_ls = require'null-ls'
-            local builtins = null_ls.builtins
-
-            null_ls.setup {
-                sources = {
-                    builtins.diagnostics.eslint,
-                    builtins.diagnostics.fish,
-
-                    builtins.code_actions.eslint,
-                    builtins.code_actions.shellcheck,
-
-                    builtins.formatting.prettier,
-                }
-            }
-        end
-    },
-
     'HiPhish/rainbow-delimiters.nvim',
 
 }
@@ -575,6 +554,7 @@ vim.cmd([[
         autocmd FileType * if luaeval('require"nvim-treesitter.parsers".has_parser()') | setlocal foldmethod=expr | setlocal foldexpr=nvim_treesitter#foldexpr() | endif
     augroup END
 
-    colorscheme gruvbox-material
+    " colorscheme gruvbox-material
+    colorscheme material
 ]])
 
