@@ -83,7 +83,7 @@ require'lazy'.setup {
     -- everything
     {
         'nvim-treesitter/nvim-treesitter',
-        run    = ':TSUpdate',
+        build        = ':TSUpdate',
         dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring', },
         config = function()
             require'nvim-treesitter.install'.prefer_git = false
