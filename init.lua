@@ -32,6 +32,13 @@ require'lazy'.setup {
         config = function() vim.g.scratchpad_autostart = 0 end,
     },
 
+    -- automatically remove highlights from hlsearch
+    {
+        'nvimdev/hlsearch.nvim',
+        event = 'BufRead',
+        config = function() require'hlsearch'.setup() end,
+    },
+
     -- highlight and search todo comments
     {
         'folke/todo-comments.nvim',
