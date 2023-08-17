@@ -184,11 +184,10 @@ require'lazy'.setup {
         config = function() require'mini.trailspace'.setup() end,
     },
 
-    -- switch things easily
-    -- TODO: keybindings
+    -- exchange, replace, sort, and evaluate stuff
     {
-        'gbprod/substitute.nvim',
-        config = function() require'substitute'.setup() end,
+        'echasnovski/mini.operators',
+        config = function() require'mini.operators'.setup() end,
     },
 
     {
@@ -446,13 +445,6 @@ make_keymap( { 'n', 'v' }, '<leader>gv', '<Cmd>GV!<CR>', { noremap=true } )
 make_keymap( { 'n', 'v' }, '<leader>GV', ':GV!',         { noremap=true } )
 
 make_keymap( 'n', '<leader>gp', '<Cmd>GV --patch<CR>', { noremap=true } )
-
--- REVIEW: I may get away with only the visual mode binding
-local exchange = require'substitute.exchange'
-make_keymap( "n", "cx",  exchange.operator, { noremap = true } )
-make_keymap( "n", "cxx", exchange.line,     { noremap = true } )
-make_keymap( "x", "X",   exchange.visual,   { noremap = true } )
-make_keymap( "n", "cxc", exchange.cancel,   { noremap = true } )
 
 -- telescope maps
 make_keymap( 'n', '<leader>ff', builtin.find_files,  {} )
