@@ -32,13 +32,6 @@ require'lazy'.setup {
         config = function() vim.g.scratchpad_autostart = 0 end,
     },
 
-    -- automatically remove highlights from hlsearch
-    {
-        'nvimdev/hlsearch.nvim',
-        event = 'BufRead',
-        config = function() require'hlsearch'.setup() end,
-    },
-
     {
         '0x00-ketsu/maximizer.nvim',
         config = function() require'maximizer'.setup() end
@@ -439,6 +432,9 @@ make_keymap( { 'n', 'v' }, '<leader>p', '"+p', opts ) -- put from clipboard
 -- change directory to current file - thanks fraser
 make_keymap( 'n', '<leader>cd', '<Cmd>cd %:p:h<CR>', {} )
 make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>',    {} )
+
+-- fraser again goddamn
+make_keymap( 'n', '<ESC>', '<Cmd>noh<CR> <Cmd>lua require"maximizer".restore()<CR> <Cmd>helpclose<CR>', opts )
 
 make_keymap( 'n', '<leader>w', '<Cmd>lua MiniTrailspace.trim()<CR>', {} )
 
