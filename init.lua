@@ -39,6 +39,11 @@ require'lazy'.setup {
         config = function() require'hlsearch'.setup() end,
     },
 
+    {
+        '0x00-ketsu/maximizer.nvim',
+        config = function() require'maximizer'.setup() end
+    },
+
     -- highlight and search todo comments
     {
         'folke/todo-comments.nvim',
@@ -445,6 +450,8 @@ make_keymap( 'v', 'j', 'gj', {} )
 make_keymap( 'v', 'k', 'gk', {} )
 
 make_keymap( 'n', '<leader>ss', '<Cmd>ScratchPad<CR>', {} )
+
+make_keymap( 'n', '<leader>m', '<Cmd>lua require"maximizer".toggle()<CR>', {} )
 
 -- git log stuff
 make_keymap( { 'n', 'v' }, '<leader>gl', '<Cmd>GV<CR>',  {} )

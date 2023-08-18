@@ -21,6 +21,7 @@
   "jai.vim": { "branch": "master", "commit": "05c7f35e202f7973125161ee4ea246bd15ab97f4" },
   "lazy.nvim": { "branch": "main", "commit": "dac844ed617dda4f9ec85eb88e9629ad2add5e05" },
   "material.nvim": { "branch": "main", "commit": "1ecaa2d065a1ea308bd7702a77c2bf35ede8f536" },
+  "maximizer.nvim": { "branch": "main", "commit": "4779ea731b4babaae7a5a406d455bd7fd1971f85" },
   "mini.ai": { "branch": "main", "commit": "5218ea75e635df78a807bc9d5a7162594fb76d02" },
   "mini.align": { "branch": "main", "commit": "86c8edae77023a7b71d0fa9e2bf78960c1e46fd8" },
   "mini.cursorword": { "branch": "main", "commit": "066770d17218d783dc76abde80fde89967f94907" },
