@@ -106,6 +106,8 @@ require'lazy'.setup {
         end
     },
 
+    -- display the context of the cursor - e.g. what function or scope am I in
+
     {
         'nvim-treesitter/nvim-treesitter-context',
         dependencies = 'nvim-treesitter',
@@ -278,6 +280,7 @@ require'lazy'.setup {
         build = "make install_jsregexp"
     },
 
+    -- the stuff of nightmares
     {
         'hrsh7th/nvim-cmp',
         -- enabled = false,
@@ -399,6 +402,7 @@ require'lazy'.setup {
         end
     },
 
+    -- rainbow brackets
     'HiPhish/rainbow-delimiters.nvim',
 
 }
@@ -415,23 +419,21 @@ make_keymap( 'n', '[d',        vim.diagnostic.goto_prev,  opts )
 make_keymap( 'n', ']d',        vim.diagnostic.goto_next,  opts )
 make_keymap( 'n', '<leader>q', vim.diagnostic.setloclist, opts )
 
-local builtin = require'telescope.builtin'
-
 -- keymaps for built in things
-make_keymap( 'n', '<leader>fs', '<Cmd>w<CR>',    { noremap=true, } ) -- save file
-make_keymap( 'n', '<leader>sa', '<Cmd>wa<CR>',   { noremap=true, } ) -- save all files
-make_keymap( 'n', '<leader>bd', '<Cmd>bd<CR>',   { noremap=true, } ) -- close buffer
-make_keymap( 'n', '<leader>te', '<Cmd>tabe<CR>', { noremap=true, } ) -- new tab
+make_keymap( 'n', '<leader>fs', '<Cmd>w<CR>',    {} ) -- save file
+make_keymap( 'n', '<leader>sa', '<Cmd>wa<CR>',   {} ) -- save all files
+make_keymap( 'n', '<leader>bd', '<Cmd>bd<CR>',   {} ) -- close buffer
+make_keymap( 'n', '<leader>te', '<Cmd>tabe<CR>', {} ) -- new tab
 
-make_keymap( 'n', 'Y',         'y$',   { noremap=true, silent=true } ) -- yank to end of line
-make_keymap( 'n', '<leader>Y', '"+y$', { noremap=true, silent=true } ) -- yank to end of line
+make_keymap( 'n', 'Y',         'y$',   opts ) -- yank to end of line
+make_keymap( 'n', '<leader>Y', '"+y$', opts ) -- yank to end of line
 
-make_keymap( { 'n', 'v' }, '<leader>y', '"+y', { noremap=true, silent=true } ) -- yank to clipboard
-make_keymap( { 'n', 'v' }, '<leader>p', '"+p', { noremap=true, silent=true } ) -- put from clipboard
+make_keymap( { 'n', 'v' }, '<leader>y', '"+y', opts ) -- yank to clipboard
+make_keymap( { 'n', 'v' }, '<leader>p', '"+p', opts ) -- put from clipboard
 
 -- change directory to current file - thanks fraser
-make_keymap( 'n', '<leader>cd', '<Cmd>cd %:p:h<CR>', { noremap=true } )
-make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>',    { noremap=true } )
+make_keymap( 'n', '<leader>cd', '<Cmd>cd %:p:h<CR>', {} )
+make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>',    {} )
 
 make_keymap( 'n', '<leader>w', '<Cmd>lua MiniTrailspace.trim()<CR>', {} )
 
@@ -442,16 +444,18 @@ make_keymap( 'n', 'k', '<Plug>(accelerated_jk_gk)', {} )
 make_keymap( 'v', 'j', 'gj', {} )
 make_keymap( 'v', 'k', 'gk', {} )
 
-make_keymap( 'n', '<leader>ss', '<Cmd>ScratchPad<CR>', { noremap=true } )
+make_keymap( 'n', '<leader>ss', '<Cmd>ScratchPad<CR>', {} )
 
 -- git log stuff
-make_keymap( { 'n', 'v' }, '<leader>gl', '<Cmd>GV<CR>',  { noremap=true } )
-make_keymap( { 'n', 'v' }, '<leader>GL', ':GV',          { noremap=true } )
+make_keymap( { 'n', 'v' }, '<leader>gl', '<Cmd>GV<CR>',  {} )
+make_keymap( { 'n', 'v' }, '<leader>GL', ':GV',          {} )
 
-make_keymap( { 'n', 'v' }, '<leader>gv', '<Cmd>GV!<CR>', { noremap=true } )
-make_keymap( { 'n', 'v' }, '<leader>GV', ':GV!',         { noremap=true } )
+make_keymap( { 'n', 'v' }, '<leader>gv', '<Cmd>GV!<CR>', {} )
+make_keymap( { 'n', 'v' }, '<leader>GV', ':GV!',         {} )
 
-make_keymap( 'n', '<leader>gp', '<Cmd>GV --patch<CR>', { noremap=true } )
+make_keymap( 'n', '<leader>gp', '<Cmd>GV --patch<CR>', {} )
+
+local builtin = require'telescope.builtin'
 
 -- telescope maps
 make_keymap( 'n', '<leader>ff', builtin.find_files,  {} )
@@ -538,7 +542,7 @@ function write_centered_line()
     api.comment.blockwise()
 end
 
-make_keymap( 'n', '<leader>l', write_centered_line, {} )
+make_keymap( 'n', '<leader>L', write_centered_line, {} )
 
 -- run all vimscript stuffs
 -- TODO: factor this out into lua
