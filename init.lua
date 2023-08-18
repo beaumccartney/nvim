@@ -418,10 +418,11 @@ make_keymap( 'n', ']d',        vim.diagnostic.goto_next,  opts )
 make_keymap( 'n', '<leader>q', vim.diagnostic.setloclist, opts )
 
 -- keymaps for built in things
-make_keymap( 'n', '<leader>fs', '<Cmd>w<CR>',    {} ) -- save file
-make_keymap( 'n', '<leader>sa', '<Cmd>wa<CR>',   {} ) -- save all files
-make_keymap( 'n', '<leader>bd', '<Cmd>bd<CR>',   {} ) -- close buffer
-make_keymap( 'n', '<leader>te', '<Cmd>tabe<CR>', {} ) -- new tab
+make_keymap( 'n', '<leader>fs', '<Cmd>w<CR>',            {} ) -- save file
+make_keymap( 'n', '<leader>fa', '<Cmd>wa<CR>',           {} ) -- save all files
+make_keymap( 'n', '<leader>bd', '<Cmd>bd<CR>',           {} ) -- close buffer
+make_keymap( 'n', '<leader>bw', '<Cmd>w<CR><Cmd>bd<CR>', {} ) -- write and close buffer
+make_keymap( 'n', '<leader>te', '<Cmd>tabe<CR>',         {} ) -- new tab
 
 make_keymap( 'n', 'Y',         'y$',   opts ) -- yank to end of line
 make_keymap( 'n', '<leader>Y', '"+y$', opts ) -- yank to end of line
@@ -447,7 +448,7 @@ make_keymap( 'v', 'k', 'gk', {} )
 
 make_keymap( 'n', '<leader>ss', '<Cmd>ScratchPad<CR>', {} )
 
-make_keymap( 'n', '<leader>m', '<Cmd>lua require"maximizer".toggle()<CR>', {} )
+make_keymap( 'n', 'M', '<Cmd>lua require"maximizer".toggle()<CR>', {} )
 
 -- git log stuff
 make_keymap( { 'n', 'v' }, '<leader>gl', '<Cmd>GV<CR>',  {} )
