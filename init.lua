@@ -551,18 +551,20 @@ end
 
 make_keymap( 'n', '<leader>L', write_centered_line, {} )
 
+function set_fold_options()
+    if require"nvim-treesitter.parsers".has_parser() then
+        vim.wo.foldmethod = 'expr'
+        vim.wo.foldexpr   = 'nvim_treesitter#foldexpr()'
+    else
+        vim.wo.foldmethod = 'indent'
+    end
+end
+
 -- run all vimscript stuffs
 -- TODO: factor this out into lua
 vim.cmd([[
-    augroup highlight_yank
-        autocmd!
-        autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
-    augroup END
-
-    augroup treesitter_folds
-        autocmd!
-        autocmd FileType * if luaeval('require"nvim-treesitter.parsers".has_parser()') | setlocal foldmethod=expr | setlocal foldexpr=nvim_treesitter#foldexpr() | endif
-    augroup END
+    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
+    autocmd BufEnter * lua set_fold_options()
 
     " colorscheme gruvbox-material
     colorscheme material
