@@ -270,7 +270,7 @@ require'lazy'.setup {
             }
         end
     },
-    -- 'madox2/vim-ai', -- requires python3 support
+    'madox2/vim-ai', -- requires python3 support
 
     {
         "L3MON4D3/LuaSnip",
