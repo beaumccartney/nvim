@@ -453,9 +453,9 @@ make_keymap( 'n', '<leader>cd', '<Cmd>cd %:p:h<CR>', {} )
 make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>',    {} )
 
 -- fraser again goddamn
-make_keymap( 'n', '<ESC>', '<Cmd>noh<CR> <Cmd>lua require"maximizer".restore()<CR>', opts )
+make_keymap( 'n', '<ESC>', '<Cmd>noh<CR><Cmd>lua require"maximizer".restore()<CR>', opts )
 
-make_keymap( 'n', '<leader>w', '<Cmd>lua MiniTrailspace.trim()<CR>', {} )
+make_keymap( 'n', '<leader>w', MiniTrailspace.trim, {} )
 
 -- jk fixes (thanks yet again fraser)
 make_keymap( 'n', 'j', '<Plug>(accelerated_jk_gj)', {} )
@@ -466,14 +466,12 @@ make_keymap( 'v', 'k', 'gk', {} )
 
 make_keymap( 'n', '<leader>s', '<Cmd>ScratchPad<CR>', {} )
 
-make_keymap( 'n', 'M', '<Cmd>lua require"maximizer".toggle()<CR>', {} )
+make_keymap( 'n', 'M', require'maximizer'.toggle, {} )
 
 -- git log stuff
 make_keymap( { 'n', 'v' }, '<leader>gl', '<Cmd>GV<CR>',  {} )
-make_keymap( { 'n', 'v' }, '<leader>GL', ':GV',          {} )
 
 make_keymap( { 'n', 'v' }, '<leader>gv', '<Cmd>GV!<CR>', {} )
-make_keymap( { 'n', 'v' }, '<leader>GV', ':GV!',         {} )
 
 make_keymap( 'n', '<leader>gp', '<Cmd>GV --patch<CR>', {} )
 
@@ -567,7 +565,7 @@ function write_centered_line()
     api.comment.blockwise()
 end
 
-make_keymap( 'n', '<leader>L', write_centered_line, {} )
+make_keymap( 'n', '<leader>l', write_centered_line, {} )
 
 function set_fold_options()
     if require"nvim-treesitter.parsers".has_parser() then
