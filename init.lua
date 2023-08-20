@@ -32,7 +32,7 @@ require'lazy'.setup {
     -- center screen and scratchpad to expand working memory
     {
         'FraserLee/ScratchPad',
-        config = function() vim.g.scratchpad_autostart = 0 end,
+        init = function() vim.g.scratchpad_autostart = 0 end,
     },
 
     {
@@ -202,7 +202,7 @@ require'lazy'.setup {
 
     {
         'sainnhe/gruvbox-material',
-        config = function()
+        init = function()
             vim.g.gruvbox_material_foreground = 'original'
             vim.g.gruvbox_material_background = 'hard'
         end
