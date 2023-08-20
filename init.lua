@@ -453,7 +453,7 @@ make_keymap( 'n', '<leader>cd', '<Cmd>cd %:p:h<CR>', {} )
 make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>',    {} )
 
 -- fraser again goddamn
-make_keymap( 'n', '<ESC>', '<Cmd>noh<CR> <Cmd>lua require"maximizer".restore()<CR> <Cmd>helpclose<CR>', opts )
+make_keymap( 'n', '<ESC>', '<Cmd>noh<CR> <Cmd>lua require"maximizer".restore()<CR>', opts )
 
 make_keymap( 'n', '<leader>w', '<Cmd>lua MiniTrailspace.trim()<CR>', {} )
 
@@ -464,7 +464,7 @@ make_keymap( 'n', 'k', '<Plug>(accelerated_jk_gk)', {} )
 make_keymap( 'v', 'j', 'gj', {} )
 make_keymap( 'v', 'k', 'gk', {} )
 
-make_keymap( 'n', '<leader>ss', '<Cmd>ScratchPad<CR>', {} )
+make_keymap( 'n', '<leader>s', '<Cmd>ScratchPad<CR>', {} )
 
 make_keymap( 'n', 'M', '<Cmd>lua require"maximizer".toggle()<CR>', {} )
 
@@ -482,6 +482,7 @@ local builtin = require'telescope.builtin'
 -- telescope maps
 make_keymap( 'n', '<leader>ff', builtin.find_files,  {} )
 make_keymap( 'n', '<leader>gg', builtin.git_files,   {} )
+make_keymap( 'n', '<leader>fd', builtin.oldfiles,   {} )
 
 make_keymap( 'n', '<leader>/',  builtin.live_grep,   {} )
 make_keymap( 'n', '<leader>*',  builtin.grep_string, {} )
@@ -525,7 +526,7 @@ vim.opt.smartcase      = true
 
 vim.opt.completeopt    = 'menu'
 
-vim.opt.foldenable     = false
+-- vim.opt.foldenable     = false
 
 vim.opt.cmdheight      = 2
 
