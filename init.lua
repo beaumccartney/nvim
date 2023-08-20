@@ -239,7 +239,15 @@ require'lazy'.setup {
         end
     },
 
-    'mg979/vim-visual-multi',
+    {
+        'mg979/vim-visual-multi',
+        init = function()
+            vim.g.VM_maps = {
+                [ 'Add Cursor Down' ] = '<C-j>',
+                [ 'Add Cursor Up'   ] = '<C-k>',
+            }
+        end
+    },
 
     -- highlight cursor after large jump
     'rainbowhxch/beacon.nvim',
