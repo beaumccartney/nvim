@@ -11,6 +11,9 @@
 -- apparently I have to put this before the package manager
 vim.g.mapleader = ' '
 
+-- use homebrew python
+vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
+
 -- bootstrap package manager (ngl it works nice)
 local lazypath = vim.fn.stdpath( 'data' ) .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat( lazypath ) then
