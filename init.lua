@@ -513,7 +513,7 @@ vim.opt.breakindent = true
 vim.opt.linebreak   = true
 
 vim.opt.scrolloff      = 10
-vim.opt.colorcolumn    = '80'
+vim.opt.colorcolumn    = '81'
 
 vim.opt.hidden         = true
 vim.opt.swapfile       = false
