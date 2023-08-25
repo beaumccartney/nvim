@@ -281,12 +281,33 @@ require'lazy'.setup {
             }
         end
     },
-    'madox2/vim-ai', -- requires python3 support
+    'madox2/vim-ai',
 
     {
         "L3MON4D3/LuaSnip",
         -- install jsregexp (optional!).
         build = "make install_jsregexp"
+    },
+
+    {
+        'jose-elias-alvarez/null-ls.nvim',
+        dependencies = 'nvim-lua/plenary.nvim',
+        config = function()
+            local null_ls = require'null-ls'
+            local builtins = null_ls.builtins
+
+            null_ls.setup {
+                sources = {
+                    builtins.diagnostics.eslint,
+                    builtins.diagnostics.fish,
+
+                    builtins.code_actions.eslint,
+                    builtins.code_actions.shellcheck,
+
+                    builtins.formatting.prettier,
+                }
+            }
+        end
     },
 
     -- the stuff of nightmares
