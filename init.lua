@@ -411,7 +411,7 @@ require'lazy'.setup {
                 'vtsls',
                 'pyright',
                 'prismals',
-                'quick_lint_js',
+                -- 'quick_lint_js',
                 'tailwindcss',
                 'vimls'
             }
@@ -602,6 +602,10 @@ end
 vim.cmd([[
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
     autocmd BufEnter * lua set_fold_options()
+
+    autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2
+
+    autocmd Filetype prisma set smartindent nocindent
 
     " colorscheme gruvbox-material
     colorscheme material
