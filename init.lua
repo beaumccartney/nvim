@@ -44,19 +44,17 @@ require'lazy'.setup {
 
     {
         '0x00-ketsu/maximizer.nvim',
-        config = function() require'maximizer'.setup() end
+        config = true,
     },
 
     -- highlight and search todo comments
     {
         'folke/todo-comments.nvim',
         dependencies = 'nvim-lua/plenary.nvim',
-        config = function()
-            require'todo-comments'.setup {
-                signs = false,
-                keywords = { TODO = { alt = { 'REVIEW', 'INCOMPLETE' }, }, },
-            }
-        end,
+        opts = {
+            signs = false,
+            keywords = { TODO = { alt = { 'REVIEW', 'INCOMPLETE' }, }, },
+        }
     },
 
     -- comment things - can respect tree-sitter or other things
@@ -77,15 +75,13 @@ require'lazy'.setup {
     -- e.g. cursorline and cursor column
     {
         'tummetott/unimpaired.nvim',
-        config = function() require'unimpaired'.setup() end
+        config = true,
     },
 
     -- surround things
     {
         'echasnovski/mini.surround',
-        config = function()
-            require'mini.surround'.setup { respect_selection_type = true, }
-        end,
+        opts = { respect_selection_type = true, }
     },
 
     -- everything
@@ -119,7 +115,7 @@ require'lazy'.setup {
     {
         'nvim-treesitter/nvim-treesitter-context',
         dependencies = 'nvim-treesitter',
-        config       = function() require'treesitter-context'.setup() end,
+        config       = true,
     },
 
     -- fuzzy-find files and strings
@@ -134,6 +130,7 @@ require'lazy'.setup {
     -- fzf syntax in fuzzy-finding
     {
         'nvim-telescope/telescope-fzf-native.nvim',
+        dependencies = 'nvim-telescope/telescope.nvim',
         build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build',
         config = function()
             require'telescope'.setup()
@@ -150,7 +147,7 @@ require'lazy'.setup {
     -- git-gutter
     {
         'lewis6991/gitsigns.nvim',
-        config = function() require'gitsigns'.setup() end
+        config = true,
     },
 
     -- all hail fugitive
@@ -162,49 +159,49 @@ require'lazy'.setup {
     -- additional textobject keys after "a" and "i" e.g. <something>[a|i]q where q is quote text object
     {
         'echasnovski/mini.ai',
-        config = function() require'mini.ai'.setup() end,
+        config = true,
     },
 
     -- align stuff - great interactivity and keybinds
     {
         'echasnovski/mini.align',
-        config = function() require'mini.align'.setup() end,
+        config = true,
     },
 
     -- highlight word under cursor
     {
         'echasnovski/mini.cursorword',
-        config = function() require'mini.cursorword'.setup() end,
+        config = true,
     },
 
     -- operations on the indent of the cursor - helps when there's no tree-sitter
     {
         'echasnovski/mini.indentscope',
-        config = function() require'mini.indentscope'.setup() end,
+        config = true,
     },
 
     -- good f/F/t/T keys - not confined to line and can keep mashing ; or ,
     {
         'echasnovski/mini.jump',
-        config = function() require'mini.jump'.setup() end,
+        config = true,
     },
 
     -- start screen when I don't start with someth
     {
         'echasnovski/mini.starter',
-        config = function() require'mini.starter'.setup() end,
+        config = true,
     },
 
     -- highlight and trim trailing whitespace
     {
         'echasnovski/mini.trailspace',
-        config = function() require'mini.trailspace'.setup() end,
+        config = true,
     },
 
     -- exchange, replace, sort, and evaluate stuff
     {
         'echasnovski/mini.operators',
-        config = function() require'mini.operators'.setup() end,
+        config = true,
     },
 
     {
@@ -217,33 +214,30 @@ require'lazy'.setup {
 
     {
         'marko-cerovac/material.nvim',
-        config = function()
-            vim.g.material_style = "deep ocean"
-            require'material'.setup
+        init = function() vim.g.material_style = "deep ocean" end,
+        opts = {
+            plugins =
             {
-                plugins =
-                {
-                    -- Available plugins:
-                    -- "dap",
-                    -- "dashboard",
-                    "gitsigns",
-                    -- "hop",
-                    -- "indent-blankline",
-                    -- "lspsaga",
-                    "mini",
-                    -- "neogit",
-                    -- "neorg",
-                    "nvim-cmp",
-                    -- "nvim-navic",
-                    -- "nvim-tree",
-                    "nvim-web-devicons",
-                    -- "sneak",
-                    "telescope",
-                    -- "trouble",
-                    -- "which-key",
-                },
-            }
-        end
+                -- Available plugins:
+                -- "dap",
+                -- "dashboard",
+                "gitsigns",
+                -- "hop",
+                -- "indent-blankline",
+                -- "lspsaga",
+                "mini",
+                -- "neogit",
+                -- "neorg",
+                "nvim-cmp",
+                -- "nvim-navic",
+                -- "nvim-tree",
+                "nvim-web-devicons",
+                -- "sneak",
+                "telescope",
+                -- "trouble",
+                -- "which-key",
+            },
+        }
     },
 
     {
@@ -263,11 +257,9 @@ require'lazy'.setup {
     -- holding j, k, w, b, W, B, etc goes fast after a while
     {
         'rainbowhxch/accelerated-jk.nvim',
-        config = function()
-            require'accelerated-jk'.setup {
-                acceleration_motions = { 'w', 'b', 'W', 'B' },
-            }
-        end
+        opts = {
+            acceleration_motions = { 'w', 'b', 'W', 'B' },
+        },
     },
 
     -- jai syntax-highlighting + folds + whatever
@@ -275,18 +267,16 @@ require'lazy'.setup {
 
     {
         'zbirenbaum/copilot.lua',
-        config = function()
-            require'copilot'.setup {
-                suggestion = {
-                    auto_trigger = true,
+        opts = {
+           suggestion = {
+                auto_trigger = true,
 
-                -- BEGIN stuff for use in nvim-cmp
-                    -- enabled = false,
-                },
-                -- panel = { enabled = false },
-                -- end stuff for use in nvim-cmp
-            }
-        end
+            -- BEGIN stuff for use in nvim-cmp
+                -- enabled = false,
+            },
+            -- panel = { enabled = false },
+            -- end stuff for use in nvim-cmp
+        }
     },
     'madox2/vim-ai',
 
@@ -552,7 +542,7 @@ vim.opt.smartcase      = true
 
 vim.opt.completeopt    = 'menu'
 
--- vim.opt.foldenable     = false
+vim.opt.foldenable     = false
 
 vim.opt.cmdheight      = 2
 
