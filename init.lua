@@ -14,6 +14,8 @@ vim.g.mapleader = ' '
 -- use homebrew python
 vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
 
+vim.opt.shell = '/opt/homebrew/bin/fish' -- before plugin spec so terminal plugin sees it
+
 -- bootstrap package manager (ngl it works nice)
 local lazypath = vim.fn.stdpath( 'data' ) .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat( lazypath ) then
@@ -33,6 +35,11 @@ require'lazy'.setup {
     {
         'FraserLee/ScratchPad',
         init = function() vim.g.scratchpad_autostart = 0 end,
+    },
+
+    {
+        'akinsho/toggleterm.nvim',
+        opts = { open_mapping = [[<c-/>]], },
     },
 
     {
