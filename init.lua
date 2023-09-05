@@ -225,7 +225,7 @@ require'lazy'.setup {
                 -- "dashboard",
                 "gitsigns",
                 -- "hop",
-                -- "indent-blankline",
+                "indent-blankline",
                 -- "lspsaga",
                 "mini",
                 -- "neogit",
@@ -244,6 +244,11 @@ require'lazy'.setup {
 
     { "bluz71/vim-nightfly-colors", name = "nightfly" },
     { "bluz71/vim-moonfly-colors",  name = "moonfly"  },
+
+    {
+        "lukas-reineke/indent-blankline.nvim",
+        opts = { show_current_context = true, }
+    },
 
     {
         'mg979/vim-visual-multi',
