@@ -37,6 +37,8 @@ require'lazy'.setup {
         init = function() vim.g.scratchpad_autostart = 0 end,
     },
 
+    { "chrisgrieser/nvim-genghis", dependencies = "stevearc/dressing.nvim" },
+
     {
         'akinsho/toggleterm.nvim',
         opts = { open_mapping = [[<c-/>]], },
