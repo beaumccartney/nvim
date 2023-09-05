@@ -394,7 +394,7 @@ require'lazy'.setup {
 
             local lsp_servers = {
                 -- 'asm_lsp',
-                -- 'astro',
+                'astro', -- NOTE: must add typescript and astro-prettier-plugin as devDependencies for this to work
                 'bashls',
                 -- 'cmake',
                 'cssls',
