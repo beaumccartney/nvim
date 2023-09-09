@@ -37,7 +37,13 @@ require'lazy'.setup {
         init = function() vim.g.scratchpad_autostart = 0 end,
     },
 
-    { "chrisgrieser/nvim-genghis", dependencies = "stevearc/dressing.nvim" },
+    {
+        "chrisgrieser/nvim-genghis",
+        dependencies = {
+            "stevearc/dressing.nvim",
+            opts = { input = { insert_only = false, } },
+        }
+    },
 
     {
         'akinsho/toggleterm.nvim',
