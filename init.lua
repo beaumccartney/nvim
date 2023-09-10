@@ -349,14 +349,30 @@ require'lazy'.setup {
             local map        = cmp.mapping
             local map_preset = map.preset
 
+            local modes = { 'i', 'c' }
+            local i_only = { 'i' }
+
             cmp.setup {
                 completion = { autocomplete = false },
-                mapping = map_preset.insert {
-                    ['<C-b>'] = map.scroll_docs( -4 ),
-                    ['<C-f>'] = map.scroll_docs(  4 ),
-                    ['<C-l>'] = map.complete(),
-                    ['<C-c>'] = map.abort(),
+                mapping = {
+                    ['<C-b>'] = map(function() cmp.scroll_docs( -4 ) end, i_only),
+                    ['<C-f>'] = map(function() cmp.scroll_docs(  4 ) end, i_only),
+                    ['<C-j>'] = map(function()
+                                        if not cmp.visible() then cmp.complete() end
+                                        cmp.select_next_item()
+                                    end,
+                                modes),
+                    ['<C-k>'] = map(function()
+                                        if not cmp.visible() then cmp.complete() end
+                                        cmp.select_prev_item()
+                                    end,
+                                modes),
+                    ['<C-c>'] = map(cmp.abort, i_only),
                     ['<CR>' ] = map.confirm(),
+
+                    -- free up these for snippet-traversing
+                    ['<C-n>'] = cmp.config.disable,
+                    ['<C-p>'] = cmp.config.disable,
                 },
                 snippet = { expand = function( args ) require'luasnip'.lsp_expand( args.body ) end },
                 sources = sources {
@@ -371,15 +387,13 @@ require'lazy'.setup {
             }
 
             cmp.setup.cmdline({ '/', '?' }, {
-                mapping = map_preset.cmdline(),
                 sources = sources { { name = 'buffer' }, },
             })
             cmp.setup.cmdline(':', {
-                mapping = map_preset.cmdline(),
                 sources = sources {
                     { name = 'path',    },
                     { name = 'cmdline', },
-                }
+                },
             })
             -- Use an on_attach function to only map the following keys
             -- after the language server attaches to the current buffer
@@ -529,8 +543,8 @@ make_keymap( 'n', '<leader>ts', builtin.treesitter,       {} )
 
 -- luasnip
 local ls = require'luasnip'
-make_keymap( {"i", "s"}, "<C-j>", function() ls.jump( 1) end, opts )
-make_keymap( {"i", "s"}, "<C-k>", function() ls.jump(-1) end, opts )
+make_keymap( {"i", "s"}, "<C-n>", function() ls.jump( 1) end, opts )
+make_keymap( {"i", "s"}, "<C-p>", function() ls.jump(-1) end, opts )
 
 vim.opt.termguicolors  = true
 vim.opt.nu             = true
