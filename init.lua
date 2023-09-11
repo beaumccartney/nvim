@@ -39,6 +39,7 @@ require'lazy'.setup {
 
     {
         "chrisgrieser/nvim-genghis",
+        dir = "~/dev/nvim-genghis",
         dependencies = {
             "stevearc/dressing.nvim",
             opts = { input = { insert_only = false, } },
@@ -327,9 +328,14 @@ require'lazy'.setup {
     -- the stuff of nightmares
     {
         'hrsh7th/nvim-cmp',
-        -- enabled = false,
         dependencies = {
-            'neovim/nvim-lspconfig',
+            {
+                'neovim/nvim-lspconfig',
+                dependencies = {
+                    'folke/neodev.nvim',
+                    config = true,
+                },
+            },
             -- inlay hints for c++
             'p00f/clangd_extensions.nvim',
 
@@ -379,7 +385,6 @@ require'lazy'.setup {
                 sources = sources {
                     -- { name = 'copilot', },
                     { name = 'fish'     },
-                    { name = 'nvim_lua' },
                     { name = 'nvim_lsp' },
                     { name = 'luasnip'  },
                     { name = 'buffer'   },
@@ -443,12 +448,23 @@ require'lazy'.setup {
                 'vimls'
             }
             local capabilities = require'cmp_nvim_lsp'.default_capabilities()
+            local lspconfig = require'lspconfig'
             for _, server in pairs( lsp_servers ) do
-                require'lspconfig'[server].setup {
+                lspconfig[server].setup {
                     on_attach    = on_attach,
                     capabilities = capabilities,
                 }
             end
+
+            lspconfig.lua_ls.setup {
+                on_attach    = on_attach,
+                capabilities = capabilities,
+                settings = {
+                    Lua = {
+                        completion = { support = { callSnippet = "Replace" }, }
+                    }
+                }
+            }
 
             require'clangd_extensions'.setup {
                 server = {
