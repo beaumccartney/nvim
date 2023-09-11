@@ -214,6 +214,7 @@ require'lazy'.setup {
 
     {
         'sainnhe/gruvbox-material',
+        lazy = true,
         init = function()
             vim.g.gruvbox_material_foreground = 'original'
             vim.g.gruvbox_material_background = 'hard'
@@ -248,8 +249,8 @@ require'lazy'.setup {
         }
     },
 
-    { "bluz71/vim-nightfly-colors", name = "nightfly" },
-    { "bluz71/vim-moonfly-colors",  name = "moonfly"  },
+    { "bluz71/vim-nightfly-colors", name = "nightfly", lazy = true },
+    { "bluz71/vim-moonfly-colors",  name = "moonfly",  lazy = true },
 
     {
         "lukas-reineke/indent-blankline.nvim",
