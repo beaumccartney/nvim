@@ -646,7 +646,7 @@ vim.cmd([[
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
     autocmd BufEnter * lua set_fold_options()
 
-    autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2
+    autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=2 nocindent smartindent
 
     autocmd Filetype prisma set smartindent nocindent
 
