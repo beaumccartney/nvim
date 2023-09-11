@@ -194,12 +194,6 @@ require'lazy'.setup {
         config = true,
     },
 
-    -- good f/F/t/T keys - not confined to line and can keep mashing ; or ,
-    {
-        'echasnovski/mini.jump',
-        config = true,
-    },
-
     -- start screen when I don't start with someth
     {
         'echasnovski/mini.starter',
