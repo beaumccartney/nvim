@@ -142,7 +142,7 @@ require'lazy'.setup {
         dependencies = 'nvim-telescope/telescope.nvim',
         build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build',
         config = function()
-            require'telescope'.setup()
+            require'telescope'.setup{}
             require'telescope'.load_extension('fzf')
         end
     },
@@ -354,7 +354,6 @@ require'lazy'.setup {
             local cmp        = require'cmp'
             local sources    = cmp.config.sources
             local map        = cmp.mapping
-            local map_preset = map.preset
 
             local modes = { 'i', 'c' }
             local i_only = { 'i' }
@@ -592,7 +591,7 @@ vim.opt.foldenable     = false
 
 vim.opt.cmdheight      = 2
 
-function write_centered_line()
+local function write_centered_line()
     -- https://github.com/numToStr/Comment.nvim - good plugin
     local api = require'Comment.api'
 
