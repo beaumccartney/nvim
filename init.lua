@@ -488,11 +488,10 @@ make_keymap( 'n', ']d',        vim.diagnostic.goto_next,  opts )
 make_keymap( 'n', '<leader>q', vim.diagnostic.setloclist, opts )
 
 -- keymaps for built in things
-make_keymap( 'n', '<leader>fs', '<Cmd>w<CR>',            {} ) -- save file
-make_keymap( 'n', '<leader>fa', '<Cmd>wa<CR>',           {} ) -- save all files
-make_keymap( 'n', '<leader>bd', '<Cmd>bd<CR>',           {} ) -- close buffer
-make_keymap( 'n', '<leader>bw', '<Cmd>w<CR><Cmd>bd<CR>', {} ) -- write and close buffer
-make_keymap( 'n', '<leader>te', '<Cmd>tabe<CR>',         {} ) -- new tab
+make_keymap( 'n', '<leader>fs', vim.cmd.w,            {} ) -- save file
+make_keymap( 'n', '<leader>fa', vim.cmd.wa,           {} ) -- save all files
+make_keymap( 'n', '<leader>bd', vim.cmd.bd,           {} ) -- close buffer
+make_keymap( 'n', '<leader>te', vim.cmd.tabe,         {} ) -- new tab
 
 make_keymap( 'n', 'Y',         'y$',   opts ) -- yank to end of line
 make_keymap( 'n', '<leader>Y', '"+y$', opts ) -- yank to end of line
@@ -552,7 +551,7 @@ make_keymap( 'n', '<leader>fo', builtin.vim_options, {} )
 make_keymap( 'n', '<leader>fk', builtin.keymaps,     {} )
 make_keymap( 'n', '<leader>fh', builtin.help_tags,   {} )
 
-make_keymap( 'n', '<leader>td', '<Cmd>TodoTelescope<CR>', {} )
+make_keymap( 'n', '<leader>td', vim.cmd.TodoTelescope, {} )
 
 make_keymap( 'n', '<leader>ts', builtin.treesitter,       {} )
 
