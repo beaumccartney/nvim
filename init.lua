@@ -277,7 +277,7 @@ require'lazy'.setup {
     },
 
     -- jai syntax-highlighting + folds + whatever
-    'jansedivy/jai.vim',
+    { 'jansedivy/jai.vim', ft = "jai" },
 
     {
         'zbirenbaum/copilot.lua',
