@@ -572,6 +572,8 @@ vim.opt.smarttab    = true
 vim.opt.cindent     = true
 vim.opt.breakindent = true
 vim.opt.linebreak   = true
+vim.opt.formatoptions = vim.opt.formatoptions + 'tcqjrn' -- NOTE: formatting can be done manually with gq{textobj}
+vim.opt.textwidth = 80
 
 vim.opt.scrolloff      = 10
 vim.opt.colorcolumn    = '81'
