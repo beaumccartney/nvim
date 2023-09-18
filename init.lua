@@ -134,7 +134,7 @@ require'lazy'.setup {
         'nvim-telescope/telescope.nvim',
         dependencies = {
             'nvim-lua/plenary.nvim',
-            'kyazdani42/nvim-web-devicons'
+            'nvim-tree/nvim-web-devicons'
         },
     },
 
@@ -191,10 +191,10 @@ require'lazy'.setup {
         config = true,
     },
 
-    -- start screen when I don't start with someth
     {
-        'echasnovski/mini.starter',
-        config = true,
+        'echasnovski/mini.files',
+        dependencies = 'nvim-tree/nvim-web-devicons',
+        opts = { windows = { preview = true, }, },
     },
 
     -- highlight and trim trailing whitespace
@@ -523,6 +523,10 @@ make_keymap( 'n', 'k', '<Plug>(accelerated_jk_gk)', {} )
 make_keymap( 'v', 'j', 'gj', {} )
 make_keymap( 'v', 'k', 'gk', {} )
 
+local fileexplorer = function()
+    MiniFiles.open( vim.api.nvim_buf_get_name( 0 ), false )
+end
+make_keymap( 'n', '<leader>fe', fileexplorer, {} )
 
 make_keymap( 'n', 'M', require'maximizer'.toggle, {} )
 
