@@ -31,19 +31,11 @@ end
 vim.opt.rtp:prepend( lazypath )
 
 require'lazy'.setup {
-    -- center screen and scratchpad to expand working memory
     {
-        'FraserLee/ScratchPad',
-        init = function() vim.g.scratchpad_autostart = 0 end,
+        "stevearc/dressing.nvim",
+        opts = { input = { insert_only = false, } },
     },
 
-    {
-        "chrisgrieser/nvim-genghis",
-        dir = "~/dev/nvim-genghis",
-        dependencies = {
-            "stevearc/dressing.nvim",
-            opts = { input = { insert_only = false, } },
-        }
     },
 
     {
@@ -168,7 +160,7 @@ require'lazy'.setup {
     'tpope/vim-fugitive',
     'junegunn/gv.vim',
     'tpope/vim-rhubarb',
-    'shumphrey/fugitive-gitlab.vim',
+    -- 'shumphrey/fugitive-gitlab.vim',
 
     -- additional textobject keys after "a" and "i" e.g. <something>[a|i]q where q is quote text object
     {
@@ -526,7 +518,6 @@ make_keymap( 'n', 'k', '<Plug>(accelerated_jk_gk)', {} )
 make_keymap( 'v', 'j', 'gj', {} )
 make_keymap( 'v', 'k', 'gk', {} )
 
-make_keymap( 'n', '<leader>s', '<Cmd>ScratchPad<CR>', {} )
 
 make_keymap( 'n', 'M', require'maximizer'.toggle, {} )
 
