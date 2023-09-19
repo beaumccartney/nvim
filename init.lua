@@ -32,20 +32,10 @@ vim.opt.rtp:prepend( lazypath )
 
 require'lazy'.setup {
     {
-        "stevearc/dressing.nvim",
-        opts = { input = { insert_only = false, } },
-    },
-
-    {
         'akinsho/bufferline.nvim',
         version = "*",
         dependencies = 'nvim-tree/nvim-web-devicons',
         config = true,
-    },
-
-    {
-        'akinsho/toggleterm.nvim',
-        opts = { open_mapping = [[<c-/>]], },
     },
 
     {
@@ -182,12 +172,6 @@ require'lazy'.setup {
     -- highlight word under cursor
     {
         'echasnovski/mini.cursorword',
-        config = true,
-    },
-
-    -- operations on the indent of the cursor - helps when there's no tree-sitter
-    {
-        'echasnovski/mini.indentscope',
         config = true,
     },
 
