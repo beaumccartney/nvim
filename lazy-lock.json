@@ -25,6 +25,7 @@
   "mini.cursorword": { "branch": "main", "commit": "066770d17218d783dc76abde80fde89967f94907" },
   "mini.files": { "branch": "main", "commit": "aa6fe72ca726fb64b22d2632790bc46656d00a0f" },
   "mini.operators": { "branch": "main", "commit": "913ddd99ee00a0b600524b215224d688bd3250f1" },
+  "mini.statusline": { "branch": "main", "commit": "419e981c4120d5e59400ecfea300f037f39c49b0" },
   "mini.surround": { "branch": "main", "commit": "9d1956b576d7051da3a483b251dfc778121c60db" },
   "mini.trailspace": { "branch": "main", "commit": "c41ab1035d184ff20c1aebd76639320c055afebe" },
   "moonfly": { "branch": "master", "commit": "1e81cbb88a34c41572fde43cd633bd6d60727274" },
@@ -46,6 +47,5 @@
   "vim-ai": { "branch": "main", "commit": "b86cb48fb8d20f3aacd24b157a2beec514b30ad6" },
   "vim-fugitive": { "branch": "master", "commit": "99db68d9b3304580bd383da7aaee05c7a954a344" },
   "vim-rhubarb": { "branch": "master", "commit": "ee69335de176d9325267b0fd2597a22901d927b1" },
-  "vim-visual-multi": { "branch": "master", "commit": "724bd53adfbaf32e129b001658b45d4c5c29ca1a" },
-  "windline.nvim": { "branch": "master", "commit": "f58634d649d5774d438f745fbd96caca16aef2c2" }
+  "vim-visual-multi": { "branch": "master", "commit": "724bd53adfbaf32e129b001658b45d4c5c29ca1a" }
 }

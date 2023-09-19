@@ -139,10 +139,9 @@ require'lazy'.setup {
         end
     },
 
-    -- evilline
     {
-        'windwp/windline.nvim',
-        config = function() require'wlsample.evil_line' end
+        'echasnovski/mini.statusline',
+        config = true
     },
 
     -- git-gutter
