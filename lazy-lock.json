@@ -29,7 +29,6 @@
   "mini.surround": { "branch": "main", "commit": "9d1956b576d7051da3a483b251dfc778121c60db" },
   "mini.trailspace": { "branch": "main", "commit": "c41ab1035d184ff20c1aebd76639320c055afebe" },
   "moonfly": { "branch": "master", "commit": "1e81cbb88a34c41572fde43cd633bd6d60727274" },
-  "neodev.nvim": { "branch": "main", "commit": "471324e6c746284dbbdc1d357799d1911bb7e120" },
   "nightfly": { "branch": "master", "commit": "2737ba5b8d22ad6803bb0f51099f90c61bab566c" },
   "null-ls.nvim": { "branch": "main", "commit": "0010ea927ab7c09ef0ce9bf28c2b573fc302f5a7" },
   "nvim-cmp": { "branch": "main", "commit": "5dce1b778b85c717f6614e3f4da45e9f19f54435" },

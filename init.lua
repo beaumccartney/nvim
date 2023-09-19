@@ -308,13 +308,7 @@ require'lazy'.setup {
     {
         'hrsh7th/nvim-cmp',
         dependencies = {
-            {
-                'neovim/nvim-lspconfig',
-                dependencies = {
-                    'folke/neodev.nvim',
-                    config = true,
-                },
-            },
+            'neovim/nvim-lspconfig',
             -- inlay hints for c++
             'p00f/clangd_extensions.nvim',
 
@@ -433,16 +427,6 @@ require'lazy'.setup {
                     capabilities = capabilities,
                 }
             end
-
-            lspconfig.lua_ls.setup {
-                on_attach    = on_attach,
-                capabilities = capabilities,
-                settings = {
-                    Lua = {
-                        completion = { support = { callSnippet = "Replace" }, }
-                    }
-                }
-            }
 
             require'clangd_extensions'.setup {
                 server = {
