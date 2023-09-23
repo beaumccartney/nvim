@@ -94,7 +94,11 @@ require'lazy'.setup {
                     enable  = true,
                     disable = function(lang, bufnr)
                         return vim.api.nvim_buf_line_count(bufnr) > 1000
-                    end
+
+                            -- TODO: kill when zig parser isn't piss slow
+                            or lang == 'zig'
+                    end,
+                    additional_vim_regex_highlighting = false,
                 },
                 incremental_selection = { -- thanks again fraser
                     enable = true,
@@ -417,7 +421,8 @@ require'lazy'.setup {
                 'prismals',
                 -- 'quick_lint_js',
                 'tailwindcss',
-                'vimls'
+                'vimls',
+                'zls',
             }
             local capabilities = require'cmp_nvim_lsp'.default_capabilities()
             local lspconfig = require'lspconfig'
