@@ -544,7 +544,7 @@ vim.opt.smarttab    = true
 vim.opt.cindent     = true
 vim.opt.breakindent = true
 vim.opt.linebreak   = true
-vim.opt.formatoptions = vim.opt.formatoptions + 'acqjrn' - 't' -- NOTE: formatting can be done manually with gq{textobj}
+vim.opt.formatoptions = vim.opt.formatoptions + 'cqrn' - 't' -- NOTE: formatting can be done manually with gq{textobj}
 vim.opt.textwidth = 80
 
 vim.opt.scrolloff      = 10
