@@ -16,6 +16,9 @@ vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
 
 vim.opt.shell = '/opt/homebrew/bin/fish' -- before plugin spec so terminal plugin sees it
 
+
+local make_keymap = vim.keymap.set
+
 -- bootstrap package manager (ngl it works nice)
 local lazypath = vim.fn.stdpath( 'data' ) .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat( lazypath ) then
@@ -31,6 +34,14 @@ end
 vim.opt.rtp:prepend( lazypath )
 
 require'lazy'.setup {
+    {
+        'FraserLee/ScratchPad',
+        init = function()
+            vim.g.scratchpad_autostart = 0
+            make_keymap( 'n', 'S', vim.cmd.ScratchPad, {} )
+        end,
+    },
+
     {
         'akinsho/bufferline.nvim',
         version = "*",
@@ -387,7 +398,6 @@ require'lazy'.setup {
             local on_attach = function( client, bufnr )
                 -- Enable completion triggered by <c-x><c-o>
                 -- vim.api.nvim_buf_set_option( bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc' )
-                local make_keymap = vim.keymap.set
                 local builtin = require'telescope.builtin'
 
                 -- Mappings.
@@ -452,7 +462,6 @@ require'lazy'.setup {
 
 }
 
-local make_keymap = vim.keymap.set
 
 -- lsp stuff
 -- Mappings.
