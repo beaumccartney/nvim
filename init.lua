@@ -184,6 +184,11 @@ require'lazy'.setup {
         opts = { windows = { preview = true, }, },
     },
 
+    {
+        'echasnovski/mini.starter',
+        config = true,
+    },
+
     -- highlight and trim trailing whitespace
     {
         'echasnovski/mini.trailspace',

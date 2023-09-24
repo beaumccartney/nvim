@@ -25,6 +25,7 @@
   "mini.cursorword": { "branch": "main", "commit": "066770d17218d783dc76abde80fde89967f94907" },
   "mini.files": { "branch": "main", "commit": "aa6fe72ca726fb64b22d2632790bc46656d00a0f" },
   "mini.operators": { "branch": "main", "commit": "913ddd99ee00a0b600524b215224d688bd3250f1" },
+  "mini.starter": { "branch": "main", "commit": "c7e027558477838eac7109d8576ff1f2d9804845" },
   "mini.statusline": { "branch": "main", "commit": "419e981c4120d5e59400ecfea300f037f39c49b0" },
   "mini.surround": { "branch": "main", "commit": "9d1956b576d7051da3a483b251dfc778121c60db" },
   "mini.trailspace": { "branch": "main", "commit": "c41ab1035d184ff20c1aebd76639320c055afebe" },
