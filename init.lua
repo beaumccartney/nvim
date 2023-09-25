@@ -16,6 +16,7 @@ vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
 
 vim.opt.shell = '/opt/homebrew/bin/fish' -- before plugin spec so terminal plugin sees it
 
+vim.g.zig_fmt_autosave = 0
 
 local make_keymap = vim.keymap.set
 
