@@ -569,7 +569,7 @@ vim.opt.smarttab    = true
 vim.opt.cindent     = true
 vim.opt.breakindent = true
 vim.opt.linebreak   = true
-vim.opt.formatoptions = vim.opt.formatoptions + 'cqrn' - 't' -- NOTE: formatting can be done manually with gq{textobj}
+vim.opt.formatoptions = vim.opt.formatoptions - 't' + 'cqrn' -- NOTE: formatting can be done manually with gq{textobj}
 vim.opt.textwidth = 80
 
 vim.opt.scrolloff      = 10
@@ -638,15 +638,18 @@ end
 
 -- run all vimscript stuffs
 -- TODO: factor this out into lua
-vim.cmd([[
+vim.cmd[[
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
+
     autocmd BufEnter * lua set_fold_options()
+
+    autocmd BufEnter * set formatoptions-=to
 
     autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=2 nocindent smartindent
 
-    autocmd Filetype prisma set smartindent nocindent
+    autocmd Filetype prisma setlocal smartindent nocindent
 
     " colorscheme gruvbox-material
     colorscheme material
-]])
+]]
 
