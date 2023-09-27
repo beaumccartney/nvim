@@ -588,6 +588,9 @@ vim.opt.foldenable     = false
 
 vim.opt.cmdheight      = 2
 
+vim.opt.spell = true
+make_keymap( 'i', '<C-z>', '<c-g>u<Esc>[s1z=`]a<c-g>u', opts )
+
 local function write_centered_line()
     -- https://github.com/numToStr/Comment.nvim - good plugin
     local api = require'Comment.api'
