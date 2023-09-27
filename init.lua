@@ -305,24 +305,34 @@ require'lazy'.setup {
     },
 
     {
-        'jose-elias-alvarez/null-ls.nvim',
-        dependencies = 'nvim-lua/plenary.nvim',
+        'mfussenegger/nvim-lint',
         config = function()
-            local null_ls = require'null-ls'
-            local builtins = null_ls.builtins
+            local lint = require'lint'
 
-            null_ls.setup {
-                sources = {
-                    builtins.diagnostics.eslint,
-                    builtins.diagnostics.fish,
-
-                    builtins.code_actions.eslint,
-                    builtins.code_actions.shellcheck,
-
-                    builtins.formatting.prettier,
-                }
+            lint.linters_by_ft = {
+                javascript = { 'eslint' },
+                typescript = { 'eslint' },
+                bash       = { 'shellcheck' },
             }
+
+            vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+                pattern = { "*.js", "*.ts", "*.jsx", "*.*js", "*.tsx", "*.sh", "*.bash" },
+                callback = function()
+                    lint.try_lint()
+                end,
+            })
         end
+    },
+
+    {
+        'stevearc/conform.nvim',
+        opts = {
+	    formatters_by_ft = {
+            javascript = { { "prettierd", "prettier" } },
+            rust       = { { "rustfmt" } },
+            zig        = { { "zigfmt" } },
+            }
+        },
     },
 
     -- the stuff of nightmares
