@@ -1,6 +1,5 @@
 -- TODO:
 -- submodes of some kind
--- signature help
 -- undotree or telescope thing
 -- undodir
 -- session reloading
@@ -340,6 +339,12 @@ require'lazy'.setup {
             zig        = { { "zigfmt" } },
             }
         },
+    },
+
+
+    {
+        "ray-x/lsp_signature.nvim",
+        opts = { toggle_key = "<C-i>", },
     },
 
     -- the stuff of nightmares
