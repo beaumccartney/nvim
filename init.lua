@@ -346,8 +346,6 @@ require'lazy'.setup {
         'hrsh7th/nvim-cmp',
         dependencies = {
             'neovim/nvim-lspconfig',
-            -- inlay hints for c++
-            'p00f/clangd_extensions.nvim',
 
             'hrsh7th/cmp-nvim-lsp',
             'hrsh7th/cmp-cmdline',
@@ -439,6 +437,7 @@ require'lazy'.setup {
                 -- 'asm_lsp',
                 'astro', -- NOTE: must add typescript and astro-prettier-plugin as devDependencies for this to work
                 'bashls',
+                'clangd',
                 -- 'cmake',
                 'cssls',
                 'cssmodules_ls',
@@ -465,12 +464,6 @@ require'lazy'.setup {
                 }
             end
 
-            require'clangd_extensions'.setup {
-                server = {
-                    on_attach    = on_attach,
-                    capabilities = capabilities,
-                }
-            }
         end
     },
 
