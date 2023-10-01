@@ -445,7 +445,7 @@ require'lazy'.setup {
                 -- 'emmet_language_server',
                 -- 'emmet_ls',
                 'html',
-                -- 'hls',
+                'hls',
                 'rust_analyzer',
                 'vtsls',
                 'pyright',
