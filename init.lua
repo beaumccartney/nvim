@@ -261,6 +261,7 @@ require'lazy'.setup {
 
     {
         "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
         opts = { show_current_context = true, }
     },
 
