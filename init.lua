@@ -198,6 +198,7 @@ require'lazy'.setup {
 
     {
         'echasnovski/mini.indentscope',
+        init = function() vim.g.miniindentscope_disable = true end,
         config = true,
     },
 
