@@ -132,7 +132,7 @@ require'lazy'.setup {
     {
         'nvim-treesitter/nvim-treesitter-context',
         dependencies = 'nvim-treesitter',
-        config       = true,
+        config       = { max_lines = 4, },
     },
 
     -- fuzzy-find files and strings
