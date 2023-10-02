@@ -91,6 +91,12 @@ require'lazy'.setup {
         opts = { respect_selection_type = true, }
     },
 
+    -- change argument lists from one line to n lines or vice-versa
+    {
+    	'echasnovski/mini.splitjoin',
+    	opts = true,
+    },
+
     -- better [de]indenting and moving up and down
     {
         'echasnovski/mini.move',
