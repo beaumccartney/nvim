@@ -49,11 +49,6 @@ require'lazy'.setup {
         config = true,
     },
 
-    {
-        '0x00-ketsu/maximizer.nvim',
-        config = true,
-    },
-
     -- highlight and search todo comments
     {
         'folke/todo-comments.nvim',
@@ -201,6 +196,15 @@ require'lazy'.setup {
         'echasnovski/mini.indentscope',
         init = function() vim.g.miniindentscope_disable = true end,
         config = true,
+    },
+
+    {
+        'echasnovski/mini.misc',
+        config = function()
+            require'mini.misc'.setup()
+
+            MiniMisc.setup_restore_cursor()
+        end,
     },
 
     {
@@ -508,7 +512,7 @@ make_keymap( 'n', '<leader>cd', '<Cmd>cd %:p:h<CR>', {} )
 make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>',    {} )
 
 -- fraser again goddamn
-make_keymap( 'n', '<ESC>', '<Cmd>noh<CR><Cmd>lua require"maximizer".restore()<CR>', opts )
+make_keymap( 'n', '<ESC>', vim.cmd.noh, opts )
 
 make_keymap( 'n', '<leader>w', MiniTrailspace.trim, {} )
 
@@ -524,7 +528,7 @@ local fileexplorer = function()
 end
 make_keymap( 'n', '<leader>fe', fileexplorer, {} )
 
-make_keymap( 'n', 'M', require'maximizer'.toggle, {} )
+make_keymap( 'n', 'M', MiniMisc.zoom, {} )
 
 -- git log stuff
 make_keymap( { 'n', 'v' }, '<leader>gl', '<Cmd>GV<CR>',  {} )
