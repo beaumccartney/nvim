@@ -91,6 +91,12 @@ require'lazy'.setup {
         opts = { respect_selection_type = true, }
     },
 
+    -- better [de]indenting and moving up and down
+    {
+        'echasnovski/mini.move',
+        config = true,
+    },
+
     -- everything
     {
         'nvim-treesitter/nvim-treesitter',
@@ -490,10 +496,6 @@ make_keymap( 'n', '<leader>Y', '"+y$', opts ) -- yank to end of line
 
 make_keymap( { 'n', 'v' }, '<leader>y', '"+y',       opts ) -- yank to clipboard
 make_keymap( { 'n', 'v' }, '<leader>p', '"+p', opts ) -- put from clipboard
-
--- keep visual selection after indent
-make_keymap( 'v', '>' , '>gv', opts )
-make_keymap( 'v', '<' , '<gv', opts )
 
 -- change directory to current file - thanks fraser
 make_keymap( 'n', '<leader>cd', '<Cmd>cd %:p:h<CR>', {} )
