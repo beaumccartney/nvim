@@ -180,6 +180,11 @@ require'lazy'.setup {
         config = true,
     },
 
+    {
+        'echasnovski/mini.bufremove',
+        opts = true,
+    },
+
     -- highlight word under cursor
     {
         'echasnovski/mini.cursorword',
@@ -498,7 +503,6 @@ make_keymap( 'n', '<leader>q', vim.diagnostic.setloclist, opts )
 -- keymaps for built in things
 make_keymap( 'n', '<leader>fs', vim.cmd.w,            {} ) -- save file
 make_keymap( 'n', '<leader>fa', vim.cmd.wa,           {} ) -- save all files
-make_keymap( 'n', '<leader>bd', vim.cmd.bd,           {} ) -- close buffer
 make_keymap( 'n', '<leader>te', vim.cmd.tabe,         {} ) -- new tab
 
 make_keymap( 'n', 'Y',         'y$',   opts ) -- yank to end of line
@@ -514,7 +518,8 @@ make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>',    {} )
 -- fraser again goddamn
 make_keymap( 'n', '<ESC>', vim.cmd.noh, opts )
 
-make_keymap( 'n', '<leader>w', MiniTrailspace.trim, {} )
+make_keymap( 'n', '<leader>w',  MiniTrailspace.trim,  {} )
+make_keymap( 'n', '<leader>bd', MiniBufremove.delete, {} ) -- close buffer
 
 -- jk fixes (thanks yet again fraser)
 make_keymap( 'n', 'j', '<Plug>(accelerated_jk_gj)', {} )
