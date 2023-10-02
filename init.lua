@@ -43,8 +43,7 @@ require'lazy'.setup {
     },
 
     {
-        'akinsho/bufferline.nvim',
-        version = "*",
+        'echasnovski/mini.tabline',
         dependencies = 'nvim-tree/nvim-web-devicons',
         config = true,
     },
