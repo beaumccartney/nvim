@@ -72,14 +72,6 @@ require'lazy'.setup {
        end
     },
 
-    -- vim-unimpaired
-    -- REVIEW: should I get rid of or modify this?
-    -- e.g. cursorline and cursor column
-    {
-        'tummetott/unimpaired.nvim',
-        config = true,
-    },
-
     -- surround things
     {
         'echasnovski/mini.surround',
@@ -182,6 +174,11 @@ require'lazy'.setup {
 
     {
         'echasnovski/mini.bufremove',
+        opts = true,
+    },
+
+    {
+        'echasnovski/mini.bracketed',
         opts = true,
     },
 
@@ -496,8 +493,6 @@ require'lazy'.setup {
 local opts = { noremap=true, silent=true }
 
 make_keymap( 'n', '<leader>e', vim.diagnostic.open_float, opts )
-make_keymap( 'n', '[d',        vim.diagnostic.goto_prev,  opts )
-make_keymap( 'n', ']d',        vim.diagnostic.goto_next,  opts )
 make_keymap( 'n', '<leader>q', vim.diagnostic.setloclist, opts )
 
 -- keymaps for built in things
