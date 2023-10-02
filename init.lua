@@ -642,6 +642,8 @@ vim.cmd[[
 
     autocmd BufEnter * set formatoptions-=to
 
+    autocmd BufNewFile,BufRead *.wgsl set filetype=wgsl
+
     autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=2 nocindent smartindent
 
     autocmd Filetype prisma setlocal smartindent nocindent
