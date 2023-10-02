@@ -111,16 +111,6 @@ require'lazy'.setup {
                     end,
                     additional_vim_regex_highlighting = false,
                 },
-                incremental_selection = { -- thanks again fraser
-                    enable = true,
-                    keymaps = {
-                        -- Alt-k to select and expand selection via syntax
-                        -- Alt-j to shrink and deselect
-                        init_selection   = '<M-k>',
-                        node_incremental = '<M-k>',
-                        node_decremental = '<M-j>',
-                    },
-                },
                 context_commentstring = { enable = true, },
             }
         end
