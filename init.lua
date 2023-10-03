@@ -422,7 +422,7 @@ make_keymap( 'n', '<leader>q',  vim.diagnostic.setloclist, opts )
 make_keymap( 'n', '<leader>fs', vim.cmd.w,    {}   ) -- save file
 make_keymap( 'n', '<leader>fa', vim.cmd.wa,   {}   ) -- save all files
 make_keymap( 'n', '<leader>te', vim.cmd.tabe, {}   ) -- new tab
-make_keymap( 'n', '<leader>cc', vim.cmd.q,    opts )
+make_keymap( 'n', '<leader>cc', vim.cmd.bd,   opts )
 
 -- from mini.basic
 make_keymap('x', 'g/', '<esc>/\\%V', { silent = false, desc = 'Search inside visual selection' })
