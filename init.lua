@@ -156,8 +156,6 @@ require'lazy'.setup {
     -- all hail fugitive
     'tpope/vim-fugitive',
     'junegunn/gv.vim',
-    'tpope/vim-rhubarb',
-    -- 'shumphrey/fugitive-gitlab.vim',
 
     -- additional textobject keys after "a" and "i" e.g. <something>[a|i]q where q is quote text object
     {
