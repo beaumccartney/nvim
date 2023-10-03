@@ -426,6 +426,31 @@ make_keymap( 'n', '<leader>fa', vim.cmd.wa,   {}   ) -- save all files
 make_keymap( 'n', '<leader>te', vim.cmd.tabe, {}   ) -- new tab
 make_keymap( 'n', '<leader>cc', vim.cmd.q,    opts )
 
+-- from mini.basic
+make_keymap('x', 'g/', '<esc>/\\%V', { silent = false, desc = 'Search inside visual selection' })
+
+ --[[ BEGIN https://github.com/echasnovski/mini.nvim/blob/1fdbb864e2015eb6f501394d593630f825154385/lua/mini/basics.lua#L549C11-L549C11 ]]
+-- Add empty lines before and after cursor line supporting dot-repeat
+local cache_empty_line = nil
+put_empty_line = function(put_above)
+    -- This has a typical workflow for enabling dot-repeat:
+    -- - On first call it sets `operatorfunc`, caches data, and calls
+    --   `operatorfunc` on current cursor position.
+    -- - On second call it performs task: puts `v:count1` empty lines
+    --   above/below current line.
+    if type(put_above) == 'boolean' then
+        vim.o.operatorfunc = 'v:lua.put_empty_line'
+        cache_empty_line = { put_above = put_above }
+        return 'g@l'
+    end
+    local target_line = vim.fn.line('.') - (cache_empty_line.put_above and 1 or 0)
+    vim.fn.append(target_line, vim.fn['repeat']({ '' }, vim.v.count1))
+end
+-- TODO: enable dot-repeat
+make_keymap('n', 'gO', 'v:lua.put_empty_line(v:true)',  { expr = true, desc = 'Put empty line above' })
+make_keymap('n', 'go', 'v:lua.put_empty_line(v:false)', { expr = true, desc = 'Put empty line below' })
+--[[ ----------------------------------- END ---------------------------------- ]]
+
 make_keymap( 'n', 'Y',         'y$',   opts ) -- yank to end of line
 make_keymap( 'n', '<leader>Y', '"+y$', opts ) -- yank to end of line
 
@@ -508,6 +533,8 @@ vim.opt.ignorecase     = true
 vim.opt.smartcase      = true
 
 vim.opt.completeopt    = 'menu'
+
+vim.opt.shortmess:append'cC'
 
 vim.opt.foldenable     = false
 
