@@ -2,7 +2,6 @@
 -- submodes of some kind
 -- undotree or telescope thing
 -- undodir
--- session reloading
 
 
 
@@ -335,6 +334,7 @@ require'lazy'.setup {
         dependencies = {
             'nvim-telescope/telescope.nvim',
             {
+                -- TODO: better highlighting in signature help
                 'echasnovski/mini.completion',
                 opts = {
                     mappings = {
@@ -444,7 +444,6 @@ put_empty_line = function(put_above)
     local target_line = vim.fn.line('.') - (cache_empty_line.put_above and 1 or 0)
     vim.fn.append(target_line, vim.fn['repeat']({ '' }, vim.v.count1))
 end
--- TODO: enable dot-repeat
 make_keymap('n', 'gO', 'v:lua.put_empty_line(v:true)',  { expr = true, desc = 'Put empty line above' })
 make_keymap('n', 'go', 'v:lua.put_empty_line(v:false)', { expr = true, desc = 'Put empty line below' })
 --[[ ----------------------------------- END ---------------------------------- ]]
