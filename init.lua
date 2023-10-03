@@ -67,6 +67,7 @@ require'lazy'.setup {
                    'ts_context_commentstring.integrations.comment_nvim'
                    .create_pre_hook(),
            }
+           require'Comment.ft'.jai = { '//%s', '/*%s*/' }
        end
     },
 
