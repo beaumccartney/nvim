@@ -250,7 +250,7 @@ require'lazy'.setup {
                 "mini",
                 -- "neogit",
                 -- "neorg",
-                "nvim-cmp",
+                -- "nvim-cmp",
                 -- "nvim-navic",
                 -- "nvim-tree",
                 "nvim-web-devicons",
@@ -298,24 +298,9 @@ require'lazy'.setup {
 
     {
         'zbirenbaum/copilot.lua',
-        opts = {
-           suggestion = {
-                auto_trigger = true,
-
-            -- BEGIN stuff for use in nvim-cmp
-                -- enabled = false,
-            },
-            -- panel = { enabled = false },
-            -- end stuff for use in nvim-cmp
-        }
+        opts = { suggestion = { auto_trigger = true, }, }
     },
     'madox2/vim-ai',
-
-    {
-        "L3MON4D3/LuaSnip",
-        -- install jsregexp (optional!).
-        build = "make install_jsregexp"
-    },
 
     {
         'mfussenegger/nvim-lint',
@@ -348,88 +333,34 @@ require'lazy'.setup {
         },
     },
 
-
     {
-        "ray-x/lsp_signature.nvim",
-        opts = { toggle_key = "<C-i>", },
-    },
-
-    -- the stuff of nightmares
-    {
-        'hrsh7th/nvim-cmp',
+        'neovim/nvim-lspconfig',
         dependencies = {
-            'neovim/nvim-lspconfig',
-
-            'hrsh7th/cmp-nvim-lsp',
-            'hrsh7th/cmp-cmdline',
-            'hrsh7th/cmp-path',
-            'hrsh7th/cmp-buffer',
-            'saadparwaiz1/cmp_luasnip',
-            'mtoohey31/cmp-fish',
-            -- {
-            --     'zbirenbaum/copilot-cmp',
-            --     config = function() require'copilot_cmp'.setup() end
-            -- },
+            'nvim-telescope/telescope.nvim',
+            {
+                'echasnovski/mini.completion',
+                opts = {
+                    mappings = {
+                        force_twostep  = '',
+                        force_fallback = '',
+                    },
+                    -- HACK: high delay for no autocomplete
+                    delay = { completion = 99999 },
+                    lsp_completion = {
+                        source_func = 'omnifunc',
+                        auto_setup  = false
+                    },
+                },
+            },
         },
+
         config = function()
-            local cmp        = require'cmp'
-            local sources    = cmp.config.sources
-            local map        = cmp.mapping
-
-            local modes = { 'i', 'c' }
-            local i_only = { 'i' }
-
-            cmp.setup {
-                completion = { autocomplete = false },
-                mapping = {
-                    ['<C-b>'] = map(function() cmp.scroll_docs( -4 ) end, i_only),
-                    ['<C-f>'] = map(function() cmp.scroll_docs(  4 ) end, i_only),
-                    ['<C-j>'] = map(function()
-                                        if not cmp.visible() then cmp.complete() end
-                                        cmp.select_next_item()
-                                    end,
-                                modes),
-                    ['<C-k>'] = map(function()
-                                        if not cmp.visible() then cmp.complete() end
-                                        cmp.select_prev_item()
-                                    end,
-                                modes),
-                    ['<C-c>'] = map(cmp.abort, i_only),
-                    ['<CR>' ] = map.confirm(),
-
-                    -- free up these for snippet-traversing
-                    ['<C-n>'] = cmp.config.disable,
-                    ['<C-p>'] = cmp.config.disable,
-                },
-                snippet = { expand = function( args ) require'luasnip'.lsp_expand( args.body ) end },
-                sources = sources {
-                    -- { name = 'copilot', },
-                    { name = 'fish'     },
-                    { name = 'nvim_lsp' },
-                    { name = 'luasnip'  },
-                    { name = 'buffer'   },
-                    { name = 'path'     },
-                },
-            }
-
-            cmp.setup.cmdline({ '/', '?' }, {
-                sources = sources { { name = 'buffer' }, },
-            })
-            cmp.setup.cmdline(':', {
-                sources = sources {
-                    { name = 'path',    },
-                    { name = 'cmdline', },
-                },
-            })
             -- Use an on_attach function to only map the following keys
             -- after the language server attaches to the current buffer
             local on_attach = function( client, bufnr )
-                -- Enable completion triggered by <c-x><c-o>
-                -- vim.api.nvim_buf_set_option( bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc' )
+                vim.api.nvim_buf_set_option( bufnr, 'omnifunc', 'v:lua.MiniCompletion.completefunc_lsp' )
                 local builtin = require'telescope.builtin'
 
-                -- Mappings.
-                -- See `:help vim.lsp.*` for documentation on any of the below functions
                 local bufopts = { noremap=true, silent=true, buffer=bufnr }
                 local lspbuf = vim.lsp.buf
 
@@ -468,16 +399,12 @@ require'lazy'.setup {
                 'vimls',
                 'zls',
             }
-            local capabilities = require'cmp_nvim_lsp'.default_capabilities()
+
             local lspconfig = require'lspconfig'
             for _, server in pairs( lsp_servers ) do
-                lspconfig[server].setup {
-                    on_attach    = on_attach,
-                    capabilities = capabilities,
-                }
+                lspconfig[server].setup { on_attach = on_attach, }
             end
-
-        end
+        end,
     },
 
     -- rainbow brackets
@@ -491,13 +418,14 @@ require'lazy'.setup {
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
 
-make_keymap( 'n', '<leader>e', vim.diagnostic.open_float, opts )
-make_keymap( 'n', '<leader>q', vim.diagnostic.setloclist, opts )
+make_keymap( 'n', '<leader>e',  vim.diagnostic.open_float, opts )
+make_keymap( 'n', '<leader>q',  vim.diagnostic.setloclist, opts )
 
 -- keymaps for built in things
-make_keymap( 'n', '<leader>fs', vim.cmd.w,            {} ) -- save file
-make_keymap( 'n', '<leader>fa', vim.cmd.wa,           {} ) -- save all files
-make_keymap( 'n', '<leader>te', vim.cmd.tabe,         {} ) -- new tab
+make_keymap( 'n', '<leader>fs', vim.cmd.w,    {}   ) -- save file
+make_keymap( 'n', '<leader>fa', vim.cmd.wa,   {}   ) -- save all files
+make_keymap( 'n', '<leader>te', vim.cmd.tabe, {}   ) -- new tab
+make_keymap( 'n', '<leader>cc', vim.cmd.q,    opts )
 
 make_keymap( 'n', 'Y',         'y$',   opts ) -- yank to end of line
 make_keymap( 'n', '<leader>Y', '"+y$', opts ) -- yank to end of line
@@ -554,11 +482,6 @@ make_keymap( 'n', '<leader>fh', builtin.help_tags,   {} )
 make_keymap( 'n', '<leader>td', vim.cmd.TodoTelescope, {} )
 
 make_keymap( 'n', '<leader>ts', builtin.treesitter,       {} )
-
--- luasnip
-local ls = require'luasnip'
-make_keymap( {"i", "s"}, "<C-n>", function() ls.jump( 1) end, opts )
-make_keymap( {"i", "s"}, "<C-p>", function() ls.jump(-1) end, opts )
 
 vim.opt.termguicolors  = true
 vim.opt.nu             = true
