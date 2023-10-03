@@ -437,7 +437,7 @@ make_keymap( 'n', '<leader>cd', '<Cmd>cd %:p:h<CR>', {} )
 make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>',    {} )
 
 -- fraser again goddamn
-make_keymap( 'n', '<ESC>', vim.cmd.noh, opts )
+make_keymap( 'n', '<ESC>', '<Cmd>nohlsearch|diffupdate|normal!<CR>', opts )
 
 make_keymap( 'n', '<leader>w',  MiniTrailspace.trim,  {} )
 make_keymap( 'n', '<leader>bd', MiniBufremove.delete, {} ) -- close buffer
