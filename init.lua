@@ -195,7 +195,6 @@ require'lazy'.setup {
 
     {
         'echasnovski/mini.indentscope',
-        init = function() vim.g.miniindentscope_disable = true end,
         config = true,
     },
 
@@ -268,7 +267,7 @@ require'lazy'.setup {
     {
         "lukas-reineke/indent-blankline.nvim",
         main = "ibl",
-        opts = { show_current_context = true, }
+        config = true,
     },
 
     {
