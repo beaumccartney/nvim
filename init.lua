@@ -2,6 +2,9 @@
 -- submodes of some kind
 -- undotree or telescope thing
 -- undodir
+-- fix neodev
+-- gitsigns current hunk stuff
+-- format range (see conform docs)
 
 
 
@@ -371,6 +374,7 @@ make_keymap( 'n', '<leader>fa', vim.cmd.wa,   {}   ) -- save all files
 make_keymap( 'n', '<leader>te', vim.cmd.tabe, {}   ) -- new tab
 make_keymap( 'n', '<leader>cc', vim.cmd.bd,   opts )
 make_keymap( 'n', '<leader>cw', '<C-w><C-q>', opts )
+
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function( ev )
         vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
@@ -484,8 +488,6 @@ make_keymap( { 'n', 'v' }, '<leader>gv', '<Cmd>GV!<CR>', {} )
 
 make_keymap( 'n', '<leader>gp', '<Cmd>GV --patch<CR>', {} )
 
-local builtin = require'telescope.builtin'
-
 -- telescope maps
 make_keymap( 'n', '<leader>ff', builtin.find_files,  {} )
 make_keymap( 'n', '<leader>gg', builtin.git_files,   {} )
@@ -529,10 +531,12 @@ vim.opt.ignorecase     = true
 vim.opt.smartcase      = true
 
 vim.opt.completeopt    = 'menu'
+vim.opt.pumheight      = 5
 
 vim.opt.shortmess:append'cC'
 
 vim.opt.foldenable     = false
+vim.opt.foldmethod     = 'indent'
 
 vim.opt.cmdheight      = 2
 
@@ -579,8 +583,10 @@ function set_fold_options()
     if require"nvim-treesitter.parsers".has_parser() then
         vim.wo.foldmethod = 'expr'
         vim.wo.foldexpr   = 'nvim_treesitter#foldexpr()'
-    else
-        vim.wo.foldmethod = 'indent'
+        -- TODO: below is treesitter syntax highlighting for the text displayed on a fold
+        -- atm it doesn't include the number of hidden lines. I'd like to
+        -- include the number of hiddenl lines at some point
+        -- vim.wo.foldtext   = 'v:lua.vim.treesitter.foldtext()'
     end
 end
 
@@ -598,6 +604,9 @@ vim.cmd[[
     autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=2 nocindent smartindent
 
     autocmd Filetype prisma setlocal smartindent nocindent
+
+    " turn on spellcheck for plain text stuff
+    autocmd Filetype text,markdown setlocal spell
 
     " colorscheme gruvbox-material
     colorscheme material
