@@ -331,85 +331,31 @@ require'lazy'.setup {
     },
 
     {
-        'neovim/nvim-lspconfig',
-        dependencies = {
-            'nvim-telescope/telescope.nvim',
-            {
-                -- TODO: better highlighting in signature help
-                'echasnovski/mini.completion',
-                opts = {
-                    mappings = {
-                        force_twostep  = '',
-                        force_fallback = '',
-                    },
-                    -- HACK: high delay for no autocomplete
-                    delay = { completion = 99999 },
-                    lsp_completion = {
-                        source_func = 'omnifunc',
-                        auto_setup  = false
-                    },
-                },
+        -- TODO: better highlighting in signature help
+        'echasnovski/mini.completion',
+        opts = {
+            mappings = {
+                force_twostep  = '<C-j>',
+                force_fallback = '<C-k>',
             },
+            -- HACK: high delay for no autocomplete
+            delay = { completion = 99999 },
+            lsp_completion = {
+                source_func = 'omnifunc',
+                auto_setup  = false
+            },
+            window = { signature = { width = 120 }, },
         },
-
-        config = function()
-            -- Use an on_attach function to only map the following keys
-            -- after the language server attaches to the current buffer
-            local on_attach = function( client, bufnr )
-                vim.api.nvim_buf_set_option( bufnr, 'omnifunc', 'v:lua.MiniCompletion.completefunc_lsp' )
-                local builtin = require'telescope.builtin'
-
-                local bufopts = { noremap=true, silent=true, buffer=bufnr }
-                local lspbuf = vim.lsp.buf
-
-                make_keymap( 'n', '<leader>gD', lspbuf.declaration,             bufopts )
-                make_keymap( 'n', '<leader>i',  lspbuf.hover,                   bufopts )
-                make_keymap( 'n', '<C-k>',      lspbuf.signature_help,          bufopts )
-                make_keymap( 'n', '<leader>rn', lspbuf.rename,                  bufopts )
-                make_keymap( 'n', '<leader>ca', lspbuf.code_action,             bufopts )
-                make_keymap( 'n', '<leader>F',  function() lspbuf.format { async = true } end, bufopts )
-
-                make_keymap( 'n', '<leader>gr',  builtin.lsp_references,       bufopts )
-                make_keymap( 'n', '<leader>gd',  builtin.lsp_definitions,      bufopts )
-                make_keymap( 'n', '<leader>gi',  builtin.lsp_implementations,  bufopts )
-                make_keymap( 'n', '<leader>gtd', builtin.lsp_type_definitions, bufopts )
-            end
-
-            local lsp_servers = {
-                -- 'asm_lsp',
-                'astro', -- NOTE: must add typescript and astro-prettier-plugin as devDependencies for this to work
-                'bashls',
-                'clangd',
-                -- 'cmake',
-                'cssls',
-                'cssmodules_ls',
-                -- 'elmls',
-                -- 'emmet_language_server',
-                -- 'emmet_ls',
-                'html',
-                'hls',
-                'rust_analyzer',
-                'vtsls',
-                'pyright',
-                'prismals',
-                -- 'quick_lint_js',
-                'tailwindcss',
-                'vimls',
-                'zls',
-            }
-
-            local lspconfig = require'lspconfig'
-            for _, server in pairs( lsp_servers ) do
-                lspconfig[server].setup { on_attach = on_attach, }
-            end
-        end,
     },
+
+    'neovim/nvim-lspconfig',
 
     -- rainbow brackets
     'HiPhish/rainbow-delimiters.nvim',
 
 }
 
+local builtin = require'telescope.builtin'
 
 -- lsp stuff
 -- Mappings.
@@ -424,6 +370,53 @@ make_keymap( 'n', '<leader>fs', vim.cmd.w,    {}   ) -- save file
 make_keymap( 'n', '<leader>fa', vim.cmd.wa,   {}   ) -- save all files
 make_keymap( 'n', '<leader>te', vim.cmd.tabe, {}   ) -- new tab
 make_keymap( 'n', '<leader>cc', vim.cmd.bd,   opts )
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function( ev )
+        vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+
+        local bufopts = { buffer=ev.buf }
+        local lspbuf = vim.lsp.buf
+
+        -- TODO:
+        -- * incoming calls
+        -- * outgoing calls
+
+        make_keymap( 'n', '<leader>gD', lspbuf.declaration,             bufopts )
+        make_keymap( 'n', '<leader>i',  lspbuf.hover,                   bufopts )
+        make_keymap( 'n', '<C-k>',      lspbuf.signature_help,          bufopts )
+        make_keymap( 'n', '<leader>rn', lspbuf.rename,                  bufopts )
+        make_keymap( 'n', '<leader>ca', lspbuf.code_action,             bufopts )
+        make_keymap( 'n', '<leader>F',  function() lspbuf.format { async = true } end, bufopts )
+
+        make_keymap( 'n', '<leader>gr',  builtin.lsp_references,       bufopts )
+        make_keymap( 'n', '<leader>gd',  builtin.lsp_definitions,      bufopts )
+        make_keymap( 'n', '<leader>gi',  builtin.lsp_implementations,  bufopts )
+        make_keymap( 'n', '<leader>gtd', builtin.lsp_type_definitions, bufopts )
+    end
+})
+
+for _, server in pairs({
+    -- 'asm_lsp',
+    'astro', -- NOTE: must add typescript and astro-prettier-plugin as devDependencies for this to work
+    'bashls',
+    'clangd',
+    -- 'cmake',
+    'cssls',
+    'cssmodules_ls',
+    -- 'elmls',
+    'html',
+    'hls',
+    'rust_analyzer',
+    'vtsls',
+    'pyright',
+    'prismals',
+    'tailwindcss',
+    'vimls',
+    'zls',
+}) do
+    require'lspconfig'[server].setup{}
+end
+
 
 -- from mini.basic
 make_keymap('x', 'g/', '<esc>/\\%V', { silent = false, desc = 'Search inside visual selection' })
