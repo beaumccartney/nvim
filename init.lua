@@ -370,6 +370,7 @@ make_keymap( 'n', '<leader>fs', vim.cmd.w,    {}   ) -- save file
 make_keymap( 'n', '<leader>fa', vim.cmd.wa,   {}   ) -- save all files
 make_keymap( 'n', '<leader>te', vim.cmd.tabe, {}   ) -- new tab
 make_keymap( 'n', '<leader>cc', vim.cmd.bd,   opts )
+make_keymap( 'n', '<leader>cw', '<C-w><C-q>', opts )
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function( ev )
         vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
@@ -417,6 +418,10 @@ for _, server in pairs({
     require'lspconfig'[server].setup{}
 end
 
+-- c-z to correct last misspelled word
+-- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
+make_keymap( 'n', '<C-Z>', '[s1z=`]',                   { desc = 'Correct latest misspelled word' } )
+make_keymap( 'i', '<C-Z>', '<C-g>u<Esc>[s1z=`]a<C-g>u', { desc = 'Correct latest misspelled word' } )
 
 -- from mini.basic
 make_keymap('x', 'g/', '<esc>/\\%V', { silent = false, desc = 'Search inside visual selection' })
@@ -438,8 +443,8 @@ put_empty_line = function(put_above)
     local target_line = vim.fn.line('.') - (cache_empty_line.put_above and 1 or 0)
     vim.fn.append(target_line, vim.fn['repeat']({ '' }, vim.v.count1))
 end
-make_keymap('n', 'gO', 'v:lua.put_empty_line(v:true)',  { expr = true, desc = 'Put empty line above' })
-make_keymap('n', 'go', 'v:lua.put_empty_line(v:false)', { expr = true, desc = 'Put empty line below' })
+make_keymap('n', '[<space>', 'v:lua.put_empty_line(v:true)',  { expr = true, desc = 'Put empty line above' })
+make_keymap('n', ']<space>', 'v:lua.put_empty_line(v:false)', { expr = true, desc = 'Put empty line below' })
 --[[ ----------------------------------- END ---------------------------------- ]]
 
 make_keymap( 'n', 'Y',         'y$',   opts ) -- yank to end of line
@@ -530,9 +535,6 @@ vim.opt.shortmess:append'cC'
 vim.opt.foldenable     = false
 
 vim.opt.cmdheight      = 2
-
-vim.opt.spell = true
-make_keymap( 'i', '<C-z>', '<c-g>u<Esc>[s1z=`]a<c-g>u', opts )
 
 local function write_centered_line()
     -- https://github.com/numToStr/Comment.nvim - good plugin
