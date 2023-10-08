@@ -40,7 +40,7 @@ require'lazy'.setup {
         'FraserLee/ScratchPad',
         init = function()
             vim.g.scratchpad_autostart = 0
-            make_keymap( 'n', 'S', vim.cmd.ScratchPad, {} )
+            make_keymap( 'n', '<leader>s', vim.cmd.ScratchPad, {} )
         end,
     },
 
@@ -374,6 +374,8 @@ make_keymap( 'n', '<leader>fa', vim.cmd.wa,   {}   ) -- save all files
 make_keymap( 'n', '<leader>te', vim.cmd.tabe, {}   ) -- new tab
 make_keymap( 'n', '<leader>cc', vim.cmd.bd,   opts )
 make_keymap( 'n', '<leader>cw', '<C-w><C-q>', opts )
+make_keymap( 'n', '<C-l>', '$', opts )
+make_keymap( 'n', '<C-h>', '^', opts )
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function( ev )
@@ -388,7 +390,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         make_keymap( 'n', '<leader>gD', lspbuf.declaration,             bufopts )
         make_keymap( 'n', '<leader>i',  lspbuf.hover,                   bufopts )
-        make_keymap( 'n', '<C-k>',      lspbuf.signature_help,          bufopts )
+        make_keymap( 'n', '<C-i>',      lspbuf.signature_help,          bufopts )
         make_keymap( 'n', '<leader>rn', lspbuf.rename,                  bufopts )
         make_keymap( 'n', '<leader>ca', lspbuf.code_action,             bufopts )
         make_keymap( 'n', '<leader>F',  function() lspbuf.format { async = true } end, bufopts )
@@ -475,7 +477,11 @@ make_keymap( 'v', 'j', 'gj', {} )
 make_keymap( 'v', 'k', 'gk', {} )
 
 local fileexplorer = function()
-    MiniFiles.open( vim.api.nvim_buf_get_name( 0 ), false )
+    local buf = vim.api.nvim_buf_get_name( 0 )
+
+    file = io.open( buf ) and buf or vim.fs.dirname( buf )
+
+    MiniFiles.open( file )
 end
 make_keymap( 'n', '<leader>fe', fileexplorer, {} )
 
