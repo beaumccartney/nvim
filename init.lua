@@ -40,7 +40,8 @@ require'lazy'.setup {
         'FraserLee/ScratchPad',
         init = function()
             vim.g.scratchpad_autostart = 0
-            make_keymap( 'n', '<leader>s', vim.cmd.ScratchPad, {} )
+            vim.g.scratchpad_location  = vim.fn.stdpath( 'data' ) .. '/scratchpad'
+            make_keymap( 'n', '<leader>s', require'scratchpad'.invoke, {} )
         end,
     },
 
