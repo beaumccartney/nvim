@@ -385,7 +385,33 @@ require'lazy'.setup {
         },
     },
 
-    'neovim/nvim-lspconfig',
+    {
+        'neovim/nvim-lspconfig',
+        config = function()
+            local lspconfig = require'lspconfig'
+            for _, server in pairs({
+                -- 'asm_lsp',
+                'astro', -- NOTE: must add typescript and astro-prettier-plugin as devDependencies for this to work
+                'bashls',
+                'clangd',
+                -- 'cmake',
+                'cssls',
+                'cssmodules_ls',
+                -- 'elmls',
+                'html',
+                'hls',
+                'rust_analyzer',
+                'vtsls',
+                'pyright',
+                'prismals',
+                'tailwindcss',
+                'vimls',
+                'zls',
+            }) do
+                lspconfig[server].setup{}
+            end
+        end,
+    },
 
     -- rainbow brackets
     'HiPhish/rainbow-delimiters.nvim',
@@ -436,28 +462,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
         make_keymap( 'n', '<leader>gtd', lspbuf.type_definition, bufopts )
     end
 })
-
-for _, server in pairs({
-    -- 'asm_lsp',
-    'astro', -- NOTE: must add typescript and astro-prettier-plugin as devDependencies for this to work
-    'bashls',
-    'clangd',
-    -- 'cmake',
-    'cssls',
-    'cssmodules_ls',
-    -- 'elmls',
-    'html',
-    'hls',
-    'rust_analyzer',
-    'vtsls',
-    'pyright',
-    'prismals',
-    'tailwindcss',
-    'vimls',
-    'zls',
-}) do
-    require'lspconfig'[server].setup{}
-end
 
 -- c-z to correct last misspelled word
 -- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
