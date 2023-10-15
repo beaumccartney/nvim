@@ -138,11 +138,12 @@ require'lazy'.setup {
             },
         },
         config = function( _, opts )
-            local pick = require'mini.pick'
+            local pick     = require'mini.pick'
+            local registry = pick.registry
             pick.setup( opts )
 
             -- https://github.com/echasnovski/mini.nvim/issues/513#issuecomment-1762785125
-            pick.registry.buffer_lines = function( local_opts )
+            registry.buffer_lines = function( local_opts )
                 -- Parse options
                 local_opts = vim.tbl_deep_extend('force', { buf_id = nil, prompt = '' }, local_opts or {})
                 local buf_id, prompt = local_opts.buf_id, local_opts.prompt
@@ -159,6 +160,25 @@ require'lazy'.setup {
                 -- Start picker while scheduling setting the query
                 vim.schedule(function() MiniPick.set_picker_query(vim.split(prompt, '')) end)
                 MiniPick.start({ source = { items = items, name = 'Buffer lines' } })
+            end
+
+            -- TODO: share this on the todo comments repo issue tracker or
+            -- something
+            registry.todo_comments = function( local_opts )
+                require'todo-comments.search'.search( function( results )
+                    local mini_pick_items = vim.tbl_map( function( entry )
+                        return {
+                            text = entry.text,
+                            path = entry.filename,
+                            lnum = entry.lnum,
+                            col  = entry.col,
+                        }
+                    end, results )
+
+                    local source = { items = mini_pick_items, name = 'Todo Comments' }
+                    MiniPick.start( { source = source } )
+                end )
+
             end
         end
     },
@@ -517,6 +537,7 @@ local builtin = MiniPick.builtin
 
 make_keymap( 'n', '<leader>ff', builtin.files, {} )
 make_keymap( 'n', '<leader>fh', builtin.help, {} )
+make_keymap( 'n', '<leader>td', MiniPick.registry.todo_comments, {} )
 
 make_keymap( 'n', '<leader>/', '<Cmd>Pick buffer_lines<CR>',                  {} )
 make_keymap( 'n', '<leader>8', '<Cmd>Pick buffer_lines prompt="<cword>"<CR>', {} )
