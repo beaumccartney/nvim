@@ -495,7 +495,12 @@ make_keymap( { 'n', 'v' }, '<leader>p', '"+p', opts ) -- put from clipboard
 
 -- change directory to current file - thanks fraser
 -- TODO: print directory I cd'd to
-make_keymap( 'n', '<leader>cd', '<Cmd>cd%:p:h<CR>', {} )
+-- TODO: look at vim cd commands and see if one of them is applicable
+--     - current file
+--     - current buffer
+--     - current window
+--     - etc.
+make_keymap( 'n', '<leader>cd', '<Cmd>cd %:p:h<CR>', {} )
 make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>',    {} )
 
 -- fraser again goddamn
@@ -562,6 +567,7 @@ vim.opt.textwidth = 80
 
 vim.opt.scrolloff      = 10
 vim.opt.colorcolumn    = '81'
+vim.opt.splitbelow     = true
 
 vim.opt.hidden         = true
 vim.opt.swapfile       = false
