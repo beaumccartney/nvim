@@ -518,14 +518,13 @@ make_keymap( 'n', 'k', '<Plug>(accelerated_jk_gk)', {} )
 make_keymap( 'v', 'j', 'gj', {} )
 make_keymap( 'v', 'k', 'gk', {} )
 
-local fileexplorer = function()
+make_keymap( 'n', '<leader>fe', function()
     local buf = vim.api.nvim_buf_get_name( 0 )
 
     file = io.open( buf ) and buf or vim.fs.dirname( buf )
 
     MiniFiles.open( file )
-end
-make_keymap( 'n', '<leader>fe', fileexplorer, {} )
+end, {} )
 
 make_keymap( 'n', 'M', MiniMisc.zoom, {} )
 
@@ -584,7 +583,9 @@ vim.opt.foldmethod     = 'indent'
 
 vim.opt.cmdheight      = 2
 
-local function write_centered_line()
+-- write centered line - 80 character line with text in the middle and dashes
+-- padding it
+make_keymap( 'n', '<leader>l', function()
     local line = vim.fn.trim( vim.fn.getline( '.' ) )
 
     local comment_text = line ~= '' and line or vim.fn.input( 'Comment text: ' )
@@ -609,29 +610,26 @@ local function write_centered_line()
     local new_line = leading_spaces .. left_dash_string .. comment_text .. right_dash_string
     vim.fn.setline( '.', new_line )
 
-    local linenum = vim.api.nvim_win_get_cursor(0)[1]
+    local linenum = vim.api.nvim_win_get_cursor( 0 )[ 1 ]
     MiniComment.toggle_lines( linenum, linenum )
-end
-
-make_keymap( 'n', '<leader>l', write_centered_line, {} )
-
-function set_fold_options()
-    if require"nvim-treesitter.parsers".has_parser() then
-        vim.wo.foldmethod = 'expr'
-        vim.wo.foldexpr   = 'nvim_treesitter#foldexpr()'
-        -- TODO: below is treesitter syntax highlighting for the text displayed on a fold
-        -- atm it doesn't include the number of hidden lines. I'd like to
-        -- include the number of hiddenl lines at some point
-        -- vim.wo.foldtext   = 'v:lua.vim.treesitter.foldtext()'
-    end
-end
+end , {} )
 
 -- run all vimscript stuffs
 -- TODO: factor this out into lua
 vim.cmd[[
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
 
-    autocmd BufEnter * lua set_fold_options()
+    " if the buffer has a treesitter parser, use treesitter for folding
+    autocmd BufEnter * lua << EOF
+        if require"nvim-treesitter.parsers".has_parser() then
+            vim.wo.foldmethod = 'expr'
+            vim.wo.foldexpr   = 'nvim_treesitter#foldexpr()'
+            -- TODO: below is treesitter syntax highlighting for the text displayed on a fold
+            -- atm it doesn't include the number of hidden lines. I'd like to
+            -- include the number of hiddenl lines at some point
+            -- vim.wo.foldtext   = 'v:lua.vim.treesitter.foldtext()'
+        end
+    EOF
 
     autocmd BufEnter * set formatoptions-=to
 
