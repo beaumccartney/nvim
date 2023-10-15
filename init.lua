@@ -1,6 +1,7 @@
 -- TODO:
+-- wrap mapping function
+-- lspsaga?
 -- submodes of some kind
--- undotree or telescope thing
 -- undodir
 -- fix neodev
 -- gitsigns current hunk stuff
@@ -41,7 +42,7 @@ require'lazy'.setup {
         init = function()
             vim.g.scratchpad_autostart = 0
             vim.g.scratchpad_location  = vim.fn.stdpath( 'data' ) .. '/scratchpad'
-            make_keymap( 'n', '<leader>s', require'scratchpad'.invoke, {} )
+            make_keymap( 'n', 'S', require'scratchpad'.invoke, {} )
         end,
     },
 
@@ -385,6 +386,7 @@ require'lazy'.setup {
                 auto_setup  = false
             },
             window = { signature = { width = 120 }, },
+            set_vim_settings = true, -- set shortmess and completeopt
         },
     },
 
@@ -498,11 +500,13 @@ make_keymap( { 'n', 'v' }, '<leader>y', '"+y',       opts ) -- yank to clipboard
 make_keymap( { 'n', 'v' }, '<leader>p', '"+p', opts ) -- put from clipboard
 
 -- change directory to current file - thanks fraser
-make_keymap( 'n', '<leader>cd', '<Cmd>cd %:p:h<CR>', {} )
+-- TODO: print directory I cd'd to
+make_keymap( 'n', '<leader>cd', '<Cmd>cd%:p:h<CR>', {} )
 make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>',    {} )
 
 -- fraser again goddamn
-make_keymap( 'n', '<ESC>', '<Cmd>nohlsearch|diffupdate|normal!<CR>', opts )
+-- TODO: make this not error
+make_keymap( 'n', '<ESC>', vim.cmd.nohlsearch, opts )
 
 make_keymap( 'n', '<leader>w',  MiniTrailspace.trim,  {} )
 make_keymap( 'n', '<leader>bd', MiniBufremove.delete, {} ) -- close buffer
@@ -538,6 +542,7 @@ make_keymap( 'n', '<leader>ff', builtin.files, {} )
 make_keymap( 'n', '<leader>fh', builtin.help, {} )
 make_keymap( 'n', '<leader>td', MiniPick.registry.todo_comments, {} )
 
+-- TODO: make cword maps use word highlighted by visual if applicable
 make_keymap( 'n', '<leader>/', '<Cmd>Pick buffer_lines<CR>',                  {} )
 make_keymap( 'n', '<leader>8', '<Cmd>Pick buffer_lines prompt="<cword>"<CR>', {} )
 make_keymap( 'n', '<leader>?', builtin.grep_live,                             {} )
@@ -547,7 +552,7 @@ make_keymap( 'n', '<leader>*', '<Cmd>Pick grep pattern="<cword>"<CR>',        {}
 -- TODO: use todo plugin to provide shit for mini pick to pick
 
 vim.opt.termguicolors  = true
-vim.opt.nu             = true
+vim.opt.number         = true
 vim.opt.relativenumber = true
 
 vim.opt.tabstop     = 4
@@ -571,10 +576,7 @@ vim.opt.incsearch      = true
 vim.opt.ignorecase     = true
 vim.opt.smartcase      = true
 
-vim.opt.completeopt    = 'menu'
 vim.opt.pumheight      = 5
-
-vim.opt.shortmess:append'cC'
 
 vim.opt.foldenable     = false
 vim.opt.foldmethod     = 'indent'
