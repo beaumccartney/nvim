@@ -62,18 +62,20 @@ require'lazy'.setup {
         }
     },
 
-    -- comment things - can respect tree-sitter or other things
     {
-       'numToStr/Comment.nvim',
-       config = function()
-           require'Comment'.setup
-           {
-               pre_hook = require
-                   'ts_context_commentstring.integrations.comment_nvim'
-                   .create_pre_hook(),
-           }
-           require'Comment.ft'.jai = { '//%s', '/*%s*/' }
-       end
+        'JoosepAlviste/nvim-ts-context-commentstring',
+        opts = { enable_autocmd = false, },
+    },
+
+    {
+        'echasnovski/mini.comment',
+        opts = {
+            options = {
+                custom_commentstring = function()
+                    return require('ts_context_commentstring.internal').calculate_commentstring() or vim.bo.commentstring
+                end,
+            }
+        },
     },
 
     -- surround things
@@ -97,33 +99,25 @@ require'lazy'.setup {
     -- everything
     {
         'nvim-treesitter/nvim-treesitter',
-        build        = ':TSUpdate',
-        dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring', },
-        config = function()
-            require'nvim-treesitter.install'.prefer_git = false
+        build = ':TSUpdate',
+        opts  = {
+            ensure_installed = 'all',
+            highlight        = {
+                enable  = true,
+                disable = function( lang, bufnr )
+                    return vim.api.nvim_buf_line_count( bufnr ) > 1000
 
-            require'nvim-treesitter.configs'.setup {
-                ensure_installed      = 'all',
-                highlight             = {
-                    enable  = true,
-                    disable = function(lang, bufnr)
-                        return vim.api.nvim_buf_line_count(bufnr) > 1000
-
-                            -- TODO: kill when zig parser isn't piss slow
-                            or lang == 'zig'
-                    end,
-                    additional_vim_regex_highlighting = false,
-                },
-                context_commentstring = { enable = true, },
-            }
-        end
+                        -- TODO: kill when zig parser isn't piss slow
+                        or lang == 'zig'
+                end,
+                additional_vim_regex_highlighting = false,
+            },
+        },
     },
 
     -- display the context of the cursor - e.g. what function or scope am I in
-
     {
         'nvim-treesitter/nvim-treesitter-context',
-        dependencies = 'nvim-treesitter',
         config       = { max_lines = 4, },
     },
 
@@ -584,15 +578,6 @@ vim.opt.foldmethod     = 'indent'
 vim.opt.cmdheight      = 2
 
 local function write_centered_line()
-    -- https://github.com/numToStr/Comment.nvim - good plugin
-    local api = require'Comment.api'
-
-    -- uncomment line
-    -- HACK: just uncomment both linewise and blockwise ig
-    -- TODO: make it not throw errors when there's nothing to uncomment
-    api.uncomment.linewise()
-    api.uncomment.blockwise()
-
     local line = vim.fn.trim( vim.fn.getline( '.' ) )
 
     local comment_text = line ~= '' and line or vim.fn.input( 'Comment text: ' )
@@ -602,7 +587,7 @@ local function write_centered_line()
 
     local comment_len = string.len( comment_text )
     local indent_len  = vim.fn.cindent( '.' )
-    local dash_len    = 74 - indent_len -- TODO: factor in commentstring
+    local dash_len    = 77 - indent_len -- TODO: factor in commentstring
 
     local half_dash_len    = math.floor( dash_len    / 2 )
     local half_comment_len = math.floor( comment_len / 2 )
@@ -617,7 +602,8 @@ local function write_centered_line()
     local new_line = leading_spaces .. left_dash_string .. comment_text .. right_dash_string
     vim.fn.setline( '.', new_line )
 
-    api.comment.blockwise()
+    local linenum = vim.api.nvim_win_get_cursor(0)[1]
+    MiniComment.toggle_lines( linenum, linenum )
 end
 
 make_keymap( 'n', '<leader>l', write_centered_line, {} )
@@ -650,6 +636,8 @@ vim.cmd[[
 
     " turn on spellcheck for plain text stuff
     autocmd Filetype text,markdown setlocal spell
+
+    autocmd Filetype jai setlocal commentstring=//\ %s
 
     " colorscheme gruvbox-material
     colorscheme material
