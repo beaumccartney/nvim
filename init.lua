@@ -128,21 +128,38 @@ require'lazy'.setup {
 
     -- fuzzy-find files and strings
     {
-        'nvim-telescope/telescope.nvim',
-        dependencies = {
-            'nvim-lua/plenary.nvim',
-            'nvim-tree/nvim-web-devicons'
+        'echasnovski/mini.pick',
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
+        opts = {
+            mappings = {
+                refine        = '<C-r>',
+                refine_marked = '<M-r>',
+                paste         = '<M-Space>',
+            },
         },
-    },
+        config = function( _, opts )
+            local pick = require'mini.pick'
+            pick.setup( opts )
 
-    -- fzf syntax in fuzzy-finding
-    {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        dependencies = 'nvim-telescope/telescope.nvim',
-        build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build',
-        config = function()
-            require'telescope'.setup{}
-            require'telescope'.load_extension('fzf')
+            -- https://github.com/echasnovski/mini.nvim/issues/513#issuecomment-1762785125
+            pick.registry.buffer_lines = function( local_opts )
+                -- Parse options
+                local_opts = vim.tbl_deep_extend('force', { buf_id = nil, prompt = '' }, local_opts or {})
+                local buf_id, prompt = local_opts.buf_id, local_opts.prompt
+                local_opts.buf_id, local_opts.prompt = nil, nil
+
+                -- Construct items
+                if buf_id == nil or buf_id == 0 then buf_id = vim.api.nvim_get_current_buf() end
+                local lines = vim.api.nvim_buf_get_lines(buf_id, 0, -1, false)
+                local items = {}
+                for i, l in ipairs(lines) do
+                items[i] = { text = string.format('%d:%s', i, l), bufnr = buf_id, lnum = i }
+                end
+
+                -- Start picker while scheduling setting the query
+                vim.schedule(function() MiniPick.set_picker_query(vim.split(prompt, '')) end)
+                MiniPick.start({ source = { items = items, name = 'Buffer lines' } })
+            end
         end
     },
 
@@ -256,7 +273,7 @@ require'lazy'.setup {
                 -- "nvim-tree",
                 "nvim-web-devicons",
                 -- "sneak",
-                "telescope",
+                -- "telescope",
                 -- "trouble",
                 -- "which-key",
             },
@@ -359,8 +376,6 @@ require'lazy'.setup {
 
 }
 
-local builtin = require'telescope.builtin'
-
 -- lsp stuff
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -391,15 +406,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         make_keymap( 'n', '<leader>gD', lspbuf.declaration,             bufopts )
         make_keymap( 'n', '<leader>i',  lspbuf.hover,                   bufopts )
-        make_keymap( 'n', '<C-i>',      lspbuf.signature_help,          bufopts )
+        -- TODO: there is a bizarre bug where mapping this to <C-i> causes it to
+        -- also be triggered by <Tab> in normal mode. Idk what I could have done
+        -- to cause this but I don't want to fix it right now
+        -- make_keymap( 'n', '<C-i>',      lspbuf.signature_help,          bufopts )
         make_keymap( 'n', '<leader>rn', lspbuf.rename,                  bufopts )
         make_keymap( 'n', '<leader>ca', lspbuf.code_action,             bufopts )
         make_keymap( 'n', '<leader>F',  function() lspbuf.format { async = true } end, bufopts )
 
-        make_keymap( 'n', '<leader>gr',  builtin.lsp_references,       bufopts )
-        make_keymap( 'n', '<leader>gd',  builtin.lsp_definitions,      bufopts )
-        make_keymap( 'n', '<leader>gi',  builtin.lsp_implementations,  bufopts )
-        make_keymap( 'n', '<leader>gtd', builtin.lsp_type_definitions, bufopts )
+        make_keymap( 'n', '<leader>gr',  lspbuf.references,       bufopts )
+        make_keymap( 'n', '<leader>gd',  lspbuf.definition,      bufopts )
+        make_keymap( 'n', '<leader>gi',  lspbuf.implementation,  bufopts )
+        make_keymap( 'n', '<leader>gtd', lspbuf.type_definition, bufopts )
     end
 })
 
@@ -495,22 +513,18 @@ make_keymap( { 'n', 'v' }, '<leader>gv', '<Cmd>GV!<CR>', {} )
 
 make_keymap( 'n', '<leader>gp', '<Cmd>GV --patch<CR>', {} )
 
--- telescope maps
-make_keymap( 'n', '<leader>ff', builtin.find_files,  {} )
-make_keymap( 'n', '<leader>gg', builtin.git_files,   {} )
-make_keymap( 'n', '<leader>fd', builtin.oldfiles,   {} )
+local builtin = MiniPick.builtin
 
-make_keymap( 'n', '<leader>/',  builtin.live_grep,   {} )
-make_keymap( 'n', '<leader>*',  builtin.grep_string, {} )
+make_keymap( 'n', '<leader>ff', builtin.files, {} )
+make_keymap( 'n', '<leader>fh', builtin.help, {} )
 
-make_keymap( 'n', '<leader>fm', builtin.marks,       {} )
-make_keymap( 'n', '<leader>fo', builtin.vim_options, {} )
-make_keymap( 'n', '<leader>fk', builtin.keymaps,     {} )
-make_keymap( 'n', '<leader>fh', builtin.help_tags,   {} )
+make_keymap( 'n', '<leader>/', '<Cmd>Pick buffer_lines<CR>',                  {} )
+make_keymap( 'n', '<leader>8', '<Cmd>Pick buffer_lines prompt="<cword>"<CR>', {} )
+make_keymap( 'n', '<leader>?', builtin.grep_live,                             {} )
+make_keymap( 'n', '<leader>*', '<Cmd>Pick grep pattern="<cword>"<CR>',        {} )
 
-make_keymap( 'n', '<leader>td', vim.cmd.TodoTelescope, {} )
 
-make_keymap( 'n', '<leader>ts', builtin.treesitter,       {} )
+-- TODO: use todo plugin to provide shit for mini pick to pick
 
 vim.opt.termguicolors  = true
 vim.opt.nu             = true
