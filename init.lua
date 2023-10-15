@@ -132,9 +132,8 @@ require'lazy'.setup {
         dependencies = { 'nvim-tree/nvim-web-devicons' },
         opts = {
             mappings = {
-                refine        = '<C-r>',
-                refine_marked = '<M-r>',
-                paste         = '<M-Space>',
+                refine        = '<C-;>',
+                refine_marked = '<M-;>',
             },
         },
         config = function( _, opts )
