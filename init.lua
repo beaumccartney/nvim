@@ -68,6 +68,36 @@ require'lazy'.setup {
     },
 
     {
+        'echasnovski/mini.clue',
+        opts = {
+            triggers = {
+                { mode = 'n', keys = '<Leader>' },
+                { mode = 'x', keys = '<Leader>' },
+
+                { mode = 'n', keys = 'g' },
+                { mode = 'x', keys = 'g' },
+
+                { mode = 'n', keys = '<C-w>' },
+
+                { mode = 'n', keys = 'z' },
+                { mode = 'x', keys = 'z' },
+            },
+        },
+        config = function(_, opts)
+            local miniclue = require'mini.clue'
+
+            local clues = {
+                miniclue.gen_clues.g(),
+                miniclue.gen_clues.windows(),
+                miniclue.gen_clues.z(),
+            }
+
+            local final_opts = vim.tbl_extend( 'error', opts, { clues = clues } )
+            miniclue.setup( final_opts )
+        end
+    },
+
+    {
         'echasnovski/mini.comment',
         opts = {
             options = {
