@@ -233,6 +233,11 @@ require'lazy'.setup {
     },
 
     {
+        'echasnovski/mini.jump2d',
+        config = true,
+    },
+
+    {
         'echasnovski/mini.misc',
         config = function()
             require'mini.misc'.setup()
