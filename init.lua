@@ -275,7 +275,22 @@ require'lazy'.setup {
 
     {
         'echasnovski/mini.jump2d',
-        config = true,
+        opts = { view = { n_steps_ahead = 999, }, },
+        config = function(_, opts)
+            local jump2d = require('mini.jump2d')
+
+            -- instead of jumping to arbitrary locations, jump to line starts
+            local jump_line_start = jump2d.builtin_opts.line_start
+            local final_opts = vim.tbl_extend( 'error', opts, {
+                spotter = jump_line_start.spotter,
+                hooks = { after_jump = jump_line_start.hooks.after_jump }
+            })
+
+            jump2d.setup( final_opts )
+
+            local jump_word_start = jump2d.builtin_opts.word_start
+            make_keymap( 'n', '<S-CR>', function() jump2d.start( jump_word_start ) end, {} )
+        end,
     },
 
     {
