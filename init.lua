@@ -62,10 +62,6 @@ require'lazy'.setup {
         }
     },
 
-    {
-        'JoosepAlviste/nvim-ts-context-commentstring',
-        opts = { enable_autocmd = false, },
-    },
 
     {
         'echasnovski/mini.clue',
@@ -129,27 +125,42 @@ require'lazy'.setup {
     -- everything
     {
         'nvim-treesitter/nvim-treesitter',
-        build = ':TSUpdate',
-        main = 'nvim-treesitter.configs',
         opts  = {
             ensure_installed = 'all',
+            -- TODO: kill when zig parser isn't piss slow
+            ignore_install = { 'zig' },
             highlight        = {
                 enable  = true,
                 disable = function( lang, bufnr )
                     return vim.api.nvim_buf_line_count( bufnr ) > 1000
-
-                        -- TODO: kill when zig parser isn't piss slow
-                        or lang == 'zig'
                 end,
                 additional_vim_regex_highlighting = false,
             },
         },
-    },
-
-    -- display the context of the cursor - e.g. what function or scope am I in
-    {
-        'nvim-treesitter/nvim-treesitter-context',
-        config       = { max_lines = 4, },
+        dependencies = {
+            'JoosepAlviste/nvim-ts-context-commentstring',
+            'HiPhish/rainbow-delimiters.nvim',
+            {
+                'nvim-treesitter/nvim-treesitter-context',
+                config = { max_lines = 4, },
+            },
+        },
+        build = ':TSUpdate',
+        main  = 'nvim-treesitter.configs',
+        init = function()
+            -- set foldmethod to treesitter if parser is available
+            vim.api.nvim_create_autocmd("BufEnter", {
+                callback = function()
+                    -- TODO: fold text highlighting w/ vim.wo.foldtext
+                    vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
+                    if require"nvim-treesitter.parsers".has_parser() then
+                        vim.wo.foldmethod = 'expr'
+                    else
+                        vim.wo.foldmethod = 'indent'
+                    end
+                end,
+            })
+        end,
     },
 
     -- fuzzy-find files and strings
@@ -448,9 +459,6 @@ require'lazy'.setup {
         end,
     },
 
-    -- rainbow brackets
-    'HiPhish/rainbow-delimiters.nvim',
-
 }
 
 -- lsp stuff
@@ -653,24 +661,10 @@ make_keymap( 'n', '<leader>l', function()
     MiniComment.toggle_lines( linenum, linenum )
 end , {} )
 
-function set_fold_options()
-    if require"nvim-treesitter.parsers".has_parser() then
-        vim.wo.foldmethod = 'expr'
-        vim.wo.foldexpr   = 'nvim_treesitter#foldexpr()'
-        -- TODO: below is treesitter syntax highlighting for the text displayed on a fold
-        -- atm it doesn't include the number of hidden lines. I'd like to
-        -- include the number of hiddenl lines at some point
-        -- vim.wo.foldtext   = 'v:lua.vim.treesitter.foldtext()'
-    end
-end
-
 -- run all vimscript stuffs
 -- TODO: factor this out into lua
 vim.cmd[[
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
-
-    " if the buffer has a treesitter parser, use treesitter for folding
-    autocmd BufEnter * lua set_fold_options()
 
     autocmd BufEnter * set formatoptions-=to
 
