@@ -228,6 +228,11 @@ require'lazy'.setup {
     {
         'lewis6991/gitsigns.nvim',
         config = true,
+        init = function()
+            make_keymap( { 'n', 'v' }, '<leader>gs', require'gitsigns'.stage_hunk, {} )
+            make_keymap( { 'n', 'v' }, '<leader>ga', require'gitsigns'.stage_buffer, {} )
+            make_keymap( { 'n', 'v' }, '<leader>gu', require'gitsigns'.undo_stage_hunk, {} )
+        end
     },
 
     -- all hail fugitive
