@@ -392,7 +392,12 @@ require'lazy'.setup {
 
     {
         'zbirenbaum/copilot.lua',
-        opts = { suggestion = { auto_trigger = true, }, }
+        opts = {
+            suggestion = {
+                auto_trigger = true,
+                debounce     = 5,
+            },
+        }
     },
     'madox2/vim-ai',
 
