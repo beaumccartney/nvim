@@ -6,6 +6,8 @@
 -- fix neodev
 -- gitsigns current hunk stuff
 -- format range (see conform docs)
+-- diffview nvim or idk get good at fugitive or someth
+-- nvim hipatterns
 
 
 
@@ -53,6 +55,7 @@ require'lazy'.setup {
     },
 
     -- highlight and search todo comments
+    -- TODO: replace with mini.hipatterns
     {
         'folke/todo-comments.nvim',
         dependencies = 'nvim-lua/plenary.nvim',
@@ -276,6 +279,11 @@ require'lazy'.setup {
     {
         'echasnovski/mini.indentscope',
         config = true,
+    },
+
+    {
+        'echasnovski/mini.jump',
+        opts = { delay = { highlight = 0 }, },
     },
 
     {
@@ -577,8 +585,10 @@ make_keymap( 'n', '<leader>cd', '<Cmd>cd %:p:h<CR>', {} )
 make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>',    {} )
 
 -- fraser again goddamn
--- TODO: make this not error
-make_keymap( 'n', '<ESC>', vim.cmd.nohlsearch, opts )
+make_keymap( 'n', '<ESC>', function()
+    vim.cmd.nohlsearch()
+    MiniJump.stop_jumping()
+end, opts )
 
 make_keymap( 'n', '<leader>w',  MiniTrailspace.trim,  {} )
 make_keymap( 'n', '<leader>bd', MiniBufremove.delete, {} ) -- close buffer
@@ -619,8 +629,6 @@ make_keymap( 'n', '<leader>8', '<Cmd>Pick buffer_lines prompt="<cword>"<CR>', {}
 make_keymap( 'n', '<leader>?', builtin.grep_live,                             {} )
 make_keymap( 'n', '<leader>*', '<Cmd>Pick grep pattern="<cword>"<CR>',        {} )
 
-
--- TODO: use todo plugin to provide shit for mini pick to pick
 
 vim.opt.termguicolors  = true
 vim.opt.number         = true
@@ -695,14 +703,16 @@ vim.cmd[[
 
     autocmd BufNewFile,BufRead *.wgsl set filetype=wgsl
 
+    autocmd BufNewFile,BufRead *.zon set filetype=zig
+
     autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=2 nocindent smartindent
 
     autocmd Filetype prisma setlocal smartindent nocindent
 
     " turn on spellcheck for plain text stuff
-    autocmd Filetype text,markdown setlocal spell
+    autocmd Filetype text,markdown,gitcommit setlocal spell
 
-    autocmd Filetype jai setlocal commentstring=//\ %s
+    autocmd Filetype jai,wgsl setlocal commentstring=//\ %s
 
     " colorscheme gruvbox-material
     colorscheme material
