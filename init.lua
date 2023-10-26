@@ -1,22 +1,18 @@
 -- TODO:
 -- wrap mapping function
--- lspsaga?
--- submodes of some kind
--- undodir
+-- give all my keymaps descriptions
+-- submodes of some kind (neovim hydra?)
 -- fix neodev
 -- gitsigns current hunk stuff
 -- format range (see conform docs)
 -- diffview nvim or idk get good at fugitive or someth
--- nvim hipatterns
+-- :make command for everything I need, including colorized output and error finding
 
 
 
 
 -- apparently I have to put this before the package manager
 vim.g.mapleader = ' '
-
--- use homebrew python
-vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
 
 vim.opt.shell = '/opt/homebrew/bin/fish' -- before plugin spec so terminal plugin sees it
 
@@ -44,8 +40,21 @@ require'lazy'.setup {
         init = function()
             vim.g.scratchpad_autostart = 0
             vim.g.scratchpad_location  = vim.fn.stdpath( 'data' ) .. '/scratchpad'
-            make_keymap( 'n', 'S', require'scratchpad'.invoke, {} )
+            make_keymap( 'n', '<leader>s', require'scratchpad'.invoke, {} )
         end,
+    },
+
+    {
+        'akinsho/toggleterm.nvim',
+        opts = { open_mapping = [[<c-/>]], },
+    },
+
+    {
+        "stevearc/dressing.nvim",
+        opts = { input = {
+            insert_only     = false,
+            start_in_insert = false,
+        } },
     },
 
     {
@@ -55,7 +64,6 @@ require'lazy'.setup {
     },
 
     -- highlight and search todo comments
-    -- TODO: replace with mini.hipatterns
     {
         'folke/todo-comments.nvim',
         dependencies = 'nvim-lua/plenary.nvim',
@@ -81,6 +89,7 @@ require'lazy'.setup {
                 { mode = 'n', keys = 'z' },
                 { mode = 'x', keys = 'z' },
             },
+            window = { delay = 0, },
         },
         config = function(_, opts)
             local miniclue = require'mini.clue'
@@ -145,7 +154,7 @@ require'lazy'.setup {
             'HiPhish/rainbow-delimiters.nvim',
             {
                 'nvim-treesitter/nvim-treesitter-context',
-                config = { max_lines = 4, },
+                opts = { max_lines = 4, },
             },
         },
         build = ':TSUpdate',
@@ -302,7 +311,8 @@ require'lazy'.setup {
             jump2d.setup( final_opts )
 
             local jump_word_start = jump2d.builtin_opts.word_start
-            make_keymap( 'n', '<S-CR>', function() jump2d.start( jump_word_start ) end, {} )
+            -- TODO: get this to work in operator pending mode
+            make_keymap( { 'n', 'x', }, '<S-CR>', function() jump2d.start( jump_word_start ) end, {} )
         end,
     },
 
@@ -348,23 +358,11 @@ require'lazy'.setup {
             plugins =
             {
                 -- Available plugins:
-                -- "dap",
-                -- "dashboard",
                 "gitsigns",
-                -- "hop",
                 "indent-blankline",
-                -- "lspsaga",
                 "mini",
-                -- "neogit",
-                -- "neorg",
-                -- "nvim-cmp",
-                -- "nvim-navic",
-                -- "nvim-tree",
                 "nvim-web-devicons",
-                -- "sneak",
-                -- "telescope",
-                -- "trouble",
-                -- "which-key",
+                "rainbow-delimiters",
             },
         }
     },
@@ -437,10 +435,10 @@ require'lazy'.setup {
     {
         'stevearc/conform.nvim',
         opts = {
-	    formatters_by_ft = {
-            javascript = { { "prettierd", "prettier" } },
-            rust       = { { "rustfmt" } },
-            zig        = { { "zigfmt" } },
+            formatters_by_ft = {
+                javascript = { { "prettierd", "prettier" } },
+                rust       = { { "rustfmt" } },
+                zig        = { { "zigfmt" } },
             }
         },
     },
@@ -508,8 +506,8 @@ make_keymap( 'n', '<leader>fa', vim.cmd.wa,   {}   ) -- save all files
 make_keymap( 'n', '<leader>te', vim.cmd.tabe, {}   ) -- new tab
 make_keymap( 'n', '<leader>cc', vim.cmd.bd,   opts )
 make_keymap( 'n', '<leader>cw', '<C-w><C-q>', opts )
-make_keymap( 'n', '<C-l>', '$', opts )
-make_keymap( 'n', '<C-h>', '^', opts )
+make_keymap( { 'n', 'x', 'o', }, '<C-l>', 'g$', opts )
+make_keymap( { 'n', 'x', 'o', }, '<C-h>', 'g^', opts )
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function( ev )
@@ -564,15 +562,18 @@ put_empty_line = function(put_above)
     local target_line = vim.fn.line('.') - (cache_empty_line.put_above and 1 or 0)
     vim.fn.append(target_line, vim.fn['repeat']({ '' }, vim.v.count1))
 end
-make_keymap('n', '[<space>', 'v:lua.put_empty_line(v:true)',  { expr = true, desc = 'Put empty line above' })
-make_keymap('n', ']<space>', 'v:lua.put_empty_line(v:false)', { expr = true, desc = 'Put empty line below' })
+make_keymap( 'n', '[<space>', 'v:lua.put_empty_line(v:true)',  { expr = true, desc = 'Put empty line above' } )
+make_keymap( 'n', ']<space>', 'v:lua.put_empty_line(v:false)', { expr = true, desc = 'Put empty line below' } )
 --[[ ----------------------------------- END ---------------------------------- ]]
 
 make_keymap( 'n', 'Y',         'y$',   opts ) -- yank to end of line
 make_keymap( 'n', '<leader>Y', '"+y$', opts ) -- yank to end of line
 
-make_keymap( { 'n', 'v' }, '<leader>y', '"+y',       opts ) -- yank to clipboard
+make_keymap( { 'n', 'v' }, '<leader>y', '"+y', opts ) -- yank to clipboard
 make_keymap( { 'n', 'v' }, '<leader>p', '"+p', opts ) -- put from clipboard
+
+make_keymap( { 'n', 'v' }, '<C-d>', '<C-d>zz', opts ) -- scroll down
+make_keymap( { 'n', 'v' }, '<C-u>', '<C-u>zz', opts ) -- scroll down
 
 -- change directory to current file - thanks fraser
 -- TODO: print directory I cd'd to
@@ -587,6 +588,7 @@ make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>',    {} )
 -- fraser again goddamn
 make_keymap( 'n', '<ESC>', function()
     vim.cmd.nohlsearch()
+    vim.cmd.ccl()
     MiniJump.stop_jumping()
 end, opts )
 
@@ -642,7 +644,7 @@ vim.opt.smarttab    = true
 vim.opt.cindent     = true
 vim.opt.breakindent = true
 vim.opt.linebreak   = true
-vim.opt.formatoptions = vim.opt.formatoptions - 't' + 'cqrn' -- NOTE: formatting can be done manually with gq{textobj}
+vim.opt.formatoptions = vim.opt.formatoptions:append( 'jcqrn' ) -- NOTE: formatting can be done manually with gq{textobj}
 vim.opt.textwidth = 80
 
 vim.opt.scrolloff      = 10
@@ -651,6 +653,7 @@ vim.opt.splitbelow     = true
 
 vim.opt.hidden         = true
 vim.opt.swapfile       = false
+vim.opt.undofile       = true
 
 vim.opt.incsearch      = true
 vim.opt.ignorecase     = true
@@ -699,11 +702,11 @@ end , {} )
 vim.cmd[[
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
 
-    autocmd BufEnter * set formatoptions-=to
+    autocmd Filetype * set formatoptions-=to formatoptions+=j
 
-    autocmd BufNewFile,BufRead *.wgsl set filetype=wgsl
+    autocmd Filetype *.wgsl set filetype=wgsl
 
-    autocmd BufNewFile,BufRead *.zon set filetype=zig
+    autocmd Filetype *.zon set filetype=zig
 
     autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=2 nocindent smartindent
 
@@ -713,6 +716,8 @@ vim.cmd[[
     autocmd Filetype text,markdown,gitcommit setlocal spell
 
     autocmd Filetype jai,wgsl setlocal commentstring=//\ %s
+
+    autocmd FileType DressingInput lua vim.b.minicompletion_disable = true
 
     " colorscheme gruvbox-material
     colorscheme material
