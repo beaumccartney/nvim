@@ -2,7 +2,6 @@
 -- wrap mapping function
 -- give all my keymaps descriptions
 -- submodes of some kind (neovim hydra?)
--- fix neodev
 -- gitsigns current hunk stuff
 -- format range (see conform docs)
 -- diffview nvim or idk get good at fugitive or someth
@@ -463,6 +462,12 @@ require'lazy'.setup {
 
     {
         'neovim/nvim-lspconfig',
+        dependencies = {
+            {
+                "folke/neodev.nvim",
+                opts = {},
+            }
+        },
         config = function()
             local lspconfig = require'lspconfig'
             for _, server in pairs({
@@ -476,6 +481,7 @@ require'lazy'.setup {
                 -- 'elmls',
                 'html',
                 'hls',
+                'lua_ls',
                 'rust_analyzer',
                 'vtsls',
                 'pyright',
