@@ -148,6 +148,7 @@ require'lazy'.setup {
                 end,
                 additional_vim_regex_highlighting = false,
             },
+            indent = { enable = true, },
         },
         dependencies = {
             'JoosepAlviste/nvim-ts-context-commentstring',
@@ -161,15 +162,13 @@ require'lazy'.setup {
         main  = 'nvim-treesitter.configs',
         init = function()
             -- set foldmethod to treesitter if parser is available
-            vim.api.nvim_create_autocmd("BufEnter", {
+            vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
+            vim.api.nvim_create_autocmd("Filetype", {
                 callback = function()
                     -- TODO: fold text highlighting w/ vim.wo.foldtext
-                    vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
-                    if require"nvim-treesitter.parsers".has_parser() then
-                        vim.wo.foldmethod = 'expr'
-                    else
-                        vim.wo.foldmethod = 'indent'
-                    end
+                    vim.wo.foldmethod =
+                        require"nvim-treesitter.parsers".has_parser()
+                            and 'expr' or 'indent'
                 end,
             })
         end,
@@ -708,9 +707,7 @@ vim.cmd[[
 
     autocmd Filetype *.zon set filetype=zig
 
-    autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=2 nocindent smartindent
-
-    autocmd Filetype prisma setlocal smartindent nocindent
+    autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
     " turn on spellcheck for plain text stuff
     autocmd Filetype text,markdown,gitcommit setlocal spell
