@@ -34,6 +34,82 @@ end
 vim.opt.rtp:prepend( lazypath )
 
 require'lazy'.setup {
+
+    {
+        'mfussenegger/nvim-dap',
+        dependencies = {
+            {
+                'mfussenegger/nvim-dap-python',
+                config = function()
+                    require'dap-python'.setup( vim.env.PYENV_ROOT .. '/shims/python3' )
+                end,
+            },
+            {
+                'rcarriga/nvim-dap-ui',
+                config = function()
+                    local dap, dapui = require'dap', require'dapui'
+                    dapui.setup()
+                    dap.listeners.after.event_initialized['dapui_config'] = function()
+                        dapui.open()
+                    end
+                    dap.listeners.before.event_terminated['dapui_config'] = function()
+                        dapui.close()
+                    end
+                    dap.listeners.before.event_exited['dapui_config'] = function()
+                        dapui.close()
+                    end
+                end,
+            }
+        },
+        config = function()
+            local dap = require'dap'
+            dap.adapters.lldb = {
+                type = 'executable',
+                command = '/opt/homebrew/opt/llvm/bin/lldb-vscode', -- adjust as needed, must be absolute path
+                name = 'lldb'
+            }
+
+            local lldb_vscode_config = {
+                name = 'Launch',
+                type = 'lldb',
+                request = 'launch',
+                program = function()
+                    return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                end,
+                cwd = '${workspaceFolder}',
+                stopOnEntry = false,
+                args = {},
+            }
+
+            dap.configurations.cpp = { lldb_vscode_config, }
+
+            dap.configurations.c = dap.configurations.cpp
+            dap.configurations.zig = dap.configurations.cpp
+            dap.configurations.rust = {
+                lldb_vscode_config,
+                initCommands = function()
+                    -- Find out where to look for the pretty printer Python module
+                    local rustc_sysroot = vim.fn.trim(vim.fn.system('rustc --print sysroot'))
+
+                    local script_import = 'command script import "' .. rustc_sysroot .. '/lib/rustlib/etc/lldb_lookup.py"'
+                    local commands_file = rustc_sysroot .. '/lib/rustlib/etc/lldb_commands'
+
+                    local commands = {}
+                    local file = io.open(commands_file, 'r')
+                    if file then
+                        for line in file:lines() do
+                            table.insert(commands, line)
+                        end
+                        file:close()
+                    end
+                    table.insert(commands, 1, script_import)
+
+                    return commands
+                end,
+            }
+        end,
+    },
+
     {
         'FraserLee/ScratchPad',
         init = function()
