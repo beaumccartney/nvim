@@ -63,28 +63,51 @@ require'lazy'.setup {
         },
         config = function()
             local dap = require'dap'
+
+            -- operate the debugger - use submode
+            make_keymap( 'n', '<leader>dd', dap.continue      )
+            make_keymap( 'n', '<leader>dl', dap.run_to_cursor )
+            make_keymap( 'n', '<leader>dh', dap.restart       )
+            make_keymap( 'n', '<leader>dj', dap.down          )
+            make_keymap( 'n', '<leader>dk', dap.up            )
+            make_keymap( 'n', '<leader>dJ', dap.step_into     )
+            make_keymap( 'n', '<leader>dK', dap.step_out      )
+            make_keymap( 'n', '<leader>dL', dap.step_over     )
+
+            -- TODO: make dot-repeatable?
+            make_keymap( 'n', '<C-p>', dap.toggle_breakpoint )
+            make_keymap( 'n', '<leader>cb', function()
+                local condition = vim.fn.input( 'Condition: ' )
+                dap.set_breakpoint( condition )
+            end)
+
+            make_keymap( 'n', '<M-p>', dap.clear_breakpoints )
+
+            make_keymap( 'n', '<leader>dp', dap.run_last )
+            make_keymap( 'n', '<leader>dc', dap.terminate )
+
             dap.adapters.lldb = {
-                type = 'executable',
-                command = '/opt/homebrew/opt/llvm/bin/lldb-vscode', -- adjust as needed, must be absolute path
-                name = 'lldb'
+                type    = 'executable',
+                command = '/opt/homebrew/opt/llvm/bin/lldb-vscode',
+                name    = 'lldb'
             }
 
             local lldb_vscode_config = {
-                name = 'Launch',
-                type = 'lldb',
-                request = 'launch',
-                program = function()
+                name        = 'Launch',
+                type        = 'lldb',
+                request     = 'launch',
+                program     = function()
                     return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
                 end,
-                cwd = '${workspaceFolder}',
+                cwd         = '${workspaceFolder}',
                 stopOnEntry = false,
-                args = {},
+                args        = {},
             }
 
             dap.configurations.cpp = { lldb_vscode_config, }
 
-            dap.configurations.c = dap.configurations.cpp
-            dap.configurations.zig = dap.configurations.cpp
+            dap.configurations.c    = dap.configurations.cpp
+            dap.configurations.zig  = dap.configurations.cpp
             dap.configurations.rust = {
                 lldb_vscode_config,
                 initCommands = function()
@@ -153,11 +176,20 @@ require'lazy'.setup {
         'echasnovski/mini.clue',
         opts = {
             triggers = {
+                -- TODO: hunt through all maps in all modes and put triggers here
                 { mode = 'n', keys = '<Leader>' },
                 { mode = 'x', keys = '<Leader>' },
 
+                { mode = 'n', keys = '[' },
+                { mode = 'x', keys = '[' },
+                { mode = 'o', keys = '[' },
+                { mode = 'n', keys = ']' },
+                { mode = 'x', keys = ']' },
+                { mode = 'o', keys = ']' },
+
                 { mode = 'n', keys = 'g' },
                 { mode = 'x', keys = 'g' },
+                { mode = 'o', keys = 'g' },
 
                 { mode = 'n', keys = '<C-w>' },
 
@@ -173,9 +205,25 @@ require'lazy'.setup {
                 miniclue.gen_clues.g(),
                 miniclue.gen_clues.windows(),
                 miniclue.gen_clues.z(),
+
+                -- submodes
+                { mode = 'n', keys = ']b', postkeys = ']' },
+                { mode = 'n', keys = ']w', postkeys = ']' },
+                { mode = 'n', keys = '[b', postkeys = '[' },
+                { mode = 'n', keys = '[w', postkeys = '[' },
+
+                { mode = 'n', keys = '<leader>dd', postkeys = '<leader>d' },
+                { mode = 'n', keys = '<leader>dl', postkeys = '<leader>d' },
+                { mode = 'n', keys = '<leader>dh', postkeys = '<leader>d' },
+                { mode = 'n', keys = '<leader>dj', postkeys = '<leader>d' },
+                { mode = 'n', keys = '<leader>dk', postkeys = '<leader>d' },
+                { mode = 'n', keys = '<leader>dJ', postkeys = '<leader>d' },
+                { mode = 'n', keys = '<leader>dK', postkeys = '<leader>d' },
+                { mode = 'n', keys = '<leader>dL', postkeys = '<leader>d' },
+                { mode = 'n', keys = '<leader>dp', postkeys = '<leader>d' },
             }
 
-            local final_opts = vim.tbl_extend( 'error', opts, { clues = clues } )
+            local final_opts = vim.tbl_deep_extend( 'error', opts, { clues = clues } )
             miniclue.setup( final_opts )
         end
     },
