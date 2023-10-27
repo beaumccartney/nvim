@@ -1,11 +1,12 @@
 -- TODO:
+-- :s respects case
 -- wrap mapping function
 -- give all my keymaps descriptions
--- submodes of some kind (neovim hydra?)
 -- gitsigns current hunk stuff
 -- format range (see conform docs)
 -- diffview nvim or idk get good at fugitive or someth
 -- :make command for everything I need, including colorized output and error finding
+-- mappings with :map and :map! equivalents
 
 
 
@@ -18,6 +19,10 @@ vim.opt.shell = '/opt/homebrew/bin/fish' -- before plugin spec so terminal plugi
 vim.g.zig_fmt_autosave = 0
 
 local make_keymap = vim.keymap.set
+local disjoint_tbl_extend = function( tbl1, tbl2 )
+    local result = vim.tbl_extend( 'error', tbl1, tbl2 )
+    return result
+end
 
 -- bootstrap package manager (ngl it works nice)
 local lazypath = vim.fn.stdpath( 'data' ) .. '/lazy/lazy.nvim'
@@ -34,7 +39,6 @@ end
 vim.opt.rtp:prepend( lazypath )
 
 require'lazy'.setup {
-
     {
         'mfussenegger/nvim-dap',
         dependencies = {
@@ -149,10 +153,12 @@ require'lazy'.setup {
 
     {
         "stevearc/dressing.nvim",
-        opts = { input = {
-            insert_only     = false,
-            start_in_insert = false,
-        } },
+        opts = {
+            input = {
+                insert_only     = false,
+                start_in_insert = false,
+            }
+        },
     },
 
     {
@@ -161,16 +167,37 @@ require'lazy'.setup {
         config = true,
     },
 
-    -- highlight and search todo comments
     {
-        'folke/todo-comments.nvim',
-        dependencies = 'nvim-lua/plenary.nvim',
+        'echasnovski/mini.hipatterns',
         opts = {
-            signs = false,
-            keywords = { TODO = { alt = { 'REVIEW', 'INCOMPLETE' }, }, },
-        }
-    },
+            highlighters = {
+                fixme      = { pattern = '%f[%w]()FIXME()%f[%W]',      group = 'MiniHipatternsFixme' },
+                bug        = { pattern = '%f[%w]()BUG()%f[%W]',        group = 'MiniHipatternsFixme' },
 
+                hack       = { pattern = '%f[%w]()HACK()%f[%W]',       group = 'MiniHipatternsHack'  },
+                xxx        = { pattern = '%f[%w]()XXX()%f[%W]',        group = 'MiniHipatternsHack'  },
+
+                note       = { pattern = '%f[%w]()NOTE()%f[%W]',       group = 'MiniHipatternsNote'  },
+
+                todo       = { pattern = '%f[%w]()TODO()%f[%W]',       group = 'MiniHipatternsTodo' },
+                review     = { pattern = '%f[%w]()REVIEW()%f[%W]',     group = 'MiniHipatternsTodo' },
+                incomplete = { pattern = '%f[%w]()INCOMPLETE()%f[%W]', group = 'MiniHipatternsTodo' },
+            },
+            delay = {
+                text_change = 0,
+                scroll = 0,
+            },
+        },
+        config = function( _, opts )
+            local hipatterns = require'mini.hipatterns'
+            local final_opts = vim.tbl_deep_extend(
+                'error',
+                opts,
+                { highlighters = { hex_color = hipatterns.gen_highlighter.hex_color(), } }
+            )
+            hipatterns.setup( final_opts )
+        end
+    },
 
     {
         'echasnovski/mini.clue',
@@ -248,7 +275,7 @@ require'lazy'.setup {
     -- change argument lists from one line to n lines or vice-versa
     {
     	'echasnovski/mini.splitjoin',
-    	opts = true,
+    	config = true,
     },
 
     -- better [de]indenting and moving up and down
@@ -266,7 +293,7 @@ require'lazy'.setup {
             ignore_install = { 'zig' },
             highlight        = {
                 enable  = true,
-                disable = function( lang, bufnr )
+                disable = function( _, bufnr )
                     return vim.api.nvim_buf_line_count( bufnr ) > 1000
                 end,
                 additional_vim_regex_highlighting = false,
@@ -283,7 +310,7 @@ require'lazy'.setup {
         },
         build = ':TSUpdate',
         main  = 'nvim-treesitter.configs',
-        init = function()
+        init  = function()
             -- set foldmethod to treesitter if parser is available
             vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
             vim.api.nvim_create_autocmd("Filetype", {
@@ -332,24 +359,14 @@ require'lazy'.setup {
                 MiniPick.start({ source = { items = items, name = 'Buffer lines' } })
             end
 
-            -- TODO: share this on the todo comments repo issue tracker or
-            -- something
-            registry.todo_comments = function( local_opts )
-                require'todo-comments.search'.search( function( results )
-                    local mini_pick_items = vim.tbl_map( function( entry )
-                        return {
-                            text = entry.text,
-                            path = entry.filename,
-                            lnum = entry.lnum,
-                            col  = entry.col,
-                        }
-                    end, results )
-
-                    local source = { items = mini_pick_items, name = 'Todo Comments' }
-                    MiniPick.start( { source = source } )
-                end )
-
-            end
+            -- TODO: finish this
+            -- registry.todo_comments = function( local_opts )
+            --     -- TODO: get only todo matches
+            --     local todo_items = MiniHipatterns.get_matches()
+            --     local source = { items = todo_items, name = 'Todo comments (current)' }
+            --
+            --     MiniPick.start( { source = source, } )
+            -- end
         end
     },
 
@@ -387,12 +404,12 @@ require'lazy'.setup {
 
     {
         'echasnovski/mini.bufremove',
-        opts = true,
+        config = true,
     },
 
     {
         'echasnovski/mini.bracketed',
-        opts = true,
+        config = true,
     },
 
     -- highlight word under cursor
@@ -425,7 +442,7 @@ require'lazy'.setup {
 
             -- instead of jumping to arbitrary locations, jump to line starts
             local jump_line_start = jump2d.builtin_opts.line_start
-            local final_opts = vim.tbl_extend( 'error', opts, {
+            local final_opts = disjoint_tbl_extend( opts, {
                 spotter = jump_line_start.spotter,
                 hooks = { after_jump = jump_line_start.hooks.after_jump }
             })
@@ -528,8 +545,8 @@ require'lazy'.setup {
         opts = {
             suggestion = {
                 auto_trigger = true,
-                debounce     = 5,
-            },
+                debounce     = 0,
+           },
         }
     },
     'madox2/vim-ai',
@@ -626,17 +643,17 @@ require'lazy'.setup {
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
 
-make_keymap( 'n', '<leader>e',  vim.diagnostic.open_float, opts )
-make_keymap( 'n', '<leader>q',  vim.diagnostic.setloclist, opts )
+make_keymap( 'n', '<leader>e', vim.diagnostic.open_float, opts )
+make_keymap( 'n', '<leader>q', vim.diagnostic.setloclist, opts )
 
 -- keymaps for built in things
-make_keymap( 'n', '<leader>fs', vim.cmd.w,    {}   ) -- save file
-make_keymap( 'n', '<leader>fa', vim.cmd.wa,   {}   ) -- save all files
+make_keymap( '',  '<C-s>', vim.cmd.update, {} ) -- save file
+make_keymap( '!', '<C-s>', vim.cmd.update, {} ) -- save file
 make_keymap( 'n', '<leader>te', vim.cmd.tabe, {}   ) -- new tab
 make_keymap( 'n', '<leader>cc', vim.cmd.bd,   opts )
 make_keymap( 'n', '<leader>cw', '<C-w><C-q>', opts )
-make_keymap( { 'n', 'x', 'o', }, '<C-l>', 'g$', opts )
-make_keymap( { 'n', 'x', 'o', }, '<C-h>', 'g^', opts )
+make_keymap( '', '<C-l>', 'g$', opts )
+make_keymap( '', '<C-h>', 'g^', opts )
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function( ev )
@@ -659,10 +676,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
         make_keymap( 'n', '<leader>ca', lspbuf.code_action,             bufopts )
         make_keymap( 'n', '<leader>F',  function() lspbuf.format { async = true } end, bufopts )
 
-        make_keymap( 'n', '<leader>gr',  lspbuf.references,       bufopts )
+        make_keymap( 'n', '<leader>gr',  lspbuf.references,      bufopts )
         make_keymap( 'n', '<leader>gd',  lspbuf.definition,      bufopts )
         make_keymap( 'n', '<leader>gi',  lspbuf.implementation,  bufopts )
         make_keymap( 'n', '<leader>gtd', lspbuf.type_definition, bufopts )
+        make_keymap( 'n', '<leader>co',  lspbuf.incoming_calls,  bufopts )
+        make_keymap( 'n', '<leader>ci',  lspbuf.outgoing_calls,  bufopts )
     end
 })
 
@@ -701,8 +720,8 @@ make_keymap( 'n', '<leader>Y', '"+y$', opts ) -- yank to end of line
 make_keymap( { 'n', 'v' }, '<leader>y', '"+y', opts ) -- yank to clipboard
 make_keymap( { 'n', 'v' }, '<leader>p', '"+p', opts ) -- put from clipboard
 
-make_keymap( { 'n', 'v' }, '<C-d>', '<C-d>zz', opts ) -- scroll down
-make_keymap( { 'n', 'v' }, '<C-u>', '<C-u>zz', opts ) -- scroll down
+make_keymap( '', '<C-d>', '<C-d>zz', opts ) -- scroll down
+make_keymap( '', '<C-u>', '<C-u>zz', opts ) -- scroll down
 
 -- change directory to current file - thanks fraser
 -- TODO: print directory I cd'd to
@@ -734,7 +753,7 @@ make_keymap( 'v', 'k', 'gk', {} )
 make_keymap( 'n', '<leader>fe', function()
     local buf = vim.api.nvim_buf_get_name( 0 )
 
-    file = io.open( buf ) and buf or vim.fs.dirname( buf )
+    local file = io.open( buf ) and buf or vim.fs.dirname( buf )
 
     MiniFiles.open( file )
 end, {} )
@@ -752,7 +771,6 @@ local builtin = MiniPick.builtin
 
 make_keymap( 'n', '<leader>ff', builtin.files, {} )
 make_keymap( 'n', '<leader>fh', builtin.help, {} )
-make_keymap( 'n', '<leader>td', MiniPick.registry.todo_comments, {} )
 
 -- TODO: make cword maps use word highlighted by visual if applicable
 make_keymap( 'n', '<leader>/', '<Cmd>Pick buffer_lines<CR>',                  {} )
@@ -792,9 +810,8 @@ vim.opt.pumheight      = 5
 
 vim.opt.foldenable     = false
 vim.opt.foldmethod     = 'indent'
-
-vim.opt.cmdheight      = 2
-
+vim.opt.cmdheight      = 1
+---------------------------------------------------------------------------
 -- write centered line - 80 character line with text in the middle and dashes
 -- padding it
 make_keymap( 'n', '<leader>l', function()
