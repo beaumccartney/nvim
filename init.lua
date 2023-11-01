@@ -301,6 +301,7 @@ require'lazy'.setup {
             indent = { enable = true, },
         },
         dependencies = {
+            'nvim-treesitter/nvim-treesitter-textobjects',
             'JoosepAlviste/nvim-ts-context-commentstring',
             'HiPhish/rainbow-delimiters.nvim',
             {
@@ -393,7 +394,18 @@ require'lazy'.setup {
     -- additional textobject keys after "a" and "i" e.g. <something>[a|i]q where q is quote text object
     {
         'echasnovski/mini.ai',
-        config = true,
+        dependencies = 'nvim-treesitter/nvim-treesitter-textobjects',
+        config = function()
+            local ai = require'mini.ai'
+            local gen_spec = ai.gen_spec
+            require'mini.ai'.setup({
+                custom_textobjects = {
+                    F = gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
+                    c = gen_spec.treesitter({ a = '@class.outer',    i = '@class.inner'    }),
+                    S = gen_spec.treesitter({ a = '@block.outer',    i = '@block.inner'    }),
+                },
+            })
+        end
     },
 
     -- align stuff - great interactivity and keybinds
