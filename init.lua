@@ -14,7 +14,7 @@
 -- apparently I have to put this before the package manager
 vim.g.mapleader = ' '
 
-vim.opt.shell = '/opt/homebrew/bin/fish' -- before plugin spec so terminal plugin sees it
+vim.opt.shell = vim.env.HOMEBREW_PREFIX .. '/bin/fish' -- before plugin spec so terminal plugin sees it
 
 vim.g.zig_fmt_autosave = 0
 
@@ -93,7 +93,7 @@ require'lazy'.setup {
 
             dap.adapters.lldb = {
                 type    = 'executable',
-                command = '/opt/homebrew/opt/llvm/bin/lldb-vscode',
+                command = vim.trim(vim.fn.system('brew --prefix llvm')) .. '/bin/lldb-vscode',
                 name    = 'lldb'
             }
 
