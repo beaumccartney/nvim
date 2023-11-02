@@ -69,6 +69,7 @@ require'lazy'.setup {
             local dap = require'dap'
 
             -- operate the debugger - use submode
+            make_keymap( 'n', '<leader>ds', dap.continue      )
             make_keymap( 'n', '<leader>dd', dap.continue      )
             make_keymap( 'n', '<leader>dl', dap.run_to_cursor )
             make_keymap( 'n', '<leader>dh', dap.restart       )
@@ -112,6 +113,7 @@ require'lazy'.setup {
 
             dap.configurations.c    = dap.configurations.cpp
             dap.configurations.zig  = dap.configurations.cpp
+            dap.configurations.jai  = dap.configurations.cpp
             dap.configurations.rust = {
                 lldb_vscode_config,
                 initCommands = function()
@@ -148,7 +150,17 @@ require'lazy'.setup {
 
     {
         'akinsho/toggleterm.nvim',
-        opts = { open_mapping = [[<c-/>]], },
+        opts = {
+            open_mapping = [[<c-/>]],
+            direction    = 'vertical',
+            size = function(term)
+                if term.direction == 'vertical' then
+                    return vim.o.columns / 2
+                else
+                    return 20
+                end
+            end
+        },
     },
 
     {
@@ -169,33 +181,23 @@ require'lazy'.setup {
 
     {
         'echasnovski/mini.hipatterns',
-        opts = {
-            highlighters = {
-                fixme      = { pattern = '%f[%w]()FIXME()%f[%W]',      group = 'MiniHipatternsFixme' },
-                bug        = { pattern = '%f[%w]()BUG()%f[%W]',        group = 'MiniHipatternsFixme' },
-
-                hack       = { pattern = '%f[%w]()HACK()%f[%W]',       group = 'MiniHipatternsHack'  },
-                xxx        = { pattern = '%f[%w]()XXX()%f[%W]',        group = 'MiniHipatternsHack'  },
-
-                note       = { pattern = '%f[%w]()NOTE()%f[%W]',       group = 'MiniHipatternsNote'  },
-
-                todo       = { pattern = '%f[%w]()TODO()%f[%W]',       group = 'MiniHipatternsTodo' },
-                review     = { pattern = '%f[%w]()REVIEW()%f[%W]',     group = 'MiniHipatternsTodo' },
-                incomplete = { pattern = '%f[%w]()INCOMPLETE()%f[%W]', group = 'MiniHipatternsTodo' },
-            },
-            delay = {
-                text_change = 0,
-                scroll = 0,
-            },
-        },
-        config = function( _, opts )
+        config = function()
             local hipatterns = require'mini.hipatterns'
-            local final_opts = vim.tbl_deep_extend(
-                'error',
-                opts,
-                { highlighters = { hex_color = hipatterns.gen_highlighter.hex_color(), } }
-            )
-            hipatterns.setup( final_opts )
+            local hi_words = require'mini.extra'.gen_highlighter.words
+            hipatterns.setup({
+                highlighters = {
+                    todo  = hi_words({ 'TODO',  'REVIEW', 'INCOMPLETE' }, 'MiniHipatternsTodo' ),
+                    fixme = hi_words({ 'FIXME', 'BUG',                 }, 'MiniHipatternsFixme'),
+                    note  = hi_words({ 'NOTE',  'INFO',                }, 'MiniHipatternsNote' ),
+                    hack  = hi_words({ 'HACK',  'XXX',                 }, 'MiniHipatternsHack' ),
+
+                    hex_color = hipatterns.gen_highlighter.hex_color(),
+                },
+                delay = {
+                    text_change = 0,
+                    scroll = 0,
+                },
+            })
         end
     },
 
@@ -247,7 +249,6 @@ require'lazy'.setup {
                 { mode = 'n', keys = '<leader>dJ', postkeys = '<leader>d' },
                 { mode = 'n', keys = '<leader>dK', postkeys = '<leader>d' },
                 { mode = 'n', keys = '<leader>dL', postkeys = '<leader>d' },
-                { mode = 'n', keys = '<leader>dp', postkeys = '<leader>d' },
             }
 
             local final_opts = vim.tbl_deep_extend( 'error', opts, { clues = clues } )
@@ -266,10 +267,15 @@ require'lazy'.setup {
         },
     },
 
+    {
+        'echasnovski/mini.extra',
+        config = true,
+    },
+
     -- surround things
     {
         'echasnovski/mini.surround',
-        opts = { respect_selection_type = true, }
+        opts = { respect_selection_type = true, },
     },
 
     -- change argument lists from one line to n lines or vice-versa
@@ -335,40 +341,6 @@ require'lazy'.setup {
                 refine_marked = '<M-;>',
             },
         },
-        config = function( _, opts )
-            local pick     = require'mini.pick'
-            local registry = pick.registry
-            pick.setup( opts )
-
-            -- https://github.com/echasnovski/mini.nvim/issues/513#issuecomment-1762785125
-            registry.buffer_lines = function( local_opts )
-                -- Parse options
-                local_opts = vim.tbl_deep_extend('force', { buf_id = nil, prompt = '' }, local_opts or {})
-                local buf_id, prompt = local_opts.buf_id, local_opts.prompt
-                local_opts.buf_id, local_opts.prompt = nil, nil
-
-                -- Construct items
-                if buf_id == nil or buf_id == 0 then buf_id = vim.api.nvim_get_current_buf() end
-                local lines = vim.api.nvim_buf_get_lines(buf_id, 0, -1, false)
-                local items = {}
-                for i, l in ipairs(lines) do
-                items[i] = { text = string.format('%d:%s', i, l), bufnr = buf_id, lnum = i }
-                end
-
-                -- Start picker while scheduling setting the query
-                vim.schedule(function() MiniPick.set_picker_query(vim.split(prompt, '')) end)
-                MiniPick.start({ source = { items = items, name = 'Buffer lines' } })
-            end
-
-            -- TODO: finish this
-            -- registry.todo_comments = function( local_opts )
-            --     -- TODO: get only todo matches
-            --     local todo_items = MiniHipatterns.get_matches()
-            --     local source = { items = todo_items, name = 'Todo comments (current)' }
-            --
-            --     MiniPick.start( { source = source, } )
-            -- end
-        end
     },
 
     {
@@ -392,17 +364,20 @@ require'lazy'.setup {
     'junegunn/gv.vim',
 
     -- additional textobject keys after "a" and "i" e.g. <something>[a|i]q where q is quote text object
+    'nvim-treesitter/nvim-treesitter-textobjects',
     {
         'echasnovski/mini.ai',
-        dependencies = 'nvim-treesitter/nvim-treesitter-textobjects',
         config = function()
             local ai = require'mini.ai'
             local gen_spec = ai.gen_spec
+            local extra_ai_spec = require'mini.extra'.gen_ai_spec
             require'mini.ai'.setup({
                 custom_textobjects = {
                     F = gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
                     c = gen_spec.treesitter({ a = '@class.outer',    i = '@class.inner'    }),
                     S = gen_spec.treesitter({ a = '@block.outer',    i = '@block.inner'    }),
+                    L = extra_ai_spec.line(),
+                    -- TODO: buffer
                 },
             })
         end
@@ -673,27 +648,32 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         local bufopts = { buffer=ev.buf }
         local lspbuf = vim.lsp.buf
+        local picklsp = function( scope )
+            return function()
+                MiniExtra.pickers.lsp( { scope = scope } )
+            end
+        end
 
         -- TODO:
         -- * incoming calls
         -- * outgoing calls
 
-        make_keymap( 'n', '<leader>gD', lspbuf.declaration,             bufopts )
-        make_keymap( 'n', '<leader>i',  lspbuf.hover,                   bufopts )
+        make_keymap( 'n',    '<leader>gD', picklsp('declaration'),                        bufopts )
+        make_keymap( 'n',    '<leader>i',  lspbuf.hover,                                  bufopts )
         -- TODO: there is a bizarre bug where mapping this to <C-i> causes it to
         -- also be triggered by <Tab> in normal mode. Idk what I could have done
         -- to cause this but I don't want to fix it right now
-        -- make_keymap( 'n', '<C-i>',      lspbuf.signature_help,          bufopts )
-        make_keymap( 'n', '<leader>rn', lspbuf.rename,                  bufopts )
-        make_keymap( 'n', '<leader>ca', lspbuf.code_action,             bufopts )
-        make_keymap( 'n', '<leader>F',  function() lspbuf.format { async = true } end, bufopts )
+        -- make_keymap( 'n', '<C-i>',      lspbuf.signature_help,                         bufopts )
+        make_keymap( 'n',    '<leader>rn', lspbuf.rename,                                 bufopts )
+        make_keymap( 'n',    '<leader>ca', lspbuf.code_action,                            bufopts )
+        make_keymap( 'n',    '<leader>F',  function() lspbuf.format { async = true } end, bufopts )
 
-        make_keymap( 'n', '<leader>gr',  lspbuf.references,      bufopts )
-        make_keymap( 'n', '<leader>gd',  lspbuf.definition,      bufopts )
-        make_keymap( 'n', '<leader>gi',  lspbuf.implementation,  bufopts )
-        make_keymap( 'n', '<leader>gtd', lspbuf.type_definition, bufopts )
-        make_keymap( 'n', '<leader>co',  lspbuf.incoming_calls,  bufopts )
-        make_keymap( 'n', '<leader>ci',  lspbuf.outgoing_calls,  bufopts )
+        make_keymap( 'n', '<leader>gr',  picklsp('references'),      bufopts )
+        make_keymap( 'n', '<leader>gd',  picklsp('definition'),      bufopts )
+        make_keymap( 'n', '<leader>gi',  picklsp('implementation'),  bufopts )
+        make_keymap( 'n', '<leader>gtd', picklsp('type_definition'), bufopts )
+        make_keymap( 'n', '<leader>co',  lspbuf.incoming_calls,      bufopts )
+        make_keymap( 'n', '<leader>ci',  lspbuf.outgoing_calls,      bufopts )
     end
 })
 
@@ -780,16 +760,21 @@ make_keymap( { 'n', 'v' }, '<leader>gv', '<Cmd>GV!<CR>', {} )
 make_keymap( 'n', '<leader>gp', '<Cmd>GV --patch<CR>', {} )
 
 local builtin = MiniPick.builtin
+local extra = MiniExtra.pickers
 
 make_keymap( 'n', '<leader>ff', builtin.files, {} )
 make_keymap( 'n', '<leader>fh', builtin.help, {} )
 
 -- TODO: make cword maps use word highlighted by visual if applicable
-make_keymap( 'n', '<leader>/', '<Cmd>Pick buffer_lines<CR>',                  {} )
-make_keymap( 'n', '<leader>8', '<Cmd>Pick buffer_lines prompt="<cword>"<CR>', {} )
-make_keymap( 'n', '<leader>?', builtin.grep_live,                             {} )
-make_keymap( 'n', '<leader>*', '<Cmd>Pick grep pattern="<cword>"<CR>',        {} )
+make_keymap( 'n', '<leader>/', extra.buf_lines,                 {} )
+make_keymap( 'n', '<leader>8', '<Cmd>Pick buf_lines prompt="<cword>"<CR>', {} )
+make_keymap( 'n', '<leader>?', builtin.grep_live,                          {} )
+make_keymap( 'n', '<leader>*', '<Cmd>Pick grep pattern="<cword>"<CR>',     {} )
 
+make_keymap( '',  '<leader>fc', extra.commands )
+make_keymap( '',  '<leader>fd', extra.diagnostic )
+make_keymap( 'n', '<leader>fo', extra.options )
+make_keymap( 'n', '<leader>td', '<Cmd>Pick hipatterns highlighters={"todo" "fixme" "hack"}<CR>' )
 
 vim.opt.termguicolors  = true
 vim.opt.number         = true
@@ -809,6 +794,7 @@ vim.opt.textwidth = 80
 vim.opt.scrolloff      = 10
 vim.opt.colorcolumn    = '81'
 vim.opt.splitbelow     = true
+vim.opt.splitright     = true
 
 vim.opt.hidden         = true
 vim.opt.swapfile       = false
