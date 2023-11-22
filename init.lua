@@ -3,7 +3,6 @@
 -- wrap mapping function
 -- give all my keymaps descriptions
 -- gitsigns current hunk stuff
--- format range (see conform docs)
 -- diffview nvim or idk get good at fugitive or someth
 -- :make command for everything I need, including colorized output and error finding
 -- mappings with :map and :map! equivalents
@@ -19,10 +18,6 @@ vim.opt.shell = vim.env.HOMEBREW_PREFIX .. '/bin/fish' -- before plugin spec so 
 vim.g.zig_fmt_autosave = 0
 
 local make_keymap = vim.keymap.set
-local disjoint_tbl_extend = function( tbl1, tbl2 )
-    local result = vim.tbl_extend( 'error', tbl1, tbl2 )
-    return result
-end
 
 -- bootstrap package manager (ngl it works nice)
 local lazypath = vim.fn.stdpath( 'data' ) .. '/lazy/lazy.nvim'
@@ -41,12 +36,14 @@ vim.opt.rtp:prepend( lazypath )
 require'lazy'.setup {
     {
         'mfussenegger/nvim-dap',
+        event = 'VeryLazy',
         dependencies = {
             {
                 'mfussenegger/nvim-dap-python',
                 config = function()
-                    require'dap-python'.setup( vim.env.PYENV_ROOT .. '/shims/python3' )
+                    require'dap-python'.setup()
                 end,
+                ft = 'python',
             },
             {
                 'rcarriga/nvim-dap-ui',
@@ -149,21 +146,6 @@ require'lazy'.setup {
     },
 
     {
-        'akinsho/toggleterm.nvim',
-        opts = {
-            open_mapping = [[<c-/>]],
-            direction    = 'vertical',
-            size = function(term)
-                if term.direction == 'vertical' then
-                    return vim.o.columns / 2
-                else
-                    return 20
-                end
-            end
-        },
-    },
-
-    {
         "stevearc/dressing.nvim",
         opts = {
             input = {
@@ -236,10 +218,7 @@ require'lazy'.setup {
                 miniclue.gen_clues.z(),
 
                 -- submodes
-                { mode = 'n', keys = ']b', postkeys = ']' },
-                { mode = 'n', keys = ']w', postkeys = ']' },
-                { mode = 'n', keys = '[b', postkeys = '[' },
-                { mode = 'n', keys = '[w', postkeys = '[' },
+                -- TODO: C-w submode for windows
 
                 { mode = 'n', keys = '<leader>dd', postkeys = '<leader>d' },
                 { mode = 'n', keys = '<leader>dl', postkeys = '<leader>d' },
@@ -293,14 +272,48 @@ require'lazy'.setup {
     -- everything
     {
         'nvim-treesitter/nvim-treesitter',
-        opts  = {
-            ensure_installed = 'all',
-            -- TODO: kill when zig parser isn't piss slow
+        opts = {
+            ensure_installed = {
+                'astro',
+                'bash',
+                'c',
+                'cmake',
+                'cpp',
+                'css',
+                'csv',
+                'diff',
+                'fish',
+                'git_config',
+                'git_rebase',
+                'gitattributes',
+                'gitignore',
+                'glsl',
+                'haskell',
+                'html',
+                'javascript',
+                'jsdoc',
+                'json',
+                'json5',
+                'llvm',
+                'lua',
+                'make',
+                'markdown',
+                'markdown_inline',
+                'ron',
+                'rust',
+                'scss',
+                'toml',
+                'tsx',
+                'typescript',
+                'wgsl',
+            },
+            -- TODO: use ziglibs zig ts parser
             ignore_install = { 'zig' },
             highlight        = {
                 enable  = true,
                 disable = function( _, bufnr )
                     return vim.api.nvim_buf_line_count( bufnr ) > 1000
+
                 end,
                 additional_vim_regex_highlighting = false,
             },
@@ -377,7 +390,12 @@ require'lazy'.setup {
                     c = gen_spec.treesitter({ a = '@class.outer',    i = '@class.inner'    }),
                     S = gen_spec.treesitter({ a = '@block.outer',    i = '@block.inner'    }),
                     L = extra_ai_spec.line(),
-                    -- TODO: buffer
+                    -- TODO:
+                    --      buffer
+                    --      assignment inner
+                    --      assignment outer
+                    --      assignment lhs
+                    --      assignment rhs
                 },
             })
         end
@@ -422,27 +440,6 @@ require'lazy'.setup {
     },
 
     {
-        'echasnovski/mini.jump2d',
-        opts = { view = { n_steps_ahead = 999, }, },
-        config = function(_, opts)
-            local jump2d = require('mini.jump2d')
-
-            -- instead of jumping to arbitrary locations, jump to line starts
-            local jump_line_start = jump2d.builtin_opts.line_start
-            local final_opts = disjoint_tbl_extend( opts, {
-                spotter = jump_line_start.spotter,
-                hooks = { after_jump = jump_line_start.hooks.after_jump }
-            })
-
-            jump2d.setup( final_opts )
-
-            local jump_word_start = jump2d.builtin_opts.word_start
-            -- TODO: get this to work in operator pending mode
-            make_keymap( { 'n', 'x', }, '<S-CR>', function() jump2d.start( jump_word_start ) end, {} )
-        end,
-    },
-
-    {
         'echasnovski/mini.misc',
         config = function()
             require'mini.misc'.setup()
@@ -470,7 +467,7 @@ require'lazy'.setup {
 
     {
         'sainnhe/gruvbox-material',
-        lazy = true,
+        -- lazy = true,
         init = function()
             vim.g.gruvbox_material_foreground = 'original'
             vim.g.gruvbox_material_background = 'hard'
@@ -479,6 +476,7 @@ require'lazy'.setup {
 
     {
         'marko-cerovac/material.nvim',
+        lazy = true,
         init = function() vim.g.material_style = "deep ocean" end,
         opts = {
             plugins =
@@ -525,7 +523,10 @@ require'lazy'.setup {
     },
 
     -- jai syntax-highlighting + folds + whatever
-    { 'jansedivy/jai.vim', ft = "jai" },
+    {
+        'rluba/jai.vim',
+        init = function() vim.g.jai_compiler = vim.env.HOME .. '/thirdparty/jai/bin/jai-macos' end,
+    },
 
     {
         'zbirenbaum/copilot.lua',
@@ -536,25 +537,19 @@ require'lazy'.setup {
            },
         }
     },
-    'madox2/vim-ai',
 
     {
+        enabled = false,
         'mfussenegger/nvim-lint',
         config = function()
             local lint = require'lint'
 
             lint.linters_by_ft = {
-                javascript = { 'eslint' },
-                typescript = { 'eslint' },
+                javascript = { 'eslint_d' },
+                typescript = { 'eslint_d' },
                 bash       = { 'shellcheck' },
+                zsh        = { 'shellcheck' },
             }
-
-            vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-                pattern = { "*.js", "*.ts", "*.jsx", "*.*js", "*.tsx", "*.sh", "*.bash" },
-                callback = function()
-                    lint.try_lint()
-                end,
-            })
         end
     },
 
@@ -563,10 +558,14 @@ require'lazy'.setup {
         opts = {
             formatters_by_ft = {
                 javascript = { { "prettierd", "prettier" } },
+                json       = { { "prettierd", "prettier" } },
                 rust       = { { "rustfmt" } },
                 zig        = { { "zigfmt" } },
             }
         },
+        init = function()
+            make_keymap( { 'n', 'x' }, '<leader>F', function() require'conform'.format { async = true, lsp_fallback = true, } end )
+        end
     },
 
     {
@@ -647,26 +646,19 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
 
         local bufopts = { buffer=ev.buf }
-        local lspbuf = vim.lsp.buf
+        local lsp = vim.lsp
+        local lspbuf = lsp.buf
         local picklsp = function( scope )
             return function()
                 MiniExtra.pickers.lsp( { scope = scope } )
             end
         end
 
-        -- TODO:
-        -- * incoming calls
-        -- * outgoing calls
-
-        make_keymap( 'n',    '<leader>gD', picklsp('declaration'),                        bufopts )
-        make_keymap( 'n',    '<leader>i',  lspbuf.hover,                                  bufopts )
-        -- TODO: there is a bizarre bug where mapping this to <C-i> causes it to
-        -- also be triggered by <Tab> in normal mode. Idk what I could have done
-        -- to cause this but I don't want to fix it right now
-        -- make_keymap( 'n', '<C-i>',      lspbuf.signature_help,                         bufopts )
-        make_keymap( 'n',    '<leader>rn', lspbuf.rename,                                 bufopts )
-        make_keymap( 'n',    '<leader>ca', lspbuf.code_action,                            bufopts )
-        make_keymap( 'n',    '<leader>F',  function() lspbuf.format { async = true } end, bufopts )
+        make_keymap( 'n', '<leader>gD', picklsp('declaration'), bufopts )
+        make_keymap( 'n', '<leader>i',  lspbuf.hover,           bufopts )
+        -- make_keymap( 'n', '<C-i>',      lspbuf.signature_help,  bufopts )
+        make_keymap( 'n', '<leader>rn', lspbuf.rename,          bufopts )
+        make_keymap( 'n', '<leader>ca', lspbuf.code_action,     bufopts )
 
         make_keymap( 'n', '<leader>gr',  picklsp('references'),      bufopts )
         make_keymap( 'n', '<leader>gd',  picklsp('definition'),      bufopts )
@@ -674,6 +666,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
         make_keymap( 'n', '<leader>gtd', picklsp('type_definition'), bufopts )
         make_keymap( 'n', '<leader>co',  lspbuf.incoming_calls,      bufopts )
         make_keymap( 'n', '<leader>ci',  lspbuf.outgoing_calls,      bufopts )
+
+        local inlay_hints = lsp.inlay_hint.enable
+        inlay_hints( ev.buf, true )
+        make_keymap( 'n', '<leader>h', function() inlay_hints( ev.buf, nil ) end, bufopts )
     end
 })
 
@@ -780,7 +776,6 @@ vim.opt.termguicolors  = true
 vim.opt.number         = true
 vim.opt.relativenumber = true
 
-vim.opt.tabstop     = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth  = 4
 vim.opt.expandtab   = true
@@ -789,7 +784,6 @@ vim.opt.cindent     = true
 vim.opt.breakindent = true
 vim.opt.linebreak   = true
 vim.opt.formatoptions = vim.opt.formatoptions:append( 'jcqrn' ) -- NOTE: formatting can be done manually with gq{textobj}
-vim.opt.textwidth = 80
 
 vim.opt.scrolloff      = 10
 vim.opt.colorcolumn    = '81'
@@ -846,22 +840,22 @@ end , {} )
 vim.cmd[[
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
 
-    autocmd Filetype * set formatoptions-=to formatoptions+=j
+    autocmd BufWritePost javascript,typescript,javascriptreact,typescriptreact,bash,zsh lua require'lint'.try_lint()
 
-    autocmd Filetype *.wgsl set filetype=wgsl
-
-    autocmd Filetype *.zon set filetype=zig
+    autocmd Filetype * setlocal formatoptions+=to formatoptions-=j
 
     autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
     " turn on spellcheck for plain text stuff
     autocmd Filetype text,markdown,gitcommit setlocal spell
 
-    autocmd Filetype jai,wgsl setlocal commentstring=//\ %s
+    autocmd Filetype gitcommit lua vim.b.minitrailspace_disable = true
+
+    autocmd Filetype wgsl setlocal commentstring=//\ %s
 
     autocmd FileType DressingInput lua vim.b.minicompletion_disable = true
 
-    " colorscheme gruvbox-material
-    colorscheme material
+    colorscheme gruvbox-material
+    " colorscheme material
 ]]
 
