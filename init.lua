@@ -90,7 +90,8 @@ require'lazy'.setup {
 
             dap.adapters.lldb = {
                 type    = 'executable',
-                command = vim.trim(vim.fn.system('brew --prefix llvm')) .. '/bin/lldb-vscode',
+                -- NOTE: can compute this with brew --prefix llvm but it take's 100 ms...
+                command = '/opt/homebrew/opt/llvm/bin/lldb-vscode',
                 name    = 'lldb'
             }
 
@@ -168,10 +169,10 @@ require'lazy'.setup {
             local hi_words = require'mini.extra'.gen_highlighter.words
             hipatterns.setup({
                 highlighters = {
-                    todo  = hi_words({ 'TODO',  'REVIEW', 'INCOMPLETE' }, 'MiniHipatternsTodo' ),
-                    fixme = hi_words({ 'FIXME', 'BUG',                 }, 'MiniHipatternsFixme'),
-                    note  = hi_words({ 'NOTE',  'INFO',                }, 'MiniHipatternsNote' ),
-                    hack  = hi_words({ 'HACK',  'XXX',                 }, 'MiniHipatternsHack' ),
+                    todo  = hi_words({ 'TODO',  'REVIEW', 'INCOMPLETE'  }, 'MiniHipatternsTodo' ),
+                    fixme = hi_words({ 'FIXME', 'BUG',    'ROBUSTNESS', }, 'MiniHipatternsFixme'),
+                    note  = hi_words({ 'NOTE',  'INFO',                 }, 'MiniHipatternsNote' ),
+                    hack  = hi_words({ 'HACK',  'XXX',                  }, 'MiniHipatternsHack' ),
 
                     hex_color = hipatterns.gen_highlighter.hex_color(),
                 },
@@ -309,14 +310,6 @@ require'lazy'.setup {
             },
             -- TODO: use ziglibs zig ts parser
             ignore_install = { 'zig' },
-            highlight        = {
-                enable  = true,
-                disable = function( _, bufnr )
-                    return vim.api.nvim_buf_line_count( bufnr ) > 1000
-
-                end,
-                additional_vim_regex_highlighting = false,
-            },
             indent = { enable = true, },
         },
         dependencies = {
@@ -332,13 +325,19 @@ require'lazy'.setup {
         main  = 'nvim-treesitter.configs',
         init  = function()
             -- set foldmethod to treesitter if parser is available
-            vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
+            vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
             vim.api.nvim_create_autocmd("Filetype", {
                 callback = function()
+                    if not require"nvim-treesitter.parsers".has_parser() or vim.api.nvim_buf_line_count(0) > 1000 then
+                        vim.wo.foldmethod = 'indent'
+                        return
+                    end
+
+                    vim.wo.foldmethod = 'expr'
+                    vim.treesitter.start()
+
                     -- TODO: fold text highlighting w/ vim.wo.foldtext
-                    vim.wo.foldmethod =
-                        require"nvim-treesitter.parsers".has_parser()
-                            and 'expr' or 'indent'
+                    -- vim.wo.foldtext = 'v:lua.vim.treesitter.foldtext()'
                 end,
             })
         end,
@@ -539,21 +538,6 @@ require'lazy'.setup {
     },
 
     {
-        enabled = false,
-        'mfussenegger/nvim-lint',
-        config = function()
-            local lint = require'lint'
-
-            lint.linters_by_ft = {
-                javascript = { 'eslint_d' },
-                typescript = { 'eslint_d' },
-                bash       = { 'shellcheck' },
-                zsh        = { 'shellcheck' },
-            }
-        end
-    },
-
-    {
         'stevearc/conform.nvim',
         opts = {
             formatters_by_ft = {
@@ -598,23 +582,24 @@ require'lazy'.setup {
         config = function()
             local lspconfig = require'lspconfig'
             for _, server in pairs({
-                -- 'asm_lsp',
-                'astro', -- NOTE: must add typescript and astro-prettier-plugin as devDependencies for this to work
+                'asm_lsp',
+                'astro', -- NOTE: must add prettier and astro-prettier-plugin as dev dependencies for this to work
                 'bashls',
                 'clangd',
-                -- 'cmake',
+                'cmake',
                 'cssls',
                 'cssmodules_ls',
-                -- 'elmls',
-                'html',
+                'eslint',
                 'hls',
+                'html',
+                'jsonls',
                 'lua_ls',
-                'rust_analyzer',
-                'vtsls',
-                'pyright',
                 'prismals',
+                'pyright',
+                'rust_analyzer',
                 'tailwindcss',
                 'vimls',
+                'vtsls',
                 'zls',
             }) do
                 lspconfig[server].setup{}
@@ -656,7 +641,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         make_keymap( 'n', '<leader>gD', picklsp('declaration'), bufopts )
         make_keymap( 'n', '<leader>i',  lspbuf.hover,           bufopts )
-        -- make_keymap( 'n', '<C-i>',      lspbuf.signature_help,  bufopts )
+        make_keymap( 'n', '<C-i>',      lspbuf.signature_help,  bufopts )
         make_keymap( 'n', '<leader>rn', lspbuf.rename,          bufopts )
         make_keymap( 'n', '<leader>ca', lspbuf.code_action,     bufopts )
 
@@ -855,7 +840,7 @@ vim.cmd[[
 
     autocmd FileType DressingInput lua vim.b.minicompletion_disable = true
 
-    colorscheme gruvbox-material
-    " colorscheme material
+    " colorscheme gruvbox-material
+    colorscheme material
 ]]
 
