@@ -36,7 +36,6 @@ vim.opt.rtp:prepend( lazypath )
 require'lazy'.setup {
     {
         'mfussenegger/nvim-dap',
-        event = 'VeryLazy',
         dependencies = {
             {
                 'mfussenegger/nvim-dap-python',
@@ -152,7 +151,7 @@ require'lazy'.setup {
             input = {
                 insert_only     = false,
                 start_in_insert = false,
-            }
+            },
         },
     },
 
@@ -356,6 +355,11 @@ require'lazy'.setup {
     },
 
     {
+        'echasnovski/mini.visits',
+        opts = {},
+    },
+
+    {
         'echasnovski/mini.statusline',
         config = true
     },
@@ -383,7 +387,7 @@ require'lazy'.setup {
             local ai = require'mini.ai'
             local gen_spec = ai.gen_spec
             local extra_ai_spec = require'mini.extra'.gen_ai_spec
-            require'mini.ai'.setup({
+            ai.setup({
                 custom_textobjects = {
                     F = gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
                     c = gen_spec.treesitter({ a = '@class.outer',    i = '@class.inner'    }),
@@ -533,8 +537,9 @@ require'lazy'.setup {
             suggestion = {
                 auto_trigger = true,
                 debounce     = 0,
-           },
-        }
+            },
+            filetypes = { DressingInput = false, },
+        },
     },
 
     {
@@ -605,6 +610,39 @@ require'lazy'.setup {
                 lspconfig[server].setup{}
             end
         end,
+        init = function()
+            vim.api.nvim_create_autocmd('LspAttach', {
+                callback = function( ev )
+                    vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+
+                    local bufopts = { buffer = ev.buf }
+                    local lsp     = vim.lsp
+                    local lspbuf  = lsp.buf
+                    local picklsp = function( scope )
+                        return function()
+                            MiniExtra.pickers.lsp( { scope = scope } )
+                        end
+                    end
+
+                    make_keymap( 'n', '<leader>gD', picklsp('declaration'), bufopts )
+                    make_keymap( 'n', '<leader>i',  lspbuf.hover,           bufopts )
+                    make_keymap( 'n', '<C-i>',      lspbuf.signature_help,  bufopts )
+                    make_keymap( 'n', '<leader>rn', lspbuf.rename,          bufopts )
+                    make_keymap( 'n', '<leader>ca', lspbuf.code_action,     bufopts )
+
+                    make_keymap( 'n', '<leader>gr',  picklsp('references'),      bufopts )
+                    make_keymap( 'n', '<leader>gd',  picklsp('definition'),      bufopts )
+                    make_keymap( 'n', '<leader>gi',  picklsp('implementation'),  bufopts )
+                    make_keymap( 'n', '<leader>gtd', picklsp('type_definition'), bufopts )
+                    make_keymap( 'n', '<leader>co',  lspbuf.incoming_calls,      bufopts )
+                    make_keymap( 'n', '<leader>ci',  lspbuf.outgoing_calls,      bufopts )
+
+                    local inlay_hints = lsp.inlay_hint.enable
+                    inlay_hints( ev.buf, true )
+                    make_keymap( 'n', '<leader>h', function() inlay_hints( ev.buf, nil ) end, bufopts )
+                end
+            })
+        end,
     },
 
 }
@@ -625,38 +663,6 @@ make_keymap( 'n', '<leader>cc', vim.cmd.bd,   opts )
 make_keymap( 'n', '<leader>cw', '<C-w><C-q>', opts )
 make_keymap( '', '<C-l>', 'g$', opts )
 make_keymap( '', '<C-h>', 'g^', opts )
-
-vim.api.nvim_create_autocmd('LspAttach', {
-    callback = function( ev )
-        vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
-
-        local bufopts = { buffer=ev.buf }
-        local lsp = vim.lsp
-        local lspbuf = lsp.buf
-        local picklsp = function( scope )
-            return function()
-                MiniExtra.pickers.lsp( { scope = scope } )
-            end
-        end
-
-        make_keymap( 'n', '<leader>gD', picklsp('declaration'), bufopts )
-        make_keymap( 'n', '<leader>i',  lspbuf.hover,           bufopts )
-        make_keymap( 'n', '<C-i>',      lspbuf.signature_help,  bufopts )
-        make_keymap( 'n', '<leader>rn', lspbuf.rename,          bufopts )
-        make_keymap( 'n', '<leader>ca', lspbuf.code_action,     bufopts )
-
-        make_keymap( 'n', '<leader>gr',  picklsp('references'),      bufopts )
-        make_keymap( 'n', '<leader>gd',  picklsp('definition'),      bufopts )
-        make_keymap( 'n', '<leader>gi',  picklsp('implementation'),  bufopts )
-        make_keymap( 'n', '<leader>gtd', picklsp('type_definition'), bufopts )
-        make_keymap( 'n', '<leader>co',  lspbuf.incoming_calls,      bufopts )
-        make_keymap( 'n', '<leader>ci',  lspbuf.outgoing_calls,      bufopts )
-
-        local inlay_hints = lsp.inlay_hint.enable
-        inlay_hints( ev.buf, true )
-        make_keymap( 'n', '<leader>h', function() inlay_hints( ev.buf, nil ) end, bufopts )
-    end
-})
 
 -- c-z to correct last misspelled word
 -- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
@@ -743,8 +749,11 @@ make_keymap( 'n', '<leader>gp', '<Cmd>GV --patch<CR>', {} )
 local builtin = MiniPick.builtin
 local extra = MiniExtra.pickers
 
-make_keymap( 'n', '<leader>ff', builtin.files, {} )
-make_keymap( 'n', '<leader>fh', builtin.help, {} )
+make_keymap( 'n', '<leader>ff', builtin.files,   {} )
+make_keymap( 'n', '<leader>gg', extra.git_files, {} )
+make_keymap( 'n', '<leader>fh', builtin.help,    {} )
+
+make_keymap( 'n', '<leader>rr', MiniVisits.select_path, {} )
 
 -- TODO: make cword maps use word highlighted by visual if applicable
 make_keymap( 'n', '<leader>/', extra.buf_lines,                 {} )
@@ -820,25 +829,19 @@ make_keymap( 'n', '<leader>l', function()
     MiniComment.toggle_lines( linenum, linenum )
 end , {} )
 
--- run all vimscript stuffs
--- TODO: factor this out into lua
 vim.cmd[[
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
 
-    autocmd BufWritePost javascript,typescript,javascriptreact,typescriptreact,bash,zsh lua require'lint'.try_lint()
-
-    autocmd Filetype * setlocal formatoptions+=to formatoptions-=j
+    autocmd Filetype * setlocal formatoptions+=o formatoptions-=jt
 
     autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
     " turn on spellcheck for plain text stuff
     autocmd Filetype text,markdown,gitcommit setlocal spell
 
-    autocmd Filetype gitcommit lua vim.b.minitrailspace_disable = true
-
     autocmd Filetype wgsl setlocal commentstring=//\ %s
 
-    autocmd FileType DressingInput lua vim.b.minicompletion_disable = true
+    autocmd FileType DressingInput,gitcommit let b:minicompletion_disable = v:true | let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
 
     " colorscheme gruvbox-material
     colorscheme material
