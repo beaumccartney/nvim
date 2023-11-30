@@ -777,7 +777,6 @@ vim.opt.smarttab    = true
 vim.opt.cindent     = true
 vim.opt.breakindent = true
 vim.opt.linebreak   = true
-vim.opt.formatoptions = vim.opt.formatoptions:append( 'jcqrn' ) -- NOTE: formatting can be done manually with gq{textobj}
 
 vim.opt.scrolloff      = 10
 vim.opt.colorcolumn    = '81'
@@ -832,7 +831,7 @@ end , {} )
 vim.cmd[[
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
 
-    autocmd Filetype * setlocal formatoptions+=o formatoptions-=jt
+    autocmd Filetype * setlocal formatoptions+=jcqrno formatoptions-=t
 
     autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
