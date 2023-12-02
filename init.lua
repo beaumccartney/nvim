@@ -327,13 +327,21 @@ require'lazy'.setup {
             vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
             vim.api.nvim_create_autocmd("Filetype", {
                 callback = function()
-                    if not require"nvim-treesitter.parsers".has_parser() or vim.api.nvim_buf_line_count(0) > 1000 then
+                    if not require"nvim-treesitter.parsers".has_parser()  then
                         vim.wo.foldmethod = 'indent'
                         return
                     end
 
                     vim.wo.foldmethod = 'expr'
-                    vim.treesitter.start()
+
+                    -- don't use fo-n, just indent with treesitter
+                    vim.bo.autoindent  = false
+                    vim.bo.smartindent = false
+                    vim.bo.cindent     = false
+
+                    if vim.api.nvim_buf_line_count(0) < 1024 then
+                        vim.treesitter.start()
+                    end
 
                     -- TODO: fold text highlighting w/ vim.wo.foldtext
                     -- vim.wo.foldtext = 'v:lua.vim.treesitter.foldtext()'
@@ -756,8 +764,9 @@ make_keymap( 'n', '<leader>fh', builtin.help,    {} )
 make_keymap( 'n', '<leader>rr', MiniVisits.select_path, {} )
 
 -- TODO: make cword maps use word highlighted by visual if applicable
+-- TODO: leader-8 find cword in the current buffer
 make_keymap( 'n', '<leader>/', extra.buf_lines,                 {} )
-make_keymap( 'n', '<leader>8', '<Cmd>Pick buf_lines prompt="<cword>"<CR>', {} )
+-- make_keymap( 'n', '<leader>8', '<Cmd>Pick buf_lines prompt="<cword>"<CR>', {} )
 make_keymap( 'n', '<leader>?', builtin.grep_live,                          {} )
 make_keymap( 'n', '<leader>*', '<Cmd>Pick grep pattern="<cword>"<CR>',     {} )
 
@@ -835,8 +844,7 @@ vim.cmd[[
 
     autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
-    " turn on spellcheck for plain text stuff
-    autocmd Filetype text,markdown,gitcommit setlocal spell
+    autocmd Filetype text,markdown,gitcommit setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
 
     autocmd Filetype wgsl setlocal commentstring=//\ %s
 
