@@ -49,6 +49,7 @@
   "nvim-ts-context-commentstring": { "branch": "main", "commit": "b8ff464f2afc2000f6c72fa331a8fc090cb46b39" },
   "nvim-web-devicons": { "branch": "master", "commit": "5efb8bd06841f91f97c90e16de85e96d57e9c862" },
   "rainbow-delimiters.nvim": { "branch": "master", "commit": "47404636a34580db1636dc0cf35027bdf77abba5" },
+  "roc.vim": { "branch": "master", "commit": "a4b2edc029b349f05221249a6ab922d2787d2962" },
   "vim-fugitive": { "branch": "master", "commit": "46eaf8918b347906789df296143117774e827616" },
   "vim-visual-multi": { "branch": "master", "commit": "aec289a9fdabaa0ee6087d044d75b32e12084344" }
 }

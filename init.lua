@@ -538,6 +538,7 @@ require'lazy'.setup {
         'rluba/jai.vim',
         init = function() vim.g.jai_compiler = vim.env.HOME .. '/thirdparty/jai/bin/jai-macos' end,
     },
+    'ChrisWellsWood/roc.vim',
 
     {
         'zbirenbaum/copilot.lua',
@@ -658,7 +659,7 @@ require'lazy'.setup {
 
                     make_keymap( 'n', '<leader>gD', picklsp('declaration'), bufopts )
                     make_keymap( 'n', '<leader>i',  lspbuf.hover,           bufopts )
-                    make_keymap( 'n', '<C-i>',      lspbuf.signature_help,  bufopts )
+                    -- make_keymap( 'n', '<C-i>',      lspbuf.signature_help,  bufopts )
                     make_keymap( 'n', '<leader>rn', lspbuf.rename,          bufopts )
                     make_keymap( 'n', '<leader>ca', lspbuf.code_action,     bufopts )
 
@@ -803,13 +804,14 @@ vim.opt.termguicolors  = true
 vim.opt.number         = true
 vim.opt.relativenumber = true
 
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth  = 4
-vim.opt.expandtab   = true
-vim.opt.smarttab    = true
-vim.opt.cindent     = true
-vim.opt.breakindent = true
-vim.opt.linebreak   = true
+vim.opt.softtabstop    = 4
+vim.opt.shiftwidth     = 4
+vim.opt.expandtab      = true
+vim.opt.smarttab       = true
+vim.opt.cindent        = true
+vim.opt.breakindent    = true
+vim.opt.breakindentopt = 'list:-1'
+vim.opt.linebreak      = true
 
 vim.opt.scrolloff      = 10
 vim.opt.colorcolumn    = '81'
