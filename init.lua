@@ -617,6 +617,30 @@ require'lazy'.setup {
             }) do
                 lspconfig[server].setup{}
             end
+
+            local configs = require'lspconfig.configs'
+
+            if configs.jails then error("Jails config exists") end
+
+            local util = lspconfig.util
+            configs.jails = {
+                default_config = {
+                    cmd                 = { 'jails', },
+                    filetypes           = { 'jai', },
+                    single_file_support = true,
+                    root_dir            = function( fname )
+                        return util.root_pattern(unpack({
+                            'build.jai',
+                            'first.jai',
+                            'jails.json',
+                        }))(fname) or util.find_git_ancestor(fname)
+
+                        -- HACK: jails crashes if I don't put this - lspconfig docs tell me explicitly to NOT do this
+                        or util.path.dirname(fname)
+                    end,
+                },
+            }
+            lspconfig.jails.setup{}
         end,
         init = function()
             vim.api.nvim_create_autocmd('LspAttach', {
