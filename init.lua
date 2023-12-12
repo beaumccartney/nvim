@@ -90,7 +90,7 @@ require'lazy'.setup {
             dap.adapters.lldb = {
                 type    = 'executable',
                 -- NOTE: can compute this with brew --prefix llvm but it take's 100 ms...
-                command = '/opt/homebrew/opt/llvm/bin/lldb-vscode',
+                command = 'lldb-vscode',
                 name    = 'lldb'
             }
 
@@ -339,11 +339,12 @@ require'lazy'.setup {
                     vim.bo.smartindent = false
                     vim.bo.cindent     = false
 
-                    if vim.api.nvim_buf_line_count(0) < 1024 then
-                        vim.treesitter.start()
-                    end
+                    -- TODO: if longest line in buffer is too long kill
+                    if vim.api.nvim_buf_line_count(0) > 1024 then return end
+                    vim.treesitter.start()
 
                     -- TODO: fold text highlighting w/ vim.wo.foldtext
+                    -- see source for foldtext() (the vimscript function)
                     -- vim.wo.foldtext = 'v:lua.vim.treesitter.foldtext()'
                 end,
             })
@@ -596,23 +597,17 @@ require'lazy'.setup {
         config = function()
             local lspconfig = require'lspconfig'
             for _, server in pairs({
-                'asm_lsp',
                 'astro', -- NOTE: must add prettier and astro-prettier-plugin as dev dependencies for this to work
                 'bashls',
                 'clangd',
-                'cmake',
                 'cssls',
-                'cssmodules_ls',
                 'eslint',
                 'hls',
                 'html',
                 'jsonls',
                 'lua_ls',
-                'prismals',
                 'pyright',
                 'rust_analyzer',
-                'tailwindcss',
-                'vimls',
                 'vtsls',
                 'zls',
             }) do
@@ -670,9 +665,12 @@ require'lazy'.setup {
                     make_keymap( 'n', '<leader>co',  lspbuf.incoming_calls,      bufopts )
                     make_keymap( 'n', '<leader>ci',  lspbuf.outgoing_calls,      bufopts )
 
-                    local inlay_hints = lsp.inlay_hint.enable
-                    inlay_hints( ev.buf, true )
-                    make_keymap( 'n', '<leader>h', function() inlay_hints( ev.buf, nil ) end, bufopts )
+                    local inlay_hint = lsp.inlay_hint
+                    inlay_hint.enable( ev.buf, true )
+                    make_keymap( 'n', '<leader>h', function()
+                        local enabled = inlay_hint.is_enabled( ev.buf )
+                        inlay_hint.enable( ev.buf, not enabled )
+                    end, bufopts )
                 end
             })
         end,
@@ -871,6 +869,7 @@ vim.cmd[[
     autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
     autocmd Filetype text,markdown,gitcommit setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
+    autocmd BufEnter * lua pcall(require'mini.misc'.use_nested_comments)
 
     autocmd Filetype wgsl setlocal commentstring=//\ %s
 
