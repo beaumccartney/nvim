@@ -90,6 +90,7 @@ require'lazy'.setup {
     },
 
     {
+        enabled = false,
         'echasnovski/mini.clue',
         opts = {
             triggers = {
@@ -137,9 +138,9 @@ require'lazy'.setup {
         opts = {
             options = {
                 custom_commentstring = function()
-                    return require('ts_context_commentstring.internal').calculate_commentstring() or vim.bo.commentstring
+                    return require'ts_context_commentstring'.calculate_commentstring() or vim.bo.commentstring
                 end,
-            }
+            },
         },
     },
 
@@ -210,7 +211,11 @@ require'lazy'.setup {
         },
         dependencies = {
             'nvim-treesitter/nvim-treesitter-textobjects',
-            'JoosepAlviste/nvim-ts-context-commentstring',
+            {
+                'JoosepAlviste/nvim-ts-context-commentstring',
+                opts = { languages = { cpp = '// %s', }, },
+                init = function() vim.g.skip_ts_context_commentstring_module = true end,
+            },
             'HiPhish/rainbow-delimiters.nvim',
             {
                 'nvim-treesitter/nvim-treesitter-context',
@@ -263,6 +268,17 @@ require'lazy'.setup {
     {
         'echasnovski/mini.visits',
         opts = {},
+        init = function()
+            vim.api.nvim_create_autocmd( 'BufReadPre', {
+                callback = function(args)
+                    local currentDir = vim.fn.getcwd()
+                    local bufDir     = vim.fn.fnamemodify( args.file, ':p:h' )
+                    if not vim.startswith( bufDir, currentDir ) then
+                        vim.b.minivisits_disable = true
+                    end
+                end,
+            })
+        end,
     },
 
     {
@@ -336,6 +352,19 @@ require'lazy'.setup {
         'echasnovski/mini.files',
         dependencies = 'nvim-tree/nvim-web-devicons',
         opts = { windows = { preview = true, }, },
+        init = function()
+            make_keymap( 'n', '<leader>fe', function()
+                local buf = vim.api.nvim_buf_get_name( 0 )
+
+                local file = io.open( buf ) and buf or vim.fs.dirname( buf )
+
+                MiniFiles.open( file )
+            end, {} )
+
+            make_keymap( 'n', '<leader>f~', function()
+                MiniFiles.open( vim.env.HOME )
+            end, {} )
+        end
     },
 
     {
@@ -388,9 +417,7 @@ require'lazy'.setup {
         lazy = true,
         init = function() vim.g.material_style = "deep ocean" end,
         opts = {
-            plugins =
-            {
-                -- Available plugins:
+            plugins = {
                 "gitsigns",
                 "indent-blankline",
                 "mini",
@@ -399,9 +426,6 @@ require'lazy'.setup {
             },
         }
     },
-
-    { "bluz71/vim-nightfly-colors", name = "nightfly", lazy = true },
-    { "bluz71/vim-moonfly-colors",  name = "moonfly",  lazy = true },
 
     {
         "lukas-reineke/indent-blankline.nvim",
@@ -433,7 +457,7 @@ require'lazy'.setup {
 
     -- jai syntax-highlighting + folds + whatever
     {
-        'rluba/jai.vim',
+        'puremourning/jai.vim',
         init = function() vim.g.jai_compiler = vim.env.HOME .. '/thirdparty/jai/bin/jai-macos' end,
     },
     'ChrisWellsWood/roc.vim',
@@ -563,7 +587,6 @@ require'lazy'.setup {
                     make_keymap( 'n', '<leader>ci',  lspbuf.outgoing_calls,      bufopts )
 
                     local inlay_hint = lsp.inlay_hint
-                    inlay_hint.enable( ev.buf, true )
                     make_keymap( 'n', '<leader>h', function()
                         local enabled = inlay_hint.is_enabled( ev.buf )
                         inlay_hint.enable( ev.buf, not enabled )
@@ -580,8 +603,18 @@ require'lazy'.setup {
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
 
-make_keymap( 'n', '<leader>e', vim.diagnostic.open_float, opts )
-make_keymap( 'n', '<leader>q', vim.diagnostic.setloclist, opts )
+local diagnostic = vim.diagnostic
+make_keymap( 'n', '<leader>e', diagnostic.open_float, opts )
+make_keymap( 'n', '<leader>q', diagnostic.setloclist, opts )
+
+diagnostic.disable()
+make_keymap( 'n', '<leader>d', function()
+    if diagnostic.is_disabled() then
+        diagnostic.enable()
+    else
+        diagnostic.disable()
+    end
+end, opts )
 
 -- keymaps for built in things
 make_keymap( '',  '<C-s>', vim.cmd.update, {} ) -- save file
@@ -656,14 +689,6 @@ make_keymap( 'n', 'k', '<Plug>(accelerated_jk_gk)', {} )
 
 make_keymap( 'v', 'j', 'gj', {} )
 make_keymap( 'v', 'k', 'gk', {} )
-
-make_keymap( 'n', '<leader>fe', function()
-    local buf = vim.api.nvim_buf_get_name( 0 )
-
-    local file = io.open( buf ) and buf or vim.fs.dirname( buf )
-
-    MiniFiles.open( file )
-end, {} )
 
 make_keymap( 'n', 'M', MiniMisc.zoom, {} )
 
@@ -765,7 +790,7 @@ vim.cmd[[
 
     autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
-    autocmd Filetype text,markdown,gitcommit setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
+    autocmd Filetype text,markdown,git,gitcommit setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
     autocmd BufEnter * lua pcall(require'mini.misc'.use_nested_comments)
 
     autocmd Filetype wgsl setlocal commentstring=//\ %s
