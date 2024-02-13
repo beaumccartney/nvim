@@ -90,50 +90,6 @@ require'lazy'.setup {
     },
 
     {
-        enabled = false,
-        'echasnovski/mini.clue',
-        opts = {
-            triggers = {
-                -- TODO: hunt through all maps in all modes and put triggers here
-                { mode = 'n', keys = '<Leader>' },
-                { mode = 'x', keys = '<Leader>' },
-
-                { mode = 'n', keys = '[' },
-                { mode = 'x', keys = '[' },
-                { mode = 'o', keys = '[' },
-                { mode = 'n', keys = ']' },
-                { mode = 'x', keys = ']' },
-                { mode = 'o', keys = ']' },
-
-                { mode = 'n', keys = 'g' },
-                { mode = 'x', keys = 'g' },
-                { mode = 'o', keys = 'g' },
-
-                { mode = 'n', keys = '<C-w>' },
-
-                { mode = 'n', keys = 'z' },
-                { mode = 'x', keys = 'z' },
-            },
-            window = { delay = 0, },
-        },
-        config = function(_, opts)
-            local miniclue = require'mini.clue'
-
-            local clues = {
-                miniclue.gen_clues.g(),
-                miniclue.gen_clues.windows(),
-                miniclue.gen_clues.z(),
-
-                -- submodes
-                -- TODO: C-w submode for windows
-            }
-
-            local final_opts = vim.tbl_deep_extend( 'error', opts, { clues = clues } )
-            miniclue.setup( final_opts )
-        end
-    },
-
-    {
         'echasnovski/mini.comment',
         opts = {
             options = {
@@ -794,6 +750,8 @@ vim.cmd[[
     autocmd BufEnter * lua pcall(require'mini.misc'.use_nested_comments)
 
     autocmd Filetype wgsl setlocal commentstring=//\ %s
+
+    autocmd BufNewFile,BufRead *.mdpp set filetype=markdown
 
     autocmd FileType DressingInput,gitcommit let b:minicompletion_disable = v:true | let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
 
