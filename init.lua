@@ -123,6 +123,11 @@ require'lazy'.setup {
         config = true,
     },
 
+    {
+        'echasnovski/mini.notify',
+        config = true,
+    },
+
     -- everything
     {
         'nvim-treesitter/nvim-treesitter',
