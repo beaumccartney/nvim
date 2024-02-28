@@ -97,6 +97,7 @@ require'lazy'.setup {
                     return require'ts_context_commentstring'.calculate_commentstring() or vim.bo.commentstring
                 end,
             },
+            mappings = { textobject = 'ic', },
         },
     },
 
