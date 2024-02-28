@@ -488,6 +488,7 @@ require'lazy'.setup {
                 'html',
                 'jsonls',
                 'lua_ls',
+                'ols',
                 'pyright',
                 'rust_analyzer',
                 'vtsls',
