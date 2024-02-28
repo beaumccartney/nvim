@@ -335,7 +335,7 @@ require'lazy'.setup {
 
     {
         'echasnovski/mini.jump',
-        opts = { delay = { highlight = 0 }, },
+        opts = {},
     },
 
     {
