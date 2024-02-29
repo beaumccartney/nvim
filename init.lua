@@ -191,7 +191,7 @@ require'lazy'.setup {
             vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
             vim.api.nvim_create_autocmd("Filetype", {
                 callback = function()
-                    if not require"nvim-treesitter.parsers".has_parser()  then
+                    if not require"nvim-treesitter.parsers".has_parser() then
                         vim.wo.foldmethod = 'indent'
                         return
                     end
@@ -489,7 +489,6 @@ require'lazy'.setup {
                 'html',
                 'jsonls',
                 'lua_ls',
-                'ols',
                 'pyright',
                 'rust_analyzer',
                 'vtsls',
@@ -497,6 +496,13 @@ require'lazy'.setup {
             }) do
                 lspconfig[server].setup{}
             end
+            lspconfig.ols.setup {
+                init_options = {
+                    enable_snippets          = false,
+                    enable_procedure_snippet = false,
+                    enable_inlay_hints       = true,
+                },
+            }
 
             local configs = require'lspconfig.configs'
 
