@@ -552,6 +552,7 @@ require'lazy'.setup {
                     make_keymap( 'n', '<leader>gd',  picklsp('definition'),      bufopts )
                     make_keymap( 'n', '<leader>gi',  picklsp('implementation'),  bufopts )
                     make_keymap( 'n', '<leader>gtd', picklsp('type_definition'), bufopts )
+                    make_keymap( 'n', '<leader>fs',  picklsp('document_symbol'), bufopts )
                     make_keymap( 'n', '<leader>co',  lspbuf.incoming_calls,      bufopts )
                     make_keymap( 'n', '<leader>ci',  lspbuf.outgoing_calls,      bufopts )
 
