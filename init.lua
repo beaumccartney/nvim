@@ -74,10 +74,10 @@ require'lazy'.setup {
             local hi_words = require'mini.extra'.gen_highlighter.words
             hipatterns.setup({
                 highlighters = {
-                    todo  = hi_words({ 'TODO',  'REVIEW', 'INCOMPLETE'  }, 'MiniHipatternsTodo' ),
-                    fixme = hi_words({ 'FIXME', 'BUG',    'ROBUSTNESS', }, 'MiniHipatternsFixme'),
-                    note  = hi_words({ 'NOTE',  'INFO',                 }, 'MiniHipatternsNote' ),
-                    hack  = hi_words({ 'HACK',  'XXX',                  }, 'MiniHipatternsHack' ),
+                    todo  = hi_words({ 'TODO',  'REVIEW', 'INCOMPLETE'           }, 'MiniHipatternsTodo' ),
+                    fixme = hi_words({ 'FIXME', 'BUG',    'ROBUSTNESS', 'CRASH', }, 'MiniHipatternsFixme'),
+                    note  = hi_words({ 'NOTE',  'INFO',                          }, 'MiniHipatternsNote' ),
+                    hack  = hi_words({ 'HACK',  'XXX',                           }, 'MiniHipatternsHack' ),
 
                     hex_color = hipatterns.gen_highlighter.hex_color(),
                 },
