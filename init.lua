@@ -594,10 +594,9 @@ make_keymap( 'n', '<leader>cw', '<C-w><C-q>', opts )
 make_keymap( '', '<C-l>', 'g$', opts )
 make_keymap( '', '<C-h>', 'g^', opts )
 
--- c-z to correct last misspelled word
 -- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
-make_keymap( 'n', '<C-Z>', '[s1z=`]',                   { desc = 'Correct latest misspelled word' } )
-make_keymap( 'i', '<C-Z>', '<C-g>u<Esc>[s1z=`]a<C-g>u', { desc = 'Correct latest misspelled word' } )
+make_keymap( 'n', '<C-c>', '[s1z=`]',                   { desc = 'Correct latest misspelled word' } )
+make_keymap( 'i', '<C-c>', '<C-g>u<Esc>[s1z=`]a<C-g>u', { desc = 'Correct latest misspelled word' } )
 
 -- from mini.basic
 make_keymap('x', 'g/', '<esc>/\\%V', { silent = false, desc = 'Search inside visual selection' })
