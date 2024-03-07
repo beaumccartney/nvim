@@ -587,8 +587,8 @@ make_keymap( 'n', '<leader>d', function()
 end, opts )
 
 -- keymaps for built in things
-make_keymap( '',  '<C-s>', vim.cmd.update, {} ) -- save file
-make_keymap( '!', '<C-s>', vim.cmd.update, {} ) -- save file
+make_keymap( '',  '<C-s>', vim.cmd.wall, {} ) -- save file
+make_keymap( '!', '<C-s>', vim.cmd.wall, {} ) -- save file
 make_keymap( 'n', '<leader>te', vim.cmd.tabe, {}   ) -- new tab
 make_keymap( 'n', '<leader>cc', vim.cmd.bd,   opts )
 make_keymap( 'n', '<leader>cw', '<C-w><C-q>', opts )
