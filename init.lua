@@ -590,7 +590,6 @@ end, opts )
 make_keymap( '',  '<C-s>', vim.cmd.wall, {} ) -- save file
 make_keymap( '!', '<C-s>', vim.cmd.wall, {} ) -- save file
 make_keymap( 'n', '<leader>te', vim.cmd.tabe, {}   ) -- new tab
-make_keymap( 'n', '<leader>cc', vim.cmd.bd,   opts )
 make_keymap( 'n', '<leader>cw', '<C-w><C-q>', opts )
 make_keymap( '', '<C-l>', 'g$', opts )
 make_keymap( '', '<C-h>', 'g^', opts )
@@ -651,7 +650,9 @@ make_keymap( 'n', '<ESC>', function()
 end, opts )
 
 make_keymap( 'n', '<leader>w',  MiniTrailspace.trim,  {} )
-make_keymap( 'n', '<leader>bd', MiniBufremove.delete, {} ) -- close buffer
+
+make_keymap( 'n', '<leader>cc', MiniBufremove.delete, {} ) -- close buffer
+make_keymap( 'n', '<leader>bd', vim.cmd.bd,   opts )
 
 -- jk fixes (thanks yet again fraser)
 make_keymap( 'n', 'j', '<Plug>(accelerated_jk_gj)', {} )
