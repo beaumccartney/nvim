@@ -169,7 +169,7 @@ require'lazy'.setup {
             },
             -- TODO: use ziglibs zig ts parser
             ignore_install = { 'zig' },
-            indent = { enable = true, },
+            indent = { enable = true, disable = { 'odin', }, },
         },
         dependencies = {
             'nvim-treesitter/nvim-treesitter-textobjects',
