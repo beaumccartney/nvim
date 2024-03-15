@@ -35,6 +35,7 @@ vim.opt.rtp:prepend( lazypath )
 
 require'lazy'.setup {
     {
+        event = 'VeryLazy',
         'puremourning/vimspector',
         init = function()
             vim.g.vimspector_enable_mappings = 'HUMAN'
@@ -170,19 +171,9 @@ require'lazy'.setup {
             },
             -- TODO: use ziglibs zig ts parser
             ignore_install = { 'zig' },
-            indent = { enable = true, disable = { 'odin', }, },
-        },
-        dependencies = {
-            'nvim-treesitter/nvim-treesitter-textobjects',
-            {
-                'JoosepAlviste/nvim-ts-context-commentstring',
-                opts = { languages = { cpp = '// %s', }, },
-                init = function() vim.g.skip_ts_context_commentstring_module = true end,
-            },
-            'HiPhish/rainbow-delimiters.nvim',
-            {
-                'nvim-treesitter/nvim-treesitter-context',
-                opts = { max_lines = 4, },
+            indent = {
+                enable = true,
+                disable = { 'odin', },
             },
         },
         build = ':TSUpdate',
@@ -214,6 +205,24 @@ require'lazy'.setup {
                 end,
             })
         end,
+    },
+
+    {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        event = 'VeryLazy',
+    },
+
+    {
+        'JoosepAlviste/nvim-ts-context-commentstring',
+        opts = { languages = { cpp = '// %s', }, },
+        init = function() vim.g.skip_ts_context_commentstring_module = true end,
+    },
+
+    'HiPhish/rainbow-delimiters.nvim',
+
+    {
+        'nvim-treesitter/nvim-treesitter-context',
+        opts = { max_lines = 4, },
     },
 
     -- fuzzy-find files and strings
@@ -429,6 +438,7 @@ require'lazy'.setup {
 
     {
         'zbirenbaum/copilot.lua',
+        event = 'VeryLazy',
         opts = {
             suggestion = {
                 auto_trigger = true,
