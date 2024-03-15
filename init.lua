@@ -454,6 +454,7 @@ require'lazy'.setup {
             formatters_by_ft = {
                 javascript = { { "prettierd", "prettier" } },
                 json       = { { "prettierd", "prettier" } },
+                odin       = { { "odinfmt" } },
                 rust       = { { "rustfmt" } },
                 zig        = { { "zigfmt" } },
             }
