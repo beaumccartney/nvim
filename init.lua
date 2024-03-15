@@ -288,9 +288,11 @@ require'lazy'.setup {
                     F = gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
                     c = gen_spec.treesitter({ a = '@class.outer',    i = '@class.inner'    }),
                     S = gen_spec.treesitter({ a = '@block.outer',    i = '@block.inner'    }),
-                    L = extra_ai_spec.line(),
+                    j = extra_ai_spec.line(),
+                    d = extra_ai_spec.number(),
+                    g = extra_ai_spec.buffer(),
+                    e = extra_ai_spec.diagnostic(),
                     -- TODO:
-                    --      buffer
                     --      assignment inner
                     --      assignment outer
                     --      assignment lhs
