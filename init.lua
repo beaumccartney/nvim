@@ -69,9 +69,10 @@ require'lazy'.setup {
 
     {
         'echasnovski/mini.hipatterns',
+        dependencies = 'echasnovski/mini.extra',
         config = function()
             local hipatterns = require'mini.hipatterns'
-            local hi_words = require'mini.extra'.gen_highlighter.words
+            local hi_words = MiniExtra.gen_highlighter.words
             hipatterns.setup({
                 highlighters = {
                     todo  = hi_words({ 'TODO',  'REVIEW', 'INCOMPLETE'           }, 'MiniHipatternsTodo' ),
@@ -267,11 +268,13 @@ require'lazy'.setup {
     'nvim-treesitter/nvim-treesitter-textobjects',
     {
         'echasnovski/mini.ai',
+        dependencies = 'echasnovski/mini.extra',
         config = function()
             local ai = require'mini.ai'
             local gen_spec = ai.gen_spec
-            local extra_ai_spec = require'mini.extra'.gen_ai_spec
+            local extra_ai_spec = MiniExtra.gen_ai_spec
             ai.setup({
+                search_method = 'cover_or_nearest',
                 custom_textobjects = {
                     F = gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
                     c = gen_spec.treesitter({ a = '@class.outer',    i = '@class.inner'    }),
@@ -475,7 +478,8 @@ require'lazy'.setup {
             {
                 "folke/neodev.nvim",
                 opts = {},
-            }
+            },
+            'echasnovski/mini.extra',
         },
         config = function()
             local lspconfig = require'lspconfig'
