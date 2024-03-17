@@ -3,7 +3,7 @@
 -- wrap mapping function
 -- give all my keymaps descriptions
 -- gitsigns current hunk stuff
--- diffview nvim or idk get good at fugitive or someth
+-- diffview nvim
 -- :make command for everything I need, including colorized output and error finding
 -- mappings with :map and :map! equivalents
 
@@ -274,9 +274,20 @@ require'lazy'.setup {
         end
     },
 
-    -- all hail fugitive
-    'tpope/vim-fugitive',
-    'junegunn/gv.vim',
+    'sindrets/diffview.nvim',
+    {
+        'NeogitOrg/neogit',
+        event = 'VeryLazy',
+        dependencies = {
+            'nvim-lua/plenary.nvim',
+        },
+        opts = {},
+        config = function(_, opts)
+            local ng = require'neogit'
+            ng.setup(opts)
+            make_keymap( '', '<leader>gg', ng.open, {} )
+        end,
+    },
 
     -- additional textobject keys after "a" and "i" e.g. <something>[a|i]q where q is quote text object
     'nvim-treesitter/nvim-treesitter-textobjects',
@@ -402,6 +413,7 @@ require'lazy'.setup {
                 "gitsigns",
                 "indent-blankline",
                 "mini",
+                "neogit",
                 "nvim-web-devicons",
                 "rainbow-delimiters",
             },
@@ -684,18 +696,10 @@ make_keymap( 'v', 'k', 'gk', {} )
 
 make_keymap( 'n', 'M', MiniMisc.zoom, {} )
 
--- git log stuff
-make_keymap( { 'n', 'v' }, '<leader>gl', '<Cmd>GV<CR>',  {} )
-
-make_keymap( { 'n', 'v' }, '<leader>gv', '<Cmd>GV!<CR>', {} )
-
-make_keymap( 'n', '<leader>gp', '<Cmd>GV --patch<CR>', {} )
-
 local builtin = MiniPick.builtin
 local extra = MiniExtra.pickers
 
 make_keymap( 'n', '<leader>ff', builtin.files,   {} )
-make_keymap( 'n', '<leader>gg', extra.git_files, {} )
 make_keymap( 'n', '<leader>fh', builtin.help,    {} )
 
 make_keymap( 'n', '<leader>rr', MiniVisits.select_path, {} )
