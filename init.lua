@@ -397,7 +397,6 @@ require'lazy'.setup {
 
     {
         'sainnhe/gruvbox-material',
-        -- lazy = true,
         init = function()
             vim.g.gruvbox_material_foreground = 'original'
             vim.g.gruvbox_material_background = 'hard'
@@ -406,7 +405,6 @@ require'lazy'.setup {
 
     {
         'marko-cerovac/material.nvim',
-        lazy = true,
         init = function() vim.g.material_style = "deep ocean" end,
         opts = {
             plugins = {
