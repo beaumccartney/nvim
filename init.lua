@@ -558,9 +558,12 @@ require'lazy'.setup {
             end
             lspconfig.ols.setup {
                 init_options = {
+                    enable_document_symbols  = true,
                     enable_snippets          = false,
-                    enable_procedure_snippet = false,
                     enable_inlay_hints       = true,
+                    enable_references        = true,
+                    enable_hover             = true,
+                    enable_procedure_context = true,
                 },
             }
 
