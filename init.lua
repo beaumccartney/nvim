@@ -817,7 +817,7 @@ vim.cmd[[
 
     autocmd FileType DressingInput,gitcommit let b:minicompletion_disable = v:true | let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
 
-    autocmd FileType odin setlocal smartindent
+    autocmd FileType odin setlocal smartindent errorformat+=%f(%l:%c)\ %m
 
     " open help windows to the left
     autocmd FileType help if winwidth(0) > winheight(0) | wincmd H | endif
