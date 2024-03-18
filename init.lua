@@ -307,7 +307,9 @@ require'lazy'.setup {
         dependencies = {
             'nvim-lua/plenary.nvim',
         },
-        opts = {},
+        opts = {
+            disable_insert_on_commit = true,
+        },
         config = function(_, opts)
             local ng = require'neogit'
             ng.setup(opts)
