@@ -735,6 +735,7 @@ make_keymap( 'n', '<leader>rr', MiniVisits.select_path, {} )
 -- TODO: leader-8 find cword in the current buffer
 make_keymap( 'n', '<leader>/', extra.buf_lines,                 {} )
 -- make_keymap( 'n', '<leader>8', '<Cmd>Pick buf_lines prompt="<cword>"<CR>', {} )
+-- TODO: ugrep_live (fuzzy finding + --and patterns for each word)
 make_keymap( 'n', '<leader>?', builtin.grep_live,                          {} )
 make_keymap( 'n', '<leader>*', '<Cmd>Pick grep pattern="<cword>"<CR>',     {} )
 
