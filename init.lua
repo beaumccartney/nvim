@@ -294,6 +294,9 @@ require'lazy'.setup {
                 gs.toggle_signs()
                 gs.toggle_numhl()
             end, {} )
+
+            make_keymap( '', '[h', gs.prev_hunk, {} )
+            make_keymap( '', ']h', gs.next_hunk, {} )
         end
     },
 
