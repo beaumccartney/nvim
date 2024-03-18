@@ -782,7 +782,7 @@ vim.cmd[[
 
     autocmd Filetype * setlocal formatoptions+=jcqrno formatoptions-=t
 
-    autocmd FileType html,css,scss,xml,yaml,json,javascript,typescript,javascriptreact,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd FileType html,css,scss,xml,javascriptreact,typescriptreact setlocal shiftwidth=2 softtabstop=2
 
     autocmd Filetype text,markdown,git,gitcommit setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
     autocmd BufEnter * lua pcall(require'mini.misc'.use_nested_comments)
