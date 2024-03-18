@@ -2,8 +2,6 @@
 -- :s respects case
 -- wrap mapping function
 -- give all my keymaps descriptions
--- gitsigns current hunk stuff
--- diffview nvim
 -- :make command for everything I need, including colorized output and error finding
 -- mappings with :map and :map! equivalents
 
@@ -266,11 +264,36 @@ require'lazy'.setup {
     -- git-gutter
     {
         'lewis6991/gitsigns.nvim',
-        config = true,
-        init = function()
-            make_keymap( { 'n', 'v' }, '<leader>gs', require'gitsigns'.stage_hunk, {} )
-            make_keymap( { 'n', 'v' }, '<leader>ga', require'gitsigns'.stage_buffer, {} )
-            make_keymap( { 'n', 'v' }, '<leader>gu', require'gitsigns'.undo_stage_hunk, {} )
+        opts = {
+            signcolumn = false,
+            current_line_blame_opts = {
+                delay = 0,
+            },
+        },
+        config = function(_, opts)
+            local gs = require'gitsigns'
+            gs.setup(opts)
+
+            make_keymap( { 'n' }, '<leader>gp', gs.preview_hunk, {} )
+
+            make_keymap( { 'n' }, '<leader>gs', gs.stage_hunk, {} )
+            make_keymap( { 'v' }, '<leader>gs', function() gs.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+            make_keymap( { 'n' }, '<leader>gu', gs.undo_stage_hunk, {} )
+            make_keymap( { 'n' }, '<leader>ga', gs.stage_buffer, {} )
+
+            make_keymap( { 'n' }, '<leader>gc', gs.reset_hunk, {} )
+            make_keymap( { 'v' }, '<leader>gc', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+            make_keymap( { 'n' }, '<leader>GC', gs.reset_buffer, {} )
+
+            make_keymap( { 'n' }, '<leader>gb', function()
+                gs.blame_line({ full = true })
+            end, {} )
+            make_keymap( { 'n' }, '<leader>tb', gs.toggle_current_line_blame, {} )
+
+            make_keymap( { 'n' }, '<leader>gh', function()
+                gs.toggle_signs()
+                gs.toggle_numhl()
+            end, {} )
         end
     },
 
@@ -622,6 +645,7 @@ end, opts )
 make_keymap( '',  '<C-s>', vim.cmd.wall, {} ) -- save file
 make_keymap( '!', '<C-s>', vim.cmd.wall, {} ) -- save file
 make_keymap( 'n', '<leader>te', vim.cmd.tabe, {}   ) -- new tab
+make_keymap( 'n', '<leader>tc', vim.cmd.tabc, {}   ) -- new tab
 make_keymap( 'n', '<leader>cw', '<C-w><C-q>', opts )
 make_keymap( '', '<C-l>', 'g$', opts )
 make_keymap( '', '<C-h>', 'g^', opts )
