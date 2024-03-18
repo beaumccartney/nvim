@@ -815,7 +815,7 @@ vim.cmd[[
 
     autocmd BufNewFile,BufRead *.mdpp set filetype=markdown
 
-    autocmd FileType DressingInput,gitcommit let b:minicompletion_disable = v:true | let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
+    autocmd FileType DressingInput,gitcommit let b:minicompletion_disable = v:true | let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true let b:ministarter_disable = v:true
 
     autocmd FileType odin setlocal smartindent errorformat+=%f(%l:%c)\ %m
 
