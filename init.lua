@@ -432,7 +432,7 @@ require'lazy'.setup {
             starter.setup {
                 evaluate_single = true,
                 items = {
-                    starter.sections.recent_files(4, false, false),
+                    starter.sections.recent_files(4, true, false),
                     starter.sections.builtin_actions(),
                 },
             }
