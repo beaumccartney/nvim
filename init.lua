@@ -391,17 +391,21 @@ require'lazy'.setup {
         'echasnovski/mini.files',
         dependencies = 'nvim-tree/nvim-web-devicons',
         opts = { windows = { preview = true, }, },
-        init = function()
-            make_keymap( 'n', '<leader>fe', function()
+        config = function(_, opts)
+            require'mini.files'.setup(opts)
+
+            local open = MiniFiles.open
+            make_keymap( 'n', '<leader>fe', open, {} )
+            make_keymap( 'n', '<leader>fi', function()
                 local buf = vim.api.nvim_buf_get_name( 0 )
 
                 local file = io.open( buf ) and buf or vim.fs.dirname( buf )
 
-                MiniFiles.open( file )
+                open( file )
             end, {} )
 
             make_keymap( 'n', '<leader>f~', function()
-                MiniFiles.open( vim.env.HOME )
+                open( vim.env.HOME )
             end, {} )
         end
     },
