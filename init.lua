@@ -265,7 +265,8 @@ require'lazy'.setup {
     {
         'lewis6991/gitsigns.nvim',
         opts = {
-            signcolumn = false,
+            numhl = true,
+            current_line_blame = true,
             current_line_blame_opts = {
                 delay = 0,
             },
@@ -649,7 +650,6 @@ local diagnostic = vim.diagnostic
 make_keymap( 'n', '<leader>e', diagnostic.open_float, opts )
 make_keymap( 'n', '<leader>q', diagnostic.setloclist, opts )
 
-diagnostic.disable()
 make_keymap( 'n', '<leader>d', function()
     if diagnostic.is_disabled() then
         diagnostic.enable()
