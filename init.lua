@@ -287,18 +287,31 @@ require'lazy'.setup {
             make_keymap( { 'n' }, '<leader>gu', gs.undo_stage_hunk, {} )
             make_keymap( { 'n' }, '<leader>ga', gs.stage_buffer, {} )
 
-            make_keymap( { 'n' }, '<leader>gc', gs.reset_hunk, {} )
-            make_keymap( { 'v' }, '<leader>gc', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-            make_keymap( { 'n' }, '<leader>GC', gs.reset_buffer, {} )
+            make_keymap( { 'n' }, '<leader>gk', gs.reset_hunk, {} )
+            make_keymap( { 'v' }, '<leader>gk', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+            make_keymap( { 'n' }, '<leader>GK', gs.reset_buffer, {} )
 
             make_keymap( { 'n' }, '<leader>gb', function()
                 gs.blame_line({ full = true })
             end, {} )
-            make_keymap( { 'n' }, '<leader>tb', gs.toggle_current_line_blame, {} )
 
-            make_keymap( { 'n' }, '<leader>gh', function()
-                gs.toggle_signs()
-                gs.toggle_numhl()
+            local toggle_state = opts.signs or true
+            local extra_toggle_state = false
+            local signs_toggle = function(switch, extra)
+                toggle_state = switch or (not toggle_state)
+                gs.toggle_current_line_blame(toggle_state)
+                gs.toggle_signs(toggle_state)
+                gs.toggle_numhl(toggle_state)
+
+                extra_toggle_state = extra and (not extra_toggle_state) or false
+                gs.toggle_deleted(extra_toggle_state)
+                gs.toggle_linehl(extra_toggle_state)
+                gs.toggle_word_diff(extra_toggle_state)
+            end
+            make_keymap( { 'n' }, '<leader>gh', signs_toggle, {} )
+
+            make_keymap( { 'n' }, '<leader>gf', function()
+                signs_toggle(true, true)
             end, {} )
 
             make_keymap( '', '[h', gs.prev_hunk, {} )
