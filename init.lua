@@ -126,7 +126,12 @@ require'lazy'.setup {
 
     {
         'echasnovski/mini.notify',
-        config = true,
+        opts = {
+            lsp_progress = {
+                -- enable = false,
+                duration_last = 350,
+            },
+        },
     },
 
     -- everything
