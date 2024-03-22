@@ -297,7 +297,7 @@ require'lazy'.setup {
 
             local toggle_state = opts.signs or true
             local extra_toggle_state = false
-            local signs_toggle = function(switch, extra)
+            local function signs_toggle(switch, extra)
                 toggle_state = switch or (not toggle_state)
                 gs.toggle_current_line_blame(toggle_state)
                 gs.toggle_signs(toggle_state)
@@ -631,7 +631,7 @@ require'lazy'.setup {
                     local bufopts = { buffer = ev.buf }
                     local lsp     = vim.lsp
                     local lspbuf  = lsp.buf
-                    local picklsp = function( scope )
+                    local function picklsp( scope )
                         return function()
                             MiniExtra.pickers.lsp( { scope = scope } )
                         end
@@ -699,7 +699,7 @@ make_keymap('x', 'g/', '<esc>/\\%V', { silent = false, desc = 'Search inside vis
  --[[ BEGIN https://github.com/echasnovski/mini.nvim/blob/1fdbb864e2015eb6f501394d593630f825154385/lua/mini/basics.lua#L549C11-L549C11 ]]
 -- Add empty lines before and after cursor line supporting dot-repeat
 local cache_empty_line = nil
-put_empty_line = function(put_above)
+function put_empty_line(put_above)
     -- This has a typical workflow for enabling dot-repeat:
     -- - On first call it sets `operatorfunc`, caches data, and calls
     --   `operatorfunc` on current cursor position.
