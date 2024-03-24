@@ -289,7 +289,7 @@ require'lazy'.setup {
 
             make_keymap( { 'n' }, '<leader>gk', gs.reset_hunk, {} )
             make_keymap( { 'v' }, '<leader>gk', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-            make_keymap( { 'n' }, '<leader>GK', gs.reset_buffer, {} )
+            make_keymap( { 'n' }, '<leader>gK', gs.reset_buffer, {} )
 
             make_keymap( { 'n' }, '<leader>gb', function()
                 gs.blame_line({ full = true })
@@ -332,7 +332,7 @@ require'lazy'.setup {
         config = function(_, opts)
             local ng = require'neogit'
             ng.setup(opts)
-            make_keymap( '', '<leader>gg', ng.open, {} )
+            make_keymap( 'n', '<leader>G', ng.open, {} )
         end,
     },
 
