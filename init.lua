@@ -577,14 +577,11 @@ require'lazy'.setup {
                 'clangd',
                 'cssls',
                 'eslint',
-                'hls',
                 'html',
                 'jsonls',
                 'lua_ls',
                 'pyright',
-                'rust_analyzer',
                 'vtsls',
-                'zls',
             }) do
                 lspconfig[server].setup{}
             end
