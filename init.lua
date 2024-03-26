@@ -760,8 +760,10 @@ make_keymap( 'n', '<ESC>', function()
     MiniJump.stop_jumping()
 end, opts )
 
-make_keymap( 'n', '<leader>w', MiniTrailspace.trim,            {} )
-make_keymap( 'n', '<leader>W', MiniTrailspace.trim_last_lines, {} )
+make_keymap( 'n', '<leader>w', function()
+    MiniTrailspace.trim()
+    MiniTrailspace.trim_last_lines()
+end,            {} )
 
 make_keymap( 'n', '<leader>cc', MiniBufremove.delete, {}   )
 make_keymap( 'n', '<leader>bd', vim.cmd.bd,           opts )
