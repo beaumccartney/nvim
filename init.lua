@@ -766,7 +766,7 @@ make_keymap( 'n', '<leader>w', function()
 end,            {} )
 
 make_keymap( 'n', '<leader>cc', MiniBufremove.delete, {}   )
-make_keymap( 'n', '<leader>bd', vim.cmd.bd,           opts )
+make_keymap( 'n', 'Q',          vim.cmd.bd,           opts )
 
 -- jk fixes (thanks yet again fraser)
 make_keymap( 'n', 'j', '<Plug>(accelerated_jk_gj)', {} )
