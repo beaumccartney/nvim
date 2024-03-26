@@ -404,7 +404,11 @@ require'lazy'.setup {
     {
         'echasnovski/mini.files',
         dependencies = 'nvim-tree/nvim-web-devicons',
-        opts = { windows = { preview = true, }, },
+        opts = {
+            windows = {
+                max_number = 3,
+            },
+        },
         config = function(_, opts)
             require'mini.files'.setup(opts)
 
