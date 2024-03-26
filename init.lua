@@ -687,7 +687,7 @@ local opts = { noremap=true, silent=true }
 
 local diagnostic = vim.diagnostic
 make_keymap( 'n', '<leader>e', diagnostic.open_float, opts )
-make_keymap( 'n', '<leader>q', diagnostic.setloclist, opts )
+make_keymap( 'n', '<leader>bd', diagnostic.setloclist, opts )
 
 make_keymap( 'n', '<leader>d', function()
     if diagnostic.is_disabled() then
