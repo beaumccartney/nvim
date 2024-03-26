@@ -2,7 +2,8 @@
 -- :s respects case
 -- wrap mapping function
 -- give all my keymaps descriptions
--- mappings with :map and :map! equivalents
+-- load mini.nvim as one plugin
+-- migrate to mini.deps
 
 
 
