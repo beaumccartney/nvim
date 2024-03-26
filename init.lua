@@ -444,12 +444,18 @@ require'lazy'.setup {
     },
 
     {
+        'echasnovski/mini.sessions',
+        opts = {},
+    },
+
+    {
         'echasnovski/mini.starter',
         config = function()
             local starter = require'mini.starter'
             starter.setup {
                 evaluate_single = true,
                 items = {
+                    starter.sections.sessions(),
                     starter.sections.recent_files(4, true, false),
                     starter.sections.builtin_actions(),
                 },
