@@ -56,7 +56,7 @@ require'lazy'.setup {
         init = function()
             vim.g.scratchpad_autostart = 0
             vim.g.scratchpad_location  = vim.fn.stdpath( 'data' ) .. '/scratchpad'
-            make_keymap( 'n', '<leader>s', require'scratchpad'.invoke, {} )
+            make_keymap( 'n', 'S', require'scratchpad'.invoke, {} )
         end,
     },
 
@@ -451,6 +451,48 @@ require'lazy'.setup {
     {
         'echasnovski/mini.sessions',
         opts = {},
+        config = function(_, opts)
+            require'mini.sessions'.setup(opts)
+
+            make_keymap( 'n', '<leader>ss', function()
+                local session = #vim.v.this_session == 0 and vim.fn.input({
+                    prompt = 'Session name: ',
+                    default = MiniSessions.config.file,
+                    completion = 'file',
+                }) or nil
+
+                if session then
+                    if session == '' then return end
+                    if not vim.endswith(session, '.vim') then session = session .. '.vim' end
+                end
+
+                MiniSessions.write(session)
+            end, {} )
+
+            local function sessionaction(action)
+                local exists = false
+                for _, _ in pairs(MiniSessions.detected) do
+                    exists = true
+                end
+
+                if not exists then
+                    print('No sessions')
+                    return
+                end
+
+                MiniSessions.select(action)
+            end
+
+            make_keymap( 'n', '<leader>sf', function()
+               sessionaction('read')
+            end, {} )
+            make_keymap( 'n', '<leader>sd', function()
+                sessionaction('delete')
+            end, {} )
+            make_keymap( 'n', '<leader>sw', function()
+                sessionaction('write')
+            end, {} )
+        end,
     },
 
     {
