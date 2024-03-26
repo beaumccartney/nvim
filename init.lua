@@ -239,7 +239,11 @@ require'lazy'.setup {
 
     {
         'nvim-treesitter/nvim-treesitter-context',
-        opts = { max_lines = 4, },
+        opts = {
+            multiline_threshold = 4,
+            trim_scope = 'inner',
+            mode = 'topline',
+        },
     },
 
     -- fuzzy-find files and strings
