@@ -775,7 +775,7 @@ make_keymap( 'n', 'k', '<Plug>(accelerated_jk_gk)', {} )
 make_keymap( 'v', 'j', 'gj', {} )
 make_keymap( 'v', 'k', 'gk', {} )
 
-make_keymap( 'n', 'M', MiniMisc.zoom, {} )
+make_keymap( 'n', '<leader>z', MiniMisc.zoom, {} )
 
 local builtin = MiniPick.builtin
 local extra = MiniExtra.pickers
