@@ -826,7 +826,6 @@ vim.opt.smartcase      = true
 
 vim.opt.pumheight      = 5
 
-vim.opt.foldenable     = false
 vim.opt.foldmethod     = 'indent'
 vim.opt.cmdheight      = 1
 ---------------------------------------------------------------------------
