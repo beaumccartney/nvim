@@ -2,7 +2,6 @@
 -- :s respects case
 -- wrap mapping function
 -- give all my keymaps descriptions
--- :make command for everything I need, including colorized output and error finding
 -- mappings with :map and :map! equivalents
 
 
@@ -32,6 +31,16 @@ end
 vim.opt.rtp:prepend( lazypath )
 
 require'lazy'.setup {
+    {
+        "pianocomposer321/officer.nvim",
+        dependencies = "stevearc/overseer.nvim",
+        opts = {},
+        init = function()
+            make_keymap( 'n', '<CR><CR>',        "<Cmd>Make!<CR>", {} )
+            make_keymap( 'n', '<CR><SPACE><CR>', ":Make!<SPACE>",  {} )
+        end,
+    },
+
     {
         event = 'VeryLazy',
         'puremourning/vimspector',
