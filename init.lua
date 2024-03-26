@@ -867,14 +867,14 @@ vim.cmd[[
 
     autocmd FileType html,css,scss,xml,javascriptreact,typescriptreact setlocal shiftwidth=2 softtabstop=2
 
-    autocmd Filetype text,markdown,git,gitcommit setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
+    autocmd Filetype text,markdown,git,gitcommit,NeogitCommitMessage setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
     autocmd BufEnter * lua pcall(require'mini.misc'.use_nested_comments)
 
     autocmd Filetype wgsl setlocal commentstring=//\ %s
 
     autocmd BufNewFile,BufRead *.mdpp set filetype=markdown
 
-    autocmd FileType DressingInput,gitcommit let b:minicompletion_disable = v:true | let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
+    autocmd FileType DressingInput,gitcommit,NeogitCommitMessage let b:minicompletion_disable = v:true | let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
 
     autocmd FileType odin setlocal smartindent errorformat+=%f(%l:%c)\ %m
 
