@@ -216,10 +216,6 @@ require'lazy'.setup {
                     -- TODO: if longest line in buffer is too long kill
                     if vim.api.nvim_buf_line_count(0) > 1024 then return end
                     vim.treesitter.start()
-
-                    -- TODO: fold text highlighting w/ vim.wo.foldtext
-                    -- see source for foldtext() (the vimscript function)
-                    -- vim.wo.foldtext = 'v:lua.vim.treesitter.foldtext()'
                 end,
             })
         end,
