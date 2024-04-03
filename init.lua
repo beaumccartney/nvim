@@ -838,7 +838,7 @@ local extra = MiniExtra.pickers
 make_keymap( 'n', '<leader>ff', builtin.files,   {} )
 make_keymap( 'n', '<leader>fh', builtin.help,    {} )
 
-make_keymap( 'n', '<leader>rr', MiniVisits.select_path, {} )
+make_keymap( 'n', '<leader>v', MiniVisits.select_path, {} )
 
 -- TODO: make cword maps use word highlighted by visual if applicable
 -- TODO: leader-8 find cword in the current buffer
