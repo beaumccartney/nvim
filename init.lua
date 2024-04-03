@@ -281,7 +281,6 @@ require'lazy'.setup {
     {
         'lewis6991/gitsigns.nvim',
         opts = {
-            numhl = true,
             current_line_blame = true,
             current_line_blame_opts = {
                 delay = 0,
@@ -317,6 +316,7 @@ require'lazy'.setup {
                 extra_toggle_state = extra and (not extra_toggle_state) or false
                 gs.toggle_deleted(extra_toggle_state)
                 gs.toggle_linehl(extra_toggle_state)
+                gs.toggle_linehl(extra_toggle_state)
                 gs.toggle_word_diff(extra_toggle_state)
             end
             make_keymap( { 'n' }, '<leader>gh', signs_toggle, {} )
@@ -343,7 +343,7 @@ require'lazy'.setup {
         config = function(_, opts)
             local ng = require'neogit'
             ng.setup(opts)
-            make_keymap( 'n', '<leader>G', ng.open, {} )
+            make_keymap( 'n', '<leader>gg', ng.open, {} )
         end,
     },
 
