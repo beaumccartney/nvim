@@ -810,7 +810,8 @@ make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>',    {} )
 -- fraser again goddamn
 make_keymap( 'n', '<ESC>', function()
     vim.cmd.nohlsearch()
-    vim.cmd.ccl()
+    vim.cmd.cclose()
+    vim.cmd.lclose()
     MiniJump.stop_jumping()
 end, opts )
 
