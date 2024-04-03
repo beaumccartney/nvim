@@ -635,7 +635,6 @@ require'lazy'.setup {
         config = function()
             local lspconfig = require'lspconfig'
             for _, server in pairs({
-                'astro', -- NOTE: must add prettier and astro-prettier-plugin as dev dependencies for this to work
                 'bashls',
                 'clangd',
                 'cssls',
