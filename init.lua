@@ -748,6 +748,18 @@ make_keymap( 'n', '<leader>cw', '<C-w><C-q>', opts )
 make_keymap( '', '<C-l>', 'g$', opts )
 make_keymap( '', '<C-h>', 'g^', opts )
 
+
+make_keymap( '', '<leader>q', function()
+    local windows = vim.fn.getwininfo()
+    for _, win in pairs(windows) do
+        if win['quickfix'] == 1 then
+            vim.cmd.cclose()
+            return
+        end
+    end
+    vim.cmd.copen()
+end, opts )
+
 -- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
 make_keymap( 'n', '<C-c>', '[s1z=`]',                   { desc = 'Correct latest misspelled word' } )
 make_keymap( 'i', '<C-c>', '<C-g>u<Esc>[s1z=`]a<C-g>u', { desc = 'Correct latest misspelled word' } )
