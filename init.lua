@@ -887,6 +887,8 @@ vim.opt.smartcase      = true
 vim.opt.pumheight      = 5
 
 vim.opt.foldmethod     = 'indent'
+vim.opt.foldlevel      = 100
+
 vim.opt.cursorline     = true
 vim.opt.cursorcolumn   = true
 
