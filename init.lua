@@ -887,6 +887,9 @@ vim.opt.smartcase      = true
 vim.opt.pumheight      = 5
 
 vim.opt.foldmethod     = 'indent'
+vim.opt.cursorline     = true
+vim.opt.cursorcolumn   = true
+
 vim.opt.cmdheight      = 1
 ---------------------------------------------------------------------------
 -- write centered line - 80 character line with text in the middle and dashes
