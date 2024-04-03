@@ -334,6 +334,7 @@ require'lazy'.setup {
     'sindrets/diffview.nvim',
     {
         'NeogitOrg/neogit',
+        branch = 'nightly',
         event = 'VeryLazy',
         dependencies = {
             'nvim-lua/plenary.nvim',
@@ -939,6 +940,7 @@ vim.cmd[[
 
     autocmd FileType DressingInput,gitcommit,NeogitCommitMessage let b:minicompletion_disable = v:true | let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
 
+    autocmd FileType NeogitStatus,NeogitCommitMessage setlocal foldmethod=manual
     autocmd FileType odin setlocal smartindent errorformat+=%f(%l:%c)\ %m
 
     " open help windows to the left
