@@ -853,6 +853,9 @@ make_keymap( '',  '<leader>fd', extra.diagnostic )
 make_keymap( 'n', '<leader>fo', extra.options )
 make_keymap( 'n', '<leader>td', '<Cmd>Pick hipatterns highlighters={"todo" "fixme" "hack"}<CR>' )
 
+make_keymap( '', '<leader>fq', function() extra.list({ scope = 'quickfix' }) end, {})
+make_keymap( '', '<leader>fv', function() extra.visit_paths() end, {})
+
 vim.opt.termguicolors  = true
 vim.opt.number         = true
 vim.opt.relativenumber = true
@@ -915,6 +918,12 @@ make_keymap( 'n', '<leader>l', function()
     MiniComment.toggle_lines( linenum, linenum )
 end , {} )
 
+vim.filetype.add({
+    extension = {
+        mdpp = 'markdown',
+    },
+})
+
 vim.cmd[[
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
 
@@ -927,8 +936,6 @@ vim.cmd[[
 
     autocmd Filetype wgsl setlocal commentstring=//\ %s
 
-    autocmd BufNewFile,BufRead *.mdpp set filetype=markdown
-
     autocmd FileType DressingInput,gitcommit,NeogitCommitMessage let b:minicompletion_disable = v:true | let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
 
     autocmd FileType odin setlocal smartindent errorformat+=%f(%l:%c)\ %m
@@ -938,4 +945,9 @@ vim.cmd[[
 
     " colorscheme gruvbox-material
     colorscheme material
+
+    if executable('ugrep')
+        set grepprg=ugrep\ -RInk\ -j\ -u\ --tabs=1\ --ignore-files\ --config
+        set grepformat=%f:%l:%c:%m,%f+%l+%c+%m,%-G%f\\\|%l\\\|%c\\\|%m
+    endif
 ]]
