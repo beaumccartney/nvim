@@ -4,6 +4,7 @@
 -- give all my keymaps descriptions
 -- load mini.nvim as one plugin
 -- migrate to mini.deps
+-- have mini pickers put shit in qf list where possible and replace with gf variants where not
 
 
 
@@ -696,19 +697,19 @@ require'lazy'.setup {
                         end
                     end
 
-                    make_keymap( 'n', '<leader>gD', picklsp('declaration'), bufopts )
-                    make_keymap( 'n', '<leader>i',  lspbuf.hover,           bufopts )
-                    -- make_keymap( 'n', '<C-i>',      lspbuf.signature_help,  bufopts )
-                    make_keymap( 'n', '<leader>rn', lspbuf.rename,          bufopts )
-                    make_keymap( 'n', '<leader>ca', lspbuf.code_action,     bufopts )
+                    make_keymap( 'n', '<leader>gD',  lspbuf.declaration,     bufopts )
+                    make_keymap( 'n', '<leader>i',   lspbuf.hover,           bufopts )
+                    make_keymap( 'n', '<C-i>',       lspbuf.signature_help,  bufopts )
+                    make_keymap( 'n', '<leader>rn',  lspbuf.rename,          bufopts )
+                    make_keymap( 'n', '<leader>ca',  lspbuf.code_action,     bufopts )
 
-                    make_keymap( 'n', '<leader>gr',  picklsp('references'),      bufopts )
-                    make_keymap( 'n', '<leader>gd',  picklsp('definition'),      bufopts )
-                    make_keymap( 'n', '<leader>gi',  picklsp('implementation'),  bufopts )
-                    make_keymap( 'n', '<leader>gtd', picklsp('type_definition'), bufopts )
-                    make_keymap( 'n', '<leader>fs',  picklsp('document_symbol'), bufopts )
-                    make_keymap( 'n', '<leader>co',  lspbuf.incoming_calls,      bufopts )
-                    make_keymap( 'n', '<leader>ci',  lspbuf.outgoing_calls,      bufopts )
+                    make_keymap( 'n', '<leader>gr',  lspbuf.references,      bufopts )
+                    make_keymap( 'n', '<leader>gd',  lspbuf.definition,      bufopts )
+                    make_keymap( 'n', '<leader>gi',  lspbuf.implementation,  bufopts )
+                    make_keymap( 'n', '<leader>gtd', lspbuf.type_definition, bufopts )
+                    make_keymap( 'n', '<leader>fs',  lspbuf.document_symbol, bufopts )
+                    make_keymap( 'n', '<leader>co',  lspbuf.incoming_calls,  bufopts )
+                    make_keymap( 'n', '<leader>ci',  lspbuf.outgoing_calls,  bufopts )
 
                     local inlay_hint = lsp.inlay_hint
                     make_keymap( 'n', '<leader>h', function()
