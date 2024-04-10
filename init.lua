@@ -893,6 +893,8 @@ vim.opt.cursorline     = true
 vim.opt.cursorcolumn   = true
 
 vim.opt.cmdheight      = 1
+
+vim.opt.wrap           = false
 ---------------------------------------------------------------------------
 -- write centered line - 80 character line with text in the middle and dashes
 -- padding it
