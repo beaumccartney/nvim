@@ -700,7 +700,7 @@ require'lazy'.setup {
 
                     make_keymap( 'n', '<leader>gD',  lspbuf.declaration,     bufopts )
                     make_keymap( 'n', '<leader>i',   lspbuf.hover,           bufopts )
-                    make_keymap( 'n', '<C-i>',       lspbuf.signature_help,  bufopts )
+                    make_keymap( 'n', '<leader>I',   lspbuf.signature_help,  bufopts )
                     make_keymap( 'n', '<leader>rn',  lspbuf.rename,          bufopts )
                     make_keymap( 'n', '<leader>ca',  lspbuf.code_action,     bufopts )
 
