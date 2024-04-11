@@ -233,7 +233,12 @@ require'lazy'.setup {
 
     {
         'JoosepAlviste/nvim-ts-context-commentstring',
-        opts = { languages = { cpp = '// %s', }, },
+        opts = {
+            languages = {
+                cpp = '// %s',
+                just = '# %s',
+            },
+        },
         init = function() vim.g.skip_ts_context_commentstring_module = true end,
     },
 
