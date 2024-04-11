@@ -173,6 +173,7 @@ require'lazy'.setup {
                 'jsdoc',
                 'json',
                 'json5',
+                'just',
                 'lua',
                 'luadoc',
                 'make',
