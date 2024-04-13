@@ -301,6 +301,8 @@ require'lazy'.setup {
             local gs = require'gitsigns'
             gs.setup(opts)
 
+            make_keymap({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>', {})
+
             make_keymap( { 'n' }, '<leader>gp', gs.preview_hunk, {} )
 
             make_keymap( { 'n' }, '<leader>gs', gs.stage_hunk, {} )
