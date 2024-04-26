@@ -3,6 +3,7 @@
 -- wrap mapping function
 -- give all my keymaps descriptions
 -- migrate to mini.deps
+-- put all autocommands in a group so they don't get re-added on re-source
 -- have mini pickers put shit in qf list where possible and replace with gf variants where not
 
 
