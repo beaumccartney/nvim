@@ -432,10 +432,6 @@ require'lazy'.setup {
 
                 open( file )
             end, {} )
-
-            make_keymap( 'n', '<leader>f~', function()
-                open( vim.env.HOME )
-            end, {} )
         end
     },
 
