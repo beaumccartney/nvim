@@ -51,5 +51,4 @@
   "rainbow-delimiters.nvim": { "branch": "master", "commit": "0563a31b1f46a911865cb85df3ddde2eff9fdada" },
   "roc.vim": { "branch": "master", "commit": "a4b2edc029b349f05221249a6ab922d2787d2962" },
   "vim-visual-multi": { "branch": "master", "commit": "e2ff111f123da6cf97f95b96b10eb95854f953c9" },
-  "vimspector": { "branch": "master", "commit": "def092693ea33eb2055fb2cfbcabb8e56ea77963" }
 }

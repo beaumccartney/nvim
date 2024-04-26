@@ -44,15 +44,6 @@ require'lazy'.setup {
     },
 
     {
-        event = 'VeryLazy',
-        'puremourning/vimspector',
-        init = function()
-            vim.g.vimspector_enable_mappings = 'HUMAN'
-            vim.g.vimspector_install_gadgets = { 'CodeLLDB', }
-        end,
-    },
-
-    {
         'FraserLee/ScratchPad',
         init = function()
             vim.g.scratchpad_autostart = 0
