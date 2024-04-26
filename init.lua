@@ -2,7 +2,6 @@
 -- :s respects case
 -- wrap mapping function
 -- give all my keymaps descriptions
--- load mini.nvim as one plugin
 -- migrate to mini.deps
 -- have mini pickers put shit in qf list where possible and replace with gf variants where not
 
@@ -34,6 +33,190 @@ vim.opt.rtp:prepend( lazypath )
 
 require'lazy'.setup {
     {
+        'echasnovski/mini.nvim',
+        dependencies = 'nvim-tree/nvim-web-devicons',
+        config = function()
+            require'mini.extra'.setup()
+            require'mini.tabline'.setup()
+
+            local hipatterns = require'mini.hipatterns'
+            local hi_words = MiniExtra.gen_highlighter.words
+            hipatterns.setup {
+                highlighters = {
+                    todo  = hi_words({ 'TODO',  'REVIEW', 'INCOMPLETE'           }, 'MiniHipatternsTodo' ),
+                    fixme = hi_words({ 'FIXME', 'BUG',    'ROBUSTNESS', 'CRASH', }, 'MiniHipatternsFixme'),
+                    note  = hi_words({ 'NOTE',  'INFO',                          }, 'MiniHipatternsNote' ),
+                    hack  = hi_words({ 'HACK',  'XXX',                           }, 'MiniHipatternsHack' ),
+
+                    hex_color = hipatterns.gen_highlighter.hex_color(),
+                },
+                delay = {
+                    text_change = 0,
+                    scroll = 0,
+                },
+            }
+
+            require 'mini.comment'.setup {
+                options = {
+                    custom_commentstring = function()
+                        return require 'ts_context_commentstring'.calculate_commentstring() or vim.bo.commentstring
+                    end,
+                },
+                mappings = { textobject = 'ic', },
+            }
+
+            require 'mini.surround'.setup {
+                respect_selection_type = true,
+            }
+
+            require 'mini.splitjoin'.setup()
+            require 'mini.move'.setup()
+
+            require 'mini.notify'.setup {
+                lsp_progress = {
+                    -- enable = false,
+                    duration_last = 350,
+                },
+            }
+
+            require 'mini.pick'.setup {
+                mappings = {
+                    refine        = '<C-;>',
+                    refine_marked = '<M-;>',
+                },
+            }
+
+            require 'mini.visits'.setup()
+            vim.api.nvim_create_autocmd( 'BufReadPre', {
+                callback = function(args)
+                    local currentDir = vim.fn.getcwd()
+                    local bufDir     = vim.fn.fnamemodify( args.file, ':p:h' )
+                    if not vim.startswith( bufDir, currentDir ) then
+                        vim.b.minivisits_disable = true
+                    end
+                end,
+            })
+
+            require 'mini.statusline'.setup()
+
+            local ai = require'mini.ai'
+            local gen_spec = ai.gen_spec
+            local extra_ai_spec = MiniExtra.gen_ai_spec
+            ai.setup({
+                search_method = 'cover_or_nearest',
+                custom_textobjects = {
+                    F = gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
+                    c = gen_spec.treesitter({ a = '@class.outer',    i = '@class.inner'    }),
+                    S = gen_spec.treesitter({ a = '@block.outer',    i = '@block.inner'    }),
+                    j = extra_ai_spec.line(),
+                    d = extra_ai_spec.number(),
+                    g = extra_ai_spec.buffer(),
+                    e = extra_ai_spec.diagnostic(),
+                    -- TODO:
+                    --      assignment inner
+                    --      assignment outer
+                    --      assignment lhs
+                    --      assignment rhs
+                },
+            })
+
+            require 'mini.align'.setup()
+            require 'mini.bufremove'.setup()
+            require 'mini.bracketed'.setup()
+            require 'mini.cursorword'.setup()
+
+            require 'mini.files'.setup {
+                windows = {
+                    max_number = 3,
+                },
+            }
+            local open = MiniFiles.open
+            make_keymap( 'n', '<leader>fe', open, {} )
+            make_keymap( 'n', '<leader>fi', function()
+                local buf = vim.api.nvim_buf_get_name( 0 )
+
+                local file = io.open( buf ) and buf or vim.fs.dirname( buf )
+
+                open( file )
+            end, {} )
+
+            require 'mini.indentscope'.setup()
+            require 'mini.jump'.setup()
+
+            require 'mini.misc'.setup()
+            MiniMisc.setup_restore_cursor()
+
+            require 'mini.sessions'.setup()
+            make_keymap( 'n', '<leader>ss', function()
+                local session = #vim.v.this_session == 0 and vim.fn.input({
+                    prompt = 'Session name: ',
+                    default = MiniSessions.config.file,
+                    completion = 'file',
+                }) or nil
+
+                if session then
+                    if session == '' then return end
+                    if not vim.endswith(session, '.vim') then session = session .. '.vim' end
+                end
+
+                MiniSessions.write(session)
+            end, {} )
+
+            local function sessionaction(action)
+                local exists = false
+                for _, _ in pairs(MiniSessions.detected) do
+                    exists = true
+                end
+
+                if not exists then
+                    print('No sessions')
+                    return
+                end
+
+                MiniSessions.select(action)
+            end
+
+            make_keymap( 'n', '<leader>sf', function()
+               sessionaction('read')
+            end, {} )
+            make_keymap( 'n', '<leader>sd', function()
+                sessionaction('delete')
+            end, {} )
+            make_keymap( 'n', '<leader>sw', function()
+                sessionaction('write')
+            end, {} )
+
+            local starter = require'mini.starter'
+            starter.setup {
+                evaluate_single = true,
+                items = {
+                    starter.sections.sessions(),
+                    starter.sections.recent_files(4, true, false),
+                    starter.sections.builtin_actions(),
+                },
+            }
+
+            require 'mini.trailspace'.setup()
+            require 'mini.operators'.setup()
+
+            require 'mini.completion'.setup {
+                mappings = {
+                    force_twostep  = '<C-j>',
+                    force_fallback = '<C-k>',
+                },
+                -- HACK: high delay for no autocomplete
+                delay = { completion = 99999 },
+                lsp_completion = {
+                    source_func = 'omnifunc',
+                    auto_setup  = false
+                },
+                window = { signature = { width = 120 }, },
+                set_vim_settings = true, -- set shortmess and completeopt
+            }
+        end,
+    },
+
+    {
         "pianocomposer321/officer.nvim",
         dependencies = "stevearc/overseer.nvim",
         opts = {},
@@ -58,80 +241,6 @@ require'lazy'.setup {
             input = {
                 insert_only     = false,
                 start_in_insert = false,
-            },
-        },
-    },
-
-    {
-        'echasnovski/mini.tabline',
-        dependencies = 'nvim-tree/nvim-web-devicons',
-        config = true,
-    },
-
-    {
-        'echasnovski/mini.hipatterns',
-        dependencies = 'echasnovski/mini.extra',
-        config = function()
-            local hipatterns = require'mini.hipatterns'
-            local hi_words = MiniExtra.gen_highlighter.words
-            hipatterns.setup({
-                highlighters = {
-                    todo  = hi_words({ 'TODO',  'REVIEW', 'INCOMPLETE'           }, 'MiniHipatternsTodo' ),
-                    fixme = hi_words({ 'FIXME', 'BUG',    'ROBUSTNESS', 'CRASH', }, 'MiniHipatternsFixme'),
-                    note  = hi_words({ 'NOTE',  'INFO',                          }, 'MiniHipatternsNote' ),
-                    hack  = hi_words({ 'HACK',  'XXX',                           }, 'MiniHipatternsHack' ),
-
-                    hex_color = hipatterns.gen_highlighter.hex_color(),
-                },
-                delay = {
-                    text_change = 0,
-                    scroll = 0,
-                },
-            })
-        end
-    },
-
-    {
-        'echasnovski/mini.comment',
-        opts = {
-            options = {
-                custom_commentstring = function()
-                    return require'ts_context_commentstring'.calculate_commentstring() or vim.bo.commentstring
-                end,
-            },
-            mappings = { textobject = 'ic', },
-        },
-    },
-
-    {
-        'echasnovski/mini.extra',
-        config = true,
-    },
-
-    -- surround things
-    {
-        'echasnovski/mini.surround',
-        opts = { respect_selection_type = true, },
-    },
-
-    -- change argument lists from one line to n lines or vice-versa
-    {
-    	'echasnovski/mini.splitjoin',
-    	config = true,
-    },
-
-    -- better [de]indenting and moving up and down
-    {
-        'echasnovski/mini.move',
-        config = true,
-    },
-
-    {
-        'echasnovski/mini.notify',
-        opts = {
-            lsp_progress = {
-                -- enable = false,
-                duration_last = 350,
             },
         },
     },
@@ -245,40 +354,6 @@ require'lazy'.setup {
         },
     },
 
-    -- fuzzy-find files and strings
-    {
-        'echasnovski/mini.pick',
-        dependencies = { 'nvim-tree/nvim-web-devicons' },
-        opts = {
-            mappings = {
-                refine        = '<C-;>',
-                refine_marked = '<M-;>',
-            },
-        },
-    },
-
-    {
-        'echasnovski/mini.visits',
-        opts = {},
-        init = function()
-            vim.api.nvim_create_autocmd( 'BufReadPre', {
-                callback = function(args)
-                    local currentDir = vim.fn.getcwd()
-                    local bufDir     = vim.fn.fnamemodify( args.file, ':p:h' )
-                    if not vim.startswith( bufDir, currentDir ) then
-                        vim.b.minivisits_disable = true
-                    end
-                end,
-            })
-        end,
-    },
-
-    {
-        'echasnovski/mini.statusline',
-        dependencies = 'nvim-tree/nvim-web-devicons',
-        config = true
-    },
-
     -- git-gutter
     {
         'lewis6991/gitsigns.nvim',
@@ -354,170 +429,6 @@ require'lazy'.setup {
 
     -- additional textobject keys after "a" and "i" e.g. <something>[a|i]q where q is quote text object
     'nvim-treesitter/nvim-treesitter-textobjects',
-    {
-        'echasnovski/mini.ai',
-        dependencies = 'echasnovski/mini.extra',
-        config = function()
-            local ai = require'mini.ai'
-            local gen_spec = ai.gen_spec
-            local extra_ai_spec = MiniExtra.gen_ai_spec
-            ai.setup({
-                search_method = 'cover_or_nearest',
-                custom_textobjects = {
-                    F = gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
-                    c = gen_spec.treesitter({ a = '@class.outer',    i = '@class.inner'    }),
-                    S = gen_spec.treesitter({ a = '@block.outer',    i = '@block.inner'    }),
-                    j = extra_ai_spec.line(),
-                    d = extra_ai_spec.number(),
-                    g = extra_ai_spec.buffer(),
-                    e = extra_ai_spec.diagnostic(),
-                    -- TODO:
-                    --      assignment inner
-                    --      assignment outer
-                    --      assignment lhs
-                    --      assignment rhs
-                },
-            })
-        end
-    },
-
-    -- align stuff - great interactivity and keybinds
-    {
-        'echasnovski/mini.align',
-        config = true,
-    },
-
-    {
-        'echasnovski/mini.bufremove',
-        config = true,
-    },
-
-    {
-        'echasnovski/mini.bracketed',
-        config = true,
-    },
-
-    -- highlight word under cursor
-    {
-        'echasnovski/mini.cursorword',
-        config = true,
-    },
-
-    {
-        'echasnovski/mini.files',
-        dependencies = 'nvim-tree/nvim-web-devicons',
-        opts = {
-            windows = {
-                max_number = 3,
-            },
-        },
-        config = function(_, opts)
-            require'mini.files'.setup(opts)
-
-            local open = MiniFiles.open
-            make_keymap( 'n', '<leader>fe', open, {} )
-            make_keymap( 'n', '<leader>fi', function()
-                local buf = vim.api.nvim_buf_get_name( 0 )
-
-                local file = io.open( buf ) and buf or vim.fs.dirname( buf )
-
-                open( file )
-            end, {} )
-        end
-    },
-
-    {
-        'echasnovski/mini.indentscope',
-        config = true,
-    },
-
-    {
-        'echasnovski/mini.jump',
-        opts = {},
-    },
-
-    {
-        'echasnovski/mini.misc',
-        config = function()
-            require'mini.misc'.setup()
-
-            MiniMisc.setup_restore_cursor()
-        end,
-    },
-
-    {
-        'echasnovski/mini.sessions',
-        opts = {},
-        config = function(_, opts)
-            require'mini.sessions'.setup(opts)
-
-            make_keymap( 'n', '<leader>ss', function()
-                local session = #vim.v.this_session == 0 and vim.fn.input({
-                    prompt = 'Session name: ',
-                    default = MiniSessions.config.file,
-                    completion = 'file',
-                }) or nil
-
-                if session then
-                    if session == '' then return end
-                    if not vim.endswith(session, '.vim') then session = session .. '.vim' end
-                end
-
-                MiniSessions.write(session)
-            end, {} )
-
-            local function sessionaction(action)
-                local exists = false
-                for _, _ in pairs(MiniSessions.detected) do
-                    exists = true
-                end
-
-                if not exists then
-                    print('No sessions')
-                    return
-                end
-
-                MiniSessions.select(action)
-            end
-
-            make_keymap( 'n', '<leader>sf', function()
-               sessionaction('read')
-            end, {} )
-            make_keymap( 'n', '<leader>sd', function()
-                sessionaction('delete')
-            end, {} )
-            make_keymap( 'n', '<leader>sw', function()
-                sessionaction('write')
-            end, {} )
-        end,
-    },
-
-    {
-        'echasnovski/mini.starter',
-        config = function()
-            local starter = require'mini.starter'
-            starter.setup {
-                evaluate_single = true,
-                items = {
-                    starter.sections.sessions(),
-                    starter.sections.recent_files(4, true, false),
-                    starter.sections.builtin_actions(),
-                },
-            }
-        end,
-    },
-
-    -- highlight and trim trailing whitespace
-    {
-        'echasnovski/mini.trailspace',
-        config = true,
-    },
-
-    -- exchange, replace, sort, and evaluate stuff
-    {
-        'echasnovski/mini.operators',
-        config = true,
-    },
 
     {
         'sainnhe/gruvbox-material',
@@ -606,32 +517,13 @@ require'lazy'.setup {
     },
 
     {
-        -- TODO: better highlighting in signature help
-        'echasnovski/mini.completion',
-        opts = {
-            mappings = {
-                force_twostep  = '<C-j>',
-                force_fallback = '<C-k>',
-            },
-            -- HACK: high delay for no autocomplete
-            delay = { completion = 99999 },
-            lsp_completion = {
-                source_func = 'omnifunc',
-                auto_setup  = false
-            },
-            window = { signature = { width = 120 }, },
-            set_vim_settings = true, -- set shortmess and completeopt
-        },
-    },
-
-    {
         'neovim/nvim-lspconfig',
         dependencies = {
             {
                 "folke/neodev.nvim",
                 opts = {},
             },
-            'echasnovski/mini.extra',
+            'echasnovski/mini.nvim',
         },
         config = function()
             local lspconfig = require'lspconfig'
