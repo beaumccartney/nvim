@@ -486,7 +486,6 @@ require'lazy'.setup {
         'puremourning/jai.vim',
         init = function() vim.g.jai_compiler = vim.env.HOME .. '/thirdparty/jai/bin/jai-macos' end,
     },
-    'ChrisWellsWood/roc.vim',
 
     {
         'zbirenbaum/copilot.lua',
