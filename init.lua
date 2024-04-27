@@ -533,7 +533,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         local inlay_hint = lsp.inlay_hint
         make_keymap( 'n', '<leader>h', function()
             local enabled = inlay_hint.is_enabled( ev.buf )
-            inlay_hint.enable( ev.buf, not enabled )
+            inlay_hint.enable( not enabled )
         end, bufopts )
     end
 })
@@ -597,11 +597,7 @@ make_keymap( 'n', '<leader>e', diagnostic.open_float, opts )
 make_keymap( 'n', '<leader>bd', diagnostic.setloclist, opts )
 
 make_keymap( 'n', '<leader>d', function()
-    if diagnostic.is_disabled() then
-        diagnostic.enable()
-    else
-        diagnostic.disable()
-    end
+    diagnostic.enable(not diagnostic.is_enabled())
 end, opts )
 
 -- keymaps for built in things
