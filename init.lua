@@ -38,8 +38,21 @@ require'lazy'.setup {
         'echasnovski/mini.nvim',
         dependencies = 'nvim-tree/nvim-web-devicons',
         config = function()
-            require'mini.extra'.setup()
-            require'mini.tabline'.setup()
+            require'mini.extra'      .setup() -- first because other plugins depend on it
+
+            require'mini.align'      .setup()
+            require'mini.bracketed'  .setup()
+            require'mini.bufremove'  .setup()
+            require'mini.cursorword' .setup()
+            require'mini.indentscope'.setup()
+            require'mini.jump'       .setup()
+            require'mini.move'       .setup()
+            require'mini.operators'  .setup()
+            require'mini.splitjoin'  .setup()
+            require'mini.statusline' .setup()
+            require'mini.tabline'    .setup()
+            require'mini.trailspace' .setup()
+
 
             local hipatterns = require'mini.hipatterns'
             local hi_words = MiniExtra.gen_highlighter.words
@@ -71,9 +84,6 @@ require'lazy'.setup {
                 respect_selection_type = true,
             }
 
-            require 'mini.splitjoin'.setup()
-            require 'mini.move'.setup()
-
             require 'mini.notify'.setup {
                 lsp_progress = {
                     -- enable = false,
@@ -99,8 +109,6 @@ require'lazy'.setup {
                 end,
             })
 
-            require 'mini.statusline'.setup()
-
             local ai = require'mini.ai'
             local gen_spec = ai.gen_spec
             local extra_ai_spec = MiniExtra.gen_ai_spec
@@ -122,11 +130,6 @@ require'lazy'.setup {
                 },
             })
 
-            require 'mini.align'.setup()
-            require 'mini.bufremove'.setup()
-            require 'mini.bracketed'.setup()
-            require 'mini.cursorword'.setup()
-
             require 'mini.files'.setup {
                 windows = {
                     max_number = 3,
@@ -141,9 +144,6 @@ require'lazy'.setup {
 
                 open( file )
             end, {} )
-
-            require 'mini.indentscope'.setup()
-            require 'mini.jump'.setup()
 
             require 'mini.misc'.setup()
             MiniMisc.setup_restore_cursor()
@@ -197,9 +197,6 @@ require'lazy'.setup {
                     starter.sections.builtin_actions(),
                 },
             }
-
-            require 'mini.trailspace'.setup()
-            require 'mini.operators'.setup()
 
             require 'mini.completion'.setup {
                 mappings = {
