@@ -2,7 +2,6 @@
 -- :s respects case
 -- wrap mapping function
 -- give all my keymaps descriptions
--- migrate to mini.deps
 -- put all autocommands in a group so they don't get re-added on re-source
 -- have mini pickers put shit in qf list where possible and replace with gf variants where not
 
@@ -19,600 +18,546 @@ vim.g.zig_fmt_autosave = 0
 
 local make_keymap = vim.keymap.set
 
--- bootstrap package manager (ngl it works nice)
-local lazypath = vim.fn.stdpath( 'data' ) .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat( lazypath ) then
-    vim.fn.system({
-        'git',
-        'clone',
-        '--filter=blob:none',
-        'https://github.com/folke/lazy.nvim.git',
-        '--branch=stable', -- latest stable release
-        lazypath,
-    })
+-- Clone 'mini.nvim' manually in a way that it gets managed by 'mini.deps'
+local path_package = vim.fn.stdpath('data') .. '/site/'
+local mini_path = path_package .. 'pack/deps/start/mini.nvim'
+if not vim.loop.fs_stat(mini_path) then
+    vim.cmd('echo "Installing `mini.nvim`" | redraw')
+    local clone_cmd = {
+        'git', 'clone', '--filter=blob:none',
+        'https://github.com/echasnovski/mini.nvim', mini_path
+    }
+    vim.fn.system(clone_cmd)
+    vim.cmd('packadd mini.nvim | helptags ALL')
+    vim.cmd('echo "Installed `mini.nvim`" | redraw')
 end
-vim.opt.rtp:prepend( lazypath )
 
-require'lazy'.setup {
-    {
-        'echasnovski/mini.nvim',
-        dependencies = 'nvim-tree/nvim-web-devicons',
-        config = function()
-            require'mini.extra'      .setup() -- first because other plugins depend on it
+-- Set up 'mini.deps' (customize to your liking)
+require'mini.deps'.setup { path = { package = path_package } }
 
-            require'mini.align'      .setup()
-            require'mini.bracketed'  .setup()
-            require'mini.bufremove'  .setup()
-            require'mini.cursorword' .setup()
-            require'mini.indentscope'.setup()
-            require'mini.jump'       .setup()
-            require'mini.move'       .setup()
-            require'mini.operators'  .setup()
-            require'mini.splitjoin'  .setup()
-            require'mini.statusline' .setup()
-            require'mini.tabline'    .setup()
-            require'mini.trailspace' .setup()
+local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
+
+add('nvim-tree/nvim-web-devicons')
+require'nvim-web-devicons'.setup()
+
+require'mini.extra'      .setup() -- first because other plugins depend on it
+
+require'mini.align'      .setup()
+require'mini.bracketed'  .setup()
+require'mini.bufremove'  .setup()
+require'mini.cursorword' .setup()
+require'mini.indentscope'.setup()
+require'mini.jump'       .setup()
+require'mini.move'       .setup()
+require'mini.operators'  .setup()
+require'mini.splitjoin'  .setup()
+require'mini.statusline' .setup()
+require'mini.tabline'    .setup()
+require'mini.trailspace' .setup()
 
 
-            local hipatterns = require'mini.hipatterns'
-            local hi_words = MiniExtra.gen_highlighter.words
-            hipatterns.setup {
-                highlighters = {
-                    todo  = hi_words({ 'TODO',  'REVIEW', 'INCOMPLETE'           }, 'MiniHipatternsTodo' ),
-                    fixme = hi_words({ 'FIXME', 'BUG',    'ROBUSTNESS', 'CRASH', }, 'MiniHipatternsFixme'),
-                    note  = hi_words({ 'NOTE',  'INFO',                          }, 'MiniHipatternsNote' ),
-                    hack  = hi_words({ 'HACK',  'XXX',                           }, 'MiniHipatternsHack' ),
+local hipatterns = require'mini.hipatterns'
+local hi_words = MiniExtra.gen_highlighter.words
+hipatterns.setup {
+    highlighters = {
+        todo  = hi_words({ 'TODO',  'REVIEW', 'INCOMPLETE'           }, 'MiniHipatternsTodo' ),
+        fixme = hi_words({ 'FIXME', 'BUG',    'ROBUSTNESS', 'CRASH', }, 'MiniHipatternsFixme'),
+        note  = hi_words({ 'NOTE',  'INFO',                          }, 'MiniHipatternsNote' ),
+        hack  = hi_words({ 'HACK',  'XXX',                           }, 'MiniHipatternsHack' ),
 
-                    hex_color = hipatterns.gen_highlighter.hex_color(),
-                },
-                delay = {
-                    text_change = 0,
-                    scroll = 0,
-                },
-            }
-
-            require 'mini.comment'.setup {
-                options = {
-                    custom_commentstring = function()
-                        return require 'ts_context_commentstring'.calculate_commentstring() or vim.bo.commentstring
-                    end,
-                },
-                mappings = { textobject = 'ic', },
-            }
-
-            require 'mini.surround'.setup {
-                respect_selection_type = true,
-            }
-
-            require 'mini.notify'.setup {
-                lsp_progress = {
-                    -- enable = false,
-                    duration_last = 350,
-                },
-            }
-
-            require 'mini.pick'.setup {
-                mappings = {
-                    refine        = '<C-;>',
-                    refine_marked = '<M-;>',
-                },
-            }
-
-            require 'mini.visits'.setup()
-            vim.api.nvim_create_autocmd( 'BufReadPre', {
-                callback = function(args)
-                    local currentDir = vim.fn.getcwd()
-                    local bufDir     = vim.fn.fnamemodify( args.file, ':p:h' )
-                    if not vim.startswith( bufDir, currentDir ) then
-                        vim.b.minivisits_disable = true
-                    end
-                end,
-            })
-
-            local ai = require'mini.ai'
-            local gen_spec = ai.gen_spec
-            local extra_ai_spec = MiniExtra.gen_ai_spec
-            ai.setup({
-                search_method = 'cover_or_nearest',
-                custom_textobjects = {
-                    F = gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
-                    c = gen_spec.treesitter({ a = '@class.outer',    i = '@class.inner'    }),
-                    S = gen_spec.treesitter({ a = '@block.outer',    i = '@block.inner'    }),
-                    j = extra_ai_spec.line(),
-                    d = extra_ai_spec.number(),
-                    g = extra_ai_spec.buffer(),
-                    e = extra_ai_spec.diagnostic(),
-                    -- TODO:
-                    --      assignment inner
-                    --      assignment outer
-                    --      assignment lhs
-                    --      assignment rhs
-                },
-            })
-
-            require 'mini.files'.setup {
-                windows = {
-                    max_number = 3,
-                },
-            }
-            local open = MiniFiles.open
-            make_keymap( 'n', '<leader>fe', open, {} )
-            make_keymap( 'n', '<leader>fi', function()
-                local buf = vim.api.nvim_buf_get_name( 0 )
-
-                local file = io.open( buf ) and buf or vim.fs.dirname( buf )
-
-                open( file )
-            end, {} )
-
-            require 'mini.misc'.setup()
-            MiniMisc.setup_restore_cursor()
-
-            require 'mini.sessions'.setup()
-            make_keymap( 'n', '<leader>ss', function()
-                local session = #vim.v.this_session == 0 and vim.fn.input({
-                    prompt = 'Session name: ',
-                    default = MiniSessions.config.file,
-                    completion = 'file',
-                }) or nil
-
-                if session then
-                    if session == '' then return end
-                    if not vim.endswith(session, '.vim') then session = session .. '.vim' end
-                end
-
-                MiniSessions.write(session)
-            end, {} )
-
-            local function sessionaction(action)
-                local exists = false
-                for _, _ in pairs(MiniSessions.detected) do
-                    exists = true
-                end
-
-                if not exists then
-                    print('No sessions')
-                    return
-                end
-
-                MiniSessions.select(action)
-            end
-
-            make_keymap( 'n', '<leader>sf', function()
-               sessionaction('read')
-            end, {} )
-            make_keymap( 'n', '<leader>sd', function()
-                sessionaction('delete')
-            end, {} )
-            make_keymap( 'n', '<leader>sw', function()
-                sessionaction('write')
-            end, {} )
-
-            local starter = require'mini.starter'
-            starter.setup {
-                evaluate_single = true,
-                items = {
-                    starter.sections.sessions(),
-                    starter.sections.recent_files(4, true, false),
-                    starter.sections.builtin_actions(),
-                },
-            }
-
-            require 'mini.completion'.setup {
-                mappings = {
-                    force_twostep  = '<C-j>',
-                    force_fallback = '<C-k>',
-                },
-                -- HACK: high delay for no autocomplete
-                delay = { completion = 99999 },
-                lsp_completion = {
-                    source_func = 'omnifunc',
-                    auto_setup  = false
-                },
-                window = { signature = { width = 120 }, },
-                set_vim_settings = true, -- set shortmess and completeopt
-            }
-        end,
+        hex_color = hipatterns.gen_highlighter.hex_color(),
     },
-
-    {
-        "pianocomposer321/officer.nvim",
-        dependencies = "stevearc/overseer.nvim",
-        opts = {},
-        init = function()
-            make_keymap( 'n', '<CR><CR>',        "<Cmd>Make!<CR>", {} )
-            make_keymap( 'n', '<CR><SPACE><CR>', ":Make!<SPACE>",  {} )
-        end,
+    delay = {
+        text_change = 0,
+        scroll = 0,
     },
-
-    {
-        'FraserLee/ScratchPad',
-        init = function()
-            vim.g.scratchpad_autostart = 0
-            vim.g.scratchpad_location  = vim.fn.stdpath( 'data' ) .. '/scratchpad'
-            make_keymap( 'n', 'S', require'scratchpad'.invoke, {} )
-        end,
-    },
-
-    {
-        "stevearc/dressing.nvim",
-        opts = {
-            input = {
-                insert_only     = false,
-                start_in_insert = false,
-            },
-        },
-    },
-
-    -- everything
-    {
-        'nvim-treesitter/nvim-treesitter',
-        opts = {
-            auto_install = true,
-            ensure_installed = {
-                'asm',
-                'bash',
-                'c',
-                'cpp',
-                'css',
-                'csv',
-                'diff',
-                'fish',
-                'git_config',
-                'git_rebase',
-                'gitattributes',
-                'gitcommit',
-                'gitignore',
-                'go',
-                'gomod',
-                'gosum',
-                'gowork',
-                'html',
-                'javascript',
-                'jsdoc',
-                'json',
-                'json5',
-                'just',
-                'lua',
-                'luadoc',
-                'make',
-                'markdown',
-                'markdown_inline',
-                'odin',
-                'printf',
-                'python',
-                'regex',
-                'requirements',
-                'scss',
-                'todotxt',
-                'toml',
-                'tsx',
-                'typescript',
-                'vim',
-                'vimdoc',
-                'yaml',
-            },
-            -- TODO: use ziglibs zig ts parser
-            ignore_install = { 'zig' },
-            indent = {
-                enable = true,
-                disable = { 'odin', },
-            },
-        },
-        build = ':TSUpdate',
-        main  = 'nvim-treesitter.configs',
-        init  = function()
-            -- set foldmethod to treesitter if parser is available
-            vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-            vim.api.nvim_create_autocmd("Filetype", {
-                callback = function()
-                    if not require"nvim-treesitter.parsers".has_parser() then
-                        vim.wo.foldmethod = 'indent'
-                        return
-                    end
-
-                    vim.wo.foldmethod = 'expr'
-
-                    -- don't use fo-n, just indent with treesitter
-                    vim.bo.autoindent  = false
-                    vim.bo.smartindent = false
-                    vim.bo.cindent     = false
-
-                    -- TODO: if longest line in buffer is too long kill
-                    if vim.api.nvim_buf_line_count(0) > 1024 then return end
-                    vim.treesitter.start()
-                end,
-            })
-        end,
-    },
-
-    {
-        'nvim-treesitter/nvim-treesitter-textobjects',
-        event = 'VeryLazy',
-    },
-
-    {
-        'JoosepAlviste/nvim-ts-context-commentstring',
-        opts = {
-            languages = {
-                cpp = '// %s',
-                just = '# %s',
-            },
-        },
-        init = function() vim.g.skip_ts_context_commentstring_module = true end,
-    },
-
-    'HiPhish/rainbow-delimiters.nvim',
-
-    {
-        'nvim-treesitter/nvim-treesitter-context',
-        opts = {
-            multiline_threshold = 4,
-            trim_scope = 'inner',
-            mode = 'topline',
-        },
-    },
-
-    -- git-gutter
-    {
-        'lewis6991/gitsigns.nvim',
-        opts = {
-            current_line_blame = true,
-            current_line_blame_opts = {
-                delay = 0,
-            },
-        },
-        config = function(_, opts)
-            local gs = require'gitsigns'
-            gs.setup(opts)
-
-            make_keymap({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>', {})
-
-            make_keymap( { 'n' }, '<leader>gp', gs.preview_hunk, {} )
-
-            make_keymap( { 'n' }, '<leader>gs', gs.stage_hunk, {} )
-            make_keymap( { 'v' }, '<leader>gs', function() gs.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-            make_keymap( { 'n' }, '<leader>gu', gs.undo_stage_hunk, {} )
-            make_keymap( { 'n' }, '<leader>ga', gs.stage_buffer, {} )
-
-            make_keymap( { 'n' }, '<leader>gk', gs.reset_hunk, {} )
-            make_keymap( { 'v' }, '<leader>gk', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-            make_keymap( { 'n' }, '<leader>gK', gs.reset_buffer, {} )
-
-            make_keymap( { 'n' }, '<leader>gb', function()
-                gs.blame_line({ full = true })
-            end, {} )
-
-            local toggle_state = opts.signs or true
-            local extra_toggle_state = false
-            local function signs_toggle(switch, extra)
-                toggle_state = switch or (not toggle_state)
-                gs.toggle_current_line_blame(toggle_state)
-                gs.toggle_signs(toggle_state)
-                gs.toggle_numhl(toggle_state)
-
-                extra_toggle_state = extra and (not extra_toggle_state) or false
-                gs.toggle_deleted(extra_toggle_state)
-                gs.toggle_linehl(extra_toggle_state)
-                gs.toggle_linehl(extra_toggle_state)
-                gs.toggle_word_diff(extra_toggle_state)
-            end
-            make_keymap( { 'n' }, '<leader>gh', signs_toggle, {} )
-
-            make_keymap( { 'n' }, '<leader>gf', function()
-                signs_toggle(true, true)
-            end, {} )
-
-            make_keymap( '', '[h', gs.prev_hunk, {} )
-            make_keymap( '', ']h', gs.next_hunk, {} )
-        end
-    },
-
-    'sindrets/diffview.nvim',
-    {
-        'NeogitOrg/neogit',
-        branch = 'nightly',
-        event = 'VeryLazy',
-        dependencies = {
-            'nvim-lua/plenary.nvim',
-        },
-        opts = {
-            disable_insert_on_commit = true,
-        },
-        config = function(_, opts)
-            local ng = require'neogit'
-            ng.setup(opts)
-            make_keymap( 'n', '<leader>gg', ng.open, {} )
-        end,
-    },
-
-    -- additional textobject keys after "a" and "i" e.g. <something>[a|i]q where q is quote text object
-    'nvim-treesitter/nvim-treesitter-textobjects',
-
-    {
-        'sainnhe/gruvbox-material',
-        init = function()
-            vim.g.gruvbox_material_foreground = 'original'
-            vim.g.gruvbox_material_background = 'hard'
-        end
-    },
-
-    {
-        'marko-cerovac/material.nvim',
-        init = function() vim.g.material_style = "deep ocean" end,
-        opts = {
-            plugins = {
-                "gitsigns",
-                "indent-blankline",
-                "mini",
-                "neogit",
-                "nvim-web-devicons",
-                "rainbow-delimiters",
-            },
-        }
-    },
-
-    {
-        "lukas-reineke/indent-blankline.nvim",
-        main = "ibl",
-        opts = { scope = { enabled = false }, },
-    },
-
-    {
-        'mg979/vim-visual-multi',
-        init = function()
-            vim.g.VM_maps = {
-                [ 'Add Cursor Down' ] = '<C-j>',
-                [ 'Add Cursor Up'   ] = '<C-k>',
-            }
-        end
-    },
-
-    -- highlight cursor after large jump
-    'rainbowhxch/beacon.nvim',
-
-    -- fast j and k YEAH BUDDY
-    -- holding j, k, w, b, W, B, etc goes fast after a while
-    {
-        'rainbowhxch/accelerated-jk.nvim',
-        opts = {
-            acceleration_motions = { 'w', 'b', 'W', 'B' },
-        },
-    },
-
-    -- jai syntax-highlighting + folds + whatever
-    {
-        'puremourning/jai.vim',
-        init = function() vim.g.jai_compiler = vim.env.HOME .. '/thirdparty/jai/bin/jai-macos' end,
-    },
-
-    {
-        'zbirenbaum/copilot.lua',
-        event = 'VeryLazy',
-        opts = {
-            suggestion = {
-                auto_trigger = true,
-                debounce     = 0,
-            },
-            filetypes = { DressingInput = false, },
-        },
-    },
-
-    {
-        'stevearc/conform.nvim',
-        opts = {
-            formatters_by_ft = {
-                javascript = { { "prettierd", "prettier" } },
-                json       = { { "prettierd", "prettier" } },
-                odin       = { { "odinfmt" } },
-                rust       = { { "rustfmt" } },
-                zig        = { { "zigfmt" } },
-            }
-        },
-        init = function()
-            make_keymap( { 'n', 'x' }, '<leader>F', function() require'conform'.format { async = true, lsp_fallback = true, } end )
-        end
-    },
-
-    {
-        'neovim/nvim-lspconfig',
-        dependencies = {
-            {
-                "folke/neodev.nvim",
-                opts = {},
-            },
-            'echasnovski/mini.nvim',
-        },
-        config = function()
-            local lspconfig = require'lspconfig'
-            for _, server in pairs({
-                'bashls',
-                'clangd',
-                'cssls',
-                'eslint',
-                'gopls',
-                'html',
-                'jsonls',
-                'lua_ls',
-                'pyright',
-                'vtsls',
-            }) do
-                lspconfig[server].setup{}
-            end
-            lspconfig.ols.setup {
-                init_options = {
-                    enable_document_symbols  = true,
-                    enable_snippets          = false,
-                    enable_inlay_hints       = true,
-                    enable_references        = true,
-                    enable_hover             = true,
-                    enable_procedure_context = true,
-                },
-            }
-
-            local configs = require'lspconfig.configs'
-
-            if configs.jails then error("Jails config exists") end
-
-            local util = lspconfig.util
-            configs.jails = {
-                default_config = {
-                    cmd                 = { 'jails', },
-                    filetypes           = { 'jai', },
-                    single_file_support = true,
-                    root_dir            = function( fname )
-                        return util.root_pattern(unpack({
-                            'build.jai',
-                            'first.jai',
-                            'jails.json',
-                        }))(fname) or util.find_git_ancestor(fname)
-
-                        -- HACK: jails crashes if I don't put this - lspconfig docs tell me explicitly to NOT do this
-                        or util.path.dirname(fname)
-                    end,
-                },
-            }
-            lspconfig.jails.setup{}
-        end,
-        init = function()
-            vim.api.nvim_create_autocmd('LspAttach', {
-                callback = function( ev )
-                    vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
-
-                    local bufopts = { buffer = ev.buf }
-                    local lsp     = vim.lsp
-                    local lspbuf  = lsp.buf
-                    local function picklsp( scope )
-                        return function()
-                            MiniExtra.pickers.lsp( { scope = scope } )
-                        end
-                    end
-
-                    make_keymap( 'n', '<leader>gD',  lspbuf.declaration,     bufopts )
-                    make_keymap( 'n', '<leader>i',   lspbuf.hover,           bufopts )
-                    make_keymap( 'n', '<leader>I',   lspbuf.signature_help,  bufopts )
-                    make_keymap( 'n', '<leader>rn',  lspbuf.rename,          bufopts )
-                    make_keymap( 'n', '<leader>ca',  lspbuf.code_action,     bufopts )
-
-                    make_keymap( 'n', '<leader>gr',  lspbuf.references,      bufopts )
-                    make_keymap( 'n', '<leader>gd',  lspbuf.definition,      bufopts )
-                    make_keymap( 'n', '<leader>gi',  lspbuf.implementation,  bufopts )
-                    make_keymap( 'n', '<leader>gtd', lspbuf.type_definition, bufopts )
-                    make_keymap( 'n', '<leader>fs',  lspbuf.document_symbol, bufopts )
-                    make_keymap( 'n', '<leader>co',  lspbuf.incoming_calls,  bufopts )
-                    make_keymap( 'n', '<leader>ci',  lspbuf.outgoing_calls,  bufopts )
-
-                    local inlay_hint = lsp.inlay_hint
-                    make_keymap( 'n', '<leader>h', function()
-                        local enabled = inlay_hint.is_enabled( ev.buf )
-                        inlay_hint.enable( ev.buf, not enabled )
-                    end, bufopts )
-                end
-            })
-        end,
-    },
-
 }
+
+require 'mini.comment'.setup {
+    options = {
+        custom_commentstring = function()
+            return require 'ts_context_commentstring'.calculate_commentstring() or vim.bo.commentstring
+        end,
+    },
+    mappings = { textobject = 'ic', },
+}
+
+require 'mini.surround'.setup {
+    respect_selection_type = true,
+}
+
+require 'mini.notify'.setup {
+    lsp_progress = {
+        -- enable = false,
+        duration_last = 350,
+    },
+}
+
+require 'mini.pick'.setup {
+    mappings = {
+        refine        = '<C-;>',
+        refine_marked = '<M-;>',
+    },
+}
+
+require 'mini.visits'.setup()
+vim.api.nvim_create_autocmd( 'BufReadPre', {
+    callback = function(args)
+        local currentDir = vim.fn.getcwd()
+        local bufDir     = vim.fn.fnamemodify( args.file, ':p:h' )
+        if not vim.startswith( bufDir, currentDir ) then
+            vim.b.minivisits_disable = true
+        end
+    end,
+})
+
+local ai = require'mini.ai'
+local gen_spec = ai.gen_spec
+local extra_ai_spec = MiniExtra.gen_ai_spec
+ai.setup({
+    search_method = 'cover_or_nearest',
+    custom_textobjects = {
+        F = gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
+        c = gen_spec.treesitter({ a = '@class.outer',    i = '@class.inner'    }),
+        S = gen_spec.treesitter({ a = '@block.outer',    i = '@block.inner'    }),
+        j = extra_ai_spec.line(),
+        d = extra_ai_spec.number(),
+        g = extra_ai_spec.buffer(),
+        e = extra_ai_spec.diagnostic(),
+        -- TODO:
+        --      assignment inner
+        --      assignment outer
+        --      assignment lhs
+        --      assignment rhs
+    },
+})
+
+require 'mini.files'.setup {
+    windows = {
+        max_number = 3,
+    },
+}
+local open = MiniFiles.open
+make_keymap( 'n', '<leader>fe', open, {} )
+make_keymap( 'n', '<leader>fi', function()
+    local buf = vim.api.nvim_buf_get_name( 0 )
+
+    local file = io.open( buf ) and buf or vim.fs.dirname( buf )
+
+    open( file )
+end, {} )
+
+require 'mini.misc'.setup()
+MiniMisc.setup_restore_cursor()
+
+require 'mini.sessions'.setup()
+make_keymap( 'n', '<leader>ss', function()
+    local session = #vim.v.this_session == 0 and vim.fn.input({
+        prompt = 'Session name: ',
+        default = MiniSessions.config.file,
+        completion = 'file',
+    }) or nil
+
+    if session then
+        if session == '' then return end
+        if not vim.endswith(session, '.vim') then session = session .. '.vim' end
+    end
+
+    MiniSessions.write(session)
+end, {} )
+
+local function sessionaction(action)
+    local exists = false
+    for _, _ in pairs(MiniSessions.detected) do
+        exists = true
+    end
+
+    if not exists then
+        print('No sessions')
+        return
+    end
+
+    MiniSessions.select(action)
+end
+
+make_keymap( 'n', '<leader>sf', function()
+    sessionaction('read')
+end, {} )
+make_keymap( 'n', '<leader>sd', function()
+    sessionaction('delete')
+end, {} )
+make_keymap( 'n', '<leader>sw', function()
+    sessionaction('write')
+end, {} )
+
+local starter = require'mini.starter'
+starter.setup {
+    evaluate_single = true,
+    items = {
+        starter.sections.sessions(),
+        starter.sections.recent_files(4, true, false),
+        starter.sections.builtin_actions(),
+    },
+}
+
+require 'mini.completion'.setup {
+    mappings = {
+        force_twostep  = '<C-j>',
+        force_fallback = '<C-k>',
+    },
+    -- HACK: high delay for no autocomplete
+    delay = { completion = 99999 },
+    lsp_completion = {
+        source_func = 'omnifunc',
+        auto_setup  = false
+    },
+    window = { signature = { width = 120 }, },
+    set_vim_settings = true, -- set shortmess and completeopt
+}
+
+add({
+    source = "pianocomposer321/officer.nvim",
+    depends ={ "stevearc/overseer.nvim", }
+})
+make_keymap( 'n', '<CR><CR>',        "<Cmd>Make!<CR>", {} )
+make_keymap( 'n', '<CR><SPACE><CR>', ":Make!<SPACE>",  {} )
+require'officer'.setup()
+
+add('FraserLee/ScratchPad')
+vim.g.scratchpad_autostart = 0
+vim.g.scratchpad_location  = vim.fn.stdpath( 'data' ) .. '/scratchpad'
+make_keymap( 'n', 'S', require'scratchpad'.invoke, {} )
+
+add("stevearc/dressing.nvim")
+
+require'dressing'.setup {
+    input = {
+        insert_only     = false,
+        start_in_insert = false,
+    },
+}
+
+
+add({
+  source = 'nvim-treesitter/nvim-treesitter',
+  checkout = 'master',
+  monitor = 'main',
+  hooks = { post_checkout = function() vim.cmd('TSUpdate') end },
+})
+-- set foldmethod to treesitter if parser is available
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.api.nvim_create_autocmd("Filetype", {
+    callback = function()
+        if not require"nvim-treesitter.parsers".has_parser() then
+            vim.wo.foldmethod = 'indent'
+            return
+        end
+
+        vim.wo.foldmethod = 'expr'
+
+        -- don't use fo-n, just indent with treesitter
+        vim.bo.autoindent  = false
+        vim.bo.smartindent = false
+        vim.bo.cindent     = false
+
+        -- TODO: if longest line in buffer is too long kill
+        if vim.api.nvim_buf_line_count(0) > 1024 then return end
+        vim.treesitter.start()
+    end,
+})
+require'nvim-treesitter.configs'.setup {
+    auto_install = true,
+    ensure_installed = {
+        'asm',
+        'bash',
+        'c',
+        'cpp',
+        'css',
+        'csv',
+        'diff',
+        'fish',
+        'git_config',
+        'git_rebase',
+        'gitattributes',
+        'gitcommit',
+        'gitignore',
+        'go',
+        'gomod',
+        'gosum',
+        'gowork',
+        'html',
+        'javascript',
+        'jsdoc',
+        'json',
+        'json5',
+        'just',
+        'lua',
+        'luadoc',
+        'make',
+        'markdown',
+        'markdown_inline',
+        'odin',
+        'printf',
+        'python',
+        'regex',
+        'requirements',
+        'scss',
+        'todotxt',
+        'toml',
+        'tsx',
+        'typescript',
+        'vim',
+        'vimdoc',
+        'yaml',
+    },
+    -- TODO: use ziglibs zig ts parser
+    ignore_install = { 'zig' },
+    indent = {
+        enable = true,
+        disable = { 'odin', },
+    },
+}
+
+add('nvim-treesitter/nvim-treesitter-textobjects')
+
+add('JoosepAlviste/nvim-ts-context-commentstring')
+vim.g.skip_ts_context_commentstring_module = true
+require'ts_context_commentstring'.setup {
+    languages = {
+        cpp = '// %s',
+        just = '# %s',
+    },
+}
+
+add('HiPhish/rainbow-delimiters.nvim')
+
+add('nvim-treesitter/nvim-treesitter-context')
+require'treesitter-context'.setup {
+    multiline_threshold = 4,
+    trim_scope = 'inner',
+    mode = 'topline',
+}
+
+add('lewis6991/gitsigns.nvim')
+local gs_opts = {
+    current_line_blame = true,
+    current_line_blame_opts = {
+        delay = 0,
+    },
+}
+local gs = require'gitsigns'
+gs.setup(gs_opts)
+make_keymap({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>', {})
+
+make_keymap( { 'n' }, '<leader>gp', gs.preview_hunk, {} )
+
+make_keymap( { 'n' }, '<leader>gs', gs.stage_hunk, {} )
+make_keymap( { 'v' }, '<leader>gs', function() gs.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+make_keymap( { 'n' }, '<leader>gu', gs.undo_stage_hunk, {} )
+make_keymap( { 'n' }, '<leader>ga', gs.stage_buffer, {} )
+
+make_keymap( { 'n' }, '<leader>gk', gs.reset_hunk, {} )
+make_keymap( { 'v' }, '<leader>gk', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+make_keymap( { 'n' }, '<leader>gK', gs.reset_buffer, {} )
+
+make_keymap( { 'n' }, '<leader>gb', function()
+    gs.blame_line({ full = true })
+end, {} )
+
+local toggle_state = gs_opts.signs or true
+local extra_toggle_state = false
+local function signs_toggle(switch, extra)
+    toggle_state = switch or (not toggle_state)
+    gs.toggle_current_line_blame(toggle_state)
+    gs.toggle_signs(toggle_state)
+    gs.toggle_numhl(toggle_state)
+
+    extra_toggle_state = extra and (not extra_toggle_state) or false
+    gs.toggle_deleted(extra_toggle_state)
+    gs.toggle_linehl(extra_toggle_state)
+    gs.toggle_linehl(extra_toggle_state)
+    gs.toggle_word_diff(extra_toggle_state)
+end
+make_keymap( { 'n' }, '<leader>gh', signs_toggle, {} )
+
+make_keymap( { 'n' }, '<leader>gf', function()
+    signs_toggle(true, true)
+end, {} )
+
+make_keymap( '', '[h', gs.prev_hunk, {} )
+make_keymap( '', ']h', gs.next_hunk, {} )
+
+add('sindrets/diffview.nvim')
+add({
+    source = 'NeogitOrg/neogit',
+    checkout = 'nightly',
+    depends = {
+        'nvim-lua/plenary.nvim',
+    },
+})
+local ng = require'neogit'
+ng.setup({
+    disable_insert_on_commit = true,
+})
+make_keymap( 'n', '<leader>gg', ng.open, {} )
+
+-- additional textobject keys after "a" and "i" e.g. <something>[a|i]q where q is quote text object
+add('nvim-treesitter/nvim-treesitter-textobjects')
+
+add('sainnhe/gruvbox-material')
+vim.g.gruvbox_material_foreground = 'original'
+vim.g.gruvbox_material_background = 'hard'
+
+add('marko-cerovac/material.nvim')
+vim.g.material_style = "deep ocean"
+require'material'.setup {
+    plugins = {
+        "gitsigns",
+        "indent-blankline",
+        "mini",
+        "neogit",
+        "nvim-web-devicons",
+        "rainbow-delimiters",
+    },
+}
+
+add("lukas-reineke/indent-blankline.nvim")
+require'ibl'.setup { scope = { enabled = false }, }
+
+add('mg979/vim-visual-multi')
+vim.g.VM_maps = {
+    [ 'Add Cursor Down' ] = '<C-j>',
+    [ 'Add Cursor Up'   ] = '<C-k>',
+}
+
+-- highlight cursor after large jump
+add('rainbowhxch/beacon.nvim')
+
+-- fast j and k YEAH BUDDY
+-- holding j, k, w, b, W, B, etc goes fast after a while
+add('rainbowhxch/accelerated-jk.nvim')
+require'accelerated-jk'.setup {
+    acceleration_motions = { 'w', 'b', 'W', 'B' },
+}
+
+
+-- jai syntax-highlighting + folds + whatever
+add('puremourning/jai.vim')
+vim.g.jai_compiler = vim.env.HOME .. '/external/jai/bin/jai-macos'
+
+add('zbirenbaum/copilot.lua')
+require'copilot'.setup {
+    suggestion = {
+        auto_trigger = true,
+        debounce     = 0,
+    },
+    filetypes = {
+        DressingInput = false,
+        NeogitStatus = false,
+        NeogitCommitView = false,
+    },
+}
+
+add('stevearc/conform.nvim')
+make_keymap( { 'n', 'x' }, '<leader>F', function() require'conform'.format { async = true, lsp_fallback = true, } end )
+require'conform'.setup {
+    formatters_by_ft = {
+        javascript = { { "prettierd", "prettier" } },
+        json       = { { "prettierd", "prettier" } },
+        odin       = { { "odinfmt" } },
+        rust       = { { "rustfmt" } },
+        zig        = { { "zigfmt" } },
+    }
+}
+
+add('neovim/nvim-lspconfig')
+
+add("folke/neodev.nvim")
+require'neodev'.setup()
+
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function( ev )
+        vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+
+        local bufopts = { buffer = ev.buf }
+        local lsp     = vim.lsp
+        local lspbuf  = lsp.buf
+        local function picklsp( scope )
+            return function()
+                MiniExtra.pickers.lsp( { scope = scope } )
+            end
+        end
+
+        make_keymap( 'n', '<leader>gD',  lspbuf.declaration,     bufopts )
+        make_keymap( 'n', '<leader>i',   lspbuf.hover,           bufopts )
+        make_keymap( 'n', '<leader>I',   lspbuf.signature_help,  bufopts )
+        make_keymap( 'n', '<leader>rn',  lspbuf.rename,          bufopts )
+        make_keymap( 'n', '<leader>ca',  lspbuf.code_action,     bufopts )
+
+        make_keymap( 'n', '<leader>gr',  lspbuf.references,      bufopts )
+        make_keymap( 'n', '<leader>gd',  lspbuf.definition,      bufopts )
+        make_keymap( 'n', '<leader>gi',  lspbuf.implementation,  bufopts )
+        make_keymap( 'n', '<leader>gtd', lspbuf.type_definition, bufopts )
+        make_keymap( 'n', '<leader>fs',  lspbuf.document_symbol, bufopts )
+        make_keymap( 'n', '<leader>co',  lspbuf.incoming_calls,  bufopts )
+        make_keymap( 'n', '<leader>ci',  lspbuf.outgoing_calls,  bufopts )
+
+        local inlay_hint = lsp.inlay_hint
+        make_keymap( 'n', '<leader>h', function()
+            local enabled = inlay_hint.is_enabled( ev.buf )
+            inlay_hint.enable( ev.buf, not enabled )
+        end, bufopts )
+    end
+})
+local lspconfig = require'lspconfig'
+for _, server in pairs({
+    'bashls',
+    'clangd',
+    'cssls',
+    'eslint',
+    'gopls',
+    'html',
+    'jsonls',
+    'lua_ls',
+    'pyright',
+    'vtsls',
+}) do
+    lspconfig[server].setup{}
+end
+lspconfig.ols.setup {
+    init_options = {
+        enable_document_symbols  = true,
+        enable_snippets          = false,
+        enable_inlay_hints       = true,
+        enable_references        = true,
+        enable_hover             = true,
+        enable_procedure_context = true,
+    },
+}
+
+local configs = require'lspconfig.configs'
+
+if configs.jails then error("Jails config exists") end
+
+local util = lspconfig.util
+configs.jails = {
+    default_config = {
+        cmd                 = { 'jails', },
+        filetypes           = { 'jai', },
+        single_file_support = true,
+        root_dir            = function( fname )
+            return util.root_pattern(unpack({
+                'build.jai',
+                'first.jai',
+                'jails.json',
+            }))(fname) or util.find_git_ancestor(fname)
+
+                -- HACK: jails crashes if I don't put this - lspconfig docs tell me explicitly to NOT do this
+                or util.path.dirname(fname)
+        end,
+    },
+}
+lspconfig.jails.setup{}
 
 -- lsp stuff
 -- Mappings.
