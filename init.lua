@@ -12,7 +12,8 @@
 -- apparently I have to put this before the package manager
 vim.g.mapleader = ' '
 
-vim.opt.shell = vim.env.HOMEBREW_PREFIX .. '/bin/fish' -- before plugin spec so terminal plugin sees it
+-- strangely enough this contains what shell I'm using - huh
+vim.opt.shell = vim.env.STARSHIP_SHELL
 
 vim.g.zig_fmt_autosave = 0
 
