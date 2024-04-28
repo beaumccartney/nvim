@@ -452,11 +452,11 @@ require'material'.setup {
 add("lukas-reineke/indent-blankline.nvim")
 require'ibl'.setup { scope = { enabled = false }, }
 
-add('mg979/vim-visual-multi')
 vim.g.VM_maps = {
     [ 'Add Cursor Down' ] = '<C-j>',
     [ 'Add Cursor Up'   ] = '<C-k>',
 }
+add('mg979/vim-visual-multi')
 
 -- highlight cursor after large jump
 add('rainbowhxch/beacon.nvim')
