@@ -531,8 +531,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
         local inlay_hint = lsp.inlay_hint
         make_keymap( 'n', '<leader>h', function()
             local enabled = inlay_hint.is_enabled( ev.buf )
-            inlay_hint.enable( not enabled )
+            inlay_hint.enable( not enabled, { bufnr = ev.buf, } )
         end, bufopts )
+        local diagnostic = vim.diagnostic
+
+        make_keymap('n', '<leader>bd', diagnostic.setloclist, bufopts)
+
+        make_keymap('n', '<leader>d', function()
+            diagnostic.enable(not diagnostic.is_enabled(), { bufnr = ev.buf })
+        end, bufopts)
     end
 })
 local lspconfig = require'lspconfig'
@@ -589,14 +596,6 @@ lspconfig.jails.setup{}
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
-
-local diagnostic = vim.diagnostic
-make_keymap( 'n', '<leader>e', diagnostic.open_float, opts )
-make_keymap( 'n', '<leader>bd', diagnostic.setloclist, opts )
-
-make_keymap( 'n', '<leader>d', function()
-    diagnostic.enable(not diagnostic.is_enabled())
-end, opts )
 
 -- keymaps for built in things
 make_keymap( '',  '<C-s>', vim.cmd.wall, {} ) -- save file
