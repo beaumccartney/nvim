@@ -491,6 +491,7 @@ make_keymap( { 'n', 'x' }, '<leader>F', function() require'conform'.format { asy
 require'conform'.setup {
     formatters_by_ft = {
         javascript = { { "prettierd", "prettier" } },
+        go         = { "gofmt", }, -- TODO: goimports
         json       = { { "prettierd", "prettier" } },
         odin       = { { "odinfmt" } },
         rust       = { { "rustfmt" } },
