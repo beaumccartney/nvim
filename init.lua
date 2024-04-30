@@ -267,10 +267,10 @@ require'dressing'.setup {
 
 
 add({
-  source = 'nvim-treesitter/nvim-treesitter',
-  checkout = 'master',
-  monitor = 'main',
-  hooks = { post_checkout = function() vim.cmd('TSUpdate') end },
+    source = 'nvim-treesitter/nvim-treesitter',
+    checkout = 'master',
+    monitor = 'main',
+    hooks = { post_checkout = function() vim.cmd('TSUpdate') end },
 })
 -- set foldmethod to treesitter if parser is available
 vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
@@ -535,6 +535,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
             local enabled = inlay_hint.is_enabled( ev.buf )
             inlay_hint.enable( not enabled, { bufnr = ev.buf, } )
         end, bufopts )
+
         local diagnostic = vim.diagnostic
 
         make_keymap('n', '<leader>bd', diagnostic.setloclist, bufopts)
