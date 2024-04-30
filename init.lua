@@ -419,6 +419,7 @@ add('sindrets/diffview.nvim')
 add({
     source = 'NeogitOrg/neogit',
     checkout = 'nightly',
+    monitor = 'master',
     depends = {
         'nvim-lua/plenary.nvim',
     },
