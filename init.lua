@@ -488,8 +488,8 @@ require'copilot'.setup {
 }
 
 add('stevearc/conform.nvim')
-make_keymap( { 'n', 'x' }, '<leader>F', function() require'conform'.format { async = true, lsp_fallback = true, } end )
-require'conform'.setup {
+local conform = require'conform'
+conform.setup {
     formatters_by_ft = {
         javascript = { { "prettierd", "prettier" } },
         go         = { "gofmt", }, -- TODO: goimports
@@ -499,6 +499,13 @@ require'conform'.setup {
         zig        = { { "zigfmt" } },
     }
 }
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = vim.tbl_keys(conform.formatters_by_ft),
+    -- group = vim.api.nvim_create_augroup('conform_formatexpr', { clear = true }),
+    callback = function()
+        vim.opt_local.formatexpr = "v:lua.require'conform'.formatexpr()"
+    end,
+})
 
 add('neovim/nvim-lspconfig')
 
