@@ -16,6 +16,42 @@ vim.opt.shell = vim.env.STARSHIP_SHELL
 
 vim.g.zig_fmt_autosave = 0
 
+vim.opt.termguicolors  = true
+vim.opt.number         = true
+vim.opt.relativenumber = true
+
+vim.opt.softtabstop    = 4
+vim.opt.shiftwidth     = 4
+vim.opt.expandtab      = true
+vim.opt.smarttab       = true
+vim.opt.cindent        = true
+vim.opt.breakindent    = true
+vim.opt.breakindentopt = 'list:-1'
+vim.opt.linebreak      = true
+
+vim.opt.scrolloff      = 10
+vim.opt.colorcolumn    = '81'
+vim.opt.splitbelow     = true
+vim.opt.splitright     = true
+
+vim.opt.hidden         = true
+vim.opt.swapfile       = false
+vim.opt.undofile       = true
+
+vim.opt.incsearch      = true
+vim.opt.ignorecase     = true
+vim.opt.smartcase      = true
+
+vim.opt.pumheight      = 5
+
+vim.opt.foldmethod     = 'indent'
+vim.opt.foldlevel      = 100
+
+vim.opt.cursorline     = true
+vim.opt.cursorcolumn   = true
+
+vim.opt.cmdheight      = 1
+
 local make_keymap = vim.keymap.set
 
 -- Clone 'mini.nvim' manually in a way that it gets managed by 'mini.deps'
@@ -693,41 +729,6 @@ make_keymap( 'n', 'k', '<Plug>(accelerated_jk_gk)', {} )
 make_keymap( 'v', 'j', 'gj', {} )
 make_keymap( 'v', 'k', 'gk', {} )
 
-vim.opt.termguicolors  = true
-vim.opt.number         = true
-vim.opt.relativenumber = true
-
-vim.opt.softtabstop    = 4
-vim.opt.shiftwidth     = 4
-vim.opt.expandtab      = true
-vim.opt.smarttab       = true
-vim.opt.cindent        = true
-vim.opt.breakindent    = true
-vim.opt.breakindentopt = 'list:-1'
-vim.opt.linebreak      = true
-
-vim.opt.scrolloff      = 10
-vim.opt.colorcolumn    = '81'
-vim.opt.splitbelow     = true
-vim.opt.splitright     = true
-
-vim.opt.hidden         = true
-vim.opt.swapfile       = false
-vim.opt.undofile       = true
-
-vim.opt.incsearch      = true
-vim.opt.ignorecase     = true
-vim.opt.smartcase      = true
-
-vim.opt.pumheight      = 5
-
-vim.opt.foldmethod     = 'indent'
-vim.opt.foldlevel      = 100
-
-vim.opt.cursorline     = true
-vim.opt.cursorcolumn   = true
-
-vim.opt.cmdheight      = 1
 ---------------------------------------------------------------------------
 -- write centered line - 80 character line with text in the middle and dashes
 -- padding it
