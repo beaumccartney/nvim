@@ -12,7 +12,10 @@
 vim.g.mapleader = ' '
 
 -- strangely enough this contains what shell I'm using - huh
-vim.opt.shell = vim.env.STARSHIP_SHELL
+-- TODO: check if fish exists and use it if so
+if vim.env.STARSHIP_SHELL then
+    vim.opt.shell = vim.env.STARSHIP_SHELL
+end
 
 vim.g.zig_fmt_autosave = 0
 
