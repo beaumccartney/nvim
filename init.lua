@@ -94,7 +94,7 @@ require'mini.trailspace' .setup()
 make_keymap( 'n', '<leader>w', function()
     MiniTrailspace.trim()
     MiniTrailspace.trim_last_lines()
-end,            {} )
+end, {} )
 
 
 local hipatterns = require'mini.hipatterns'
@@ -143,12 +143,12 @@ require 'mini.pick'.setup {
 local builtin = MiniPick.builtin
 local extra = MiniExtra.pickers
 
-make_keymap( 'n', '<leader>ff', builtin.files,   {} )
-make_keymap( 'n', '<leader>fh', builtin.help,    {} )
+make_keymap( 'n', '<leader>ff', builtin.files, {} )
+make_keymap( 'n', '<leader>fh', builtin.help,  {} )
 
 -- TODO: make cword maps use word highlighted by visual if applicable
 -- TODO: leader-8 find cword in the current buffer
-make_keymap( 'n', '<leader>/', extra.buf_lines,                 {} )
+make_keymap( 'n', '<leader>/', extra.buf_lines, {} )
 -- make_keymap( 'n', '<leader>8', '<Cmd>Pick buf_lines prompt="<cword>"<CR>', {} )
 -- TODO: ugrep_live (fuzzy finding + --and patterns for each word)
 make_keymap( 'n', '<leader>?', builtin.grep_live,                          {} )
@@ -234,6 +234,7 @@ local function sessionaction(action)
     local exists = false
     for _, _ in pairs(MiniSessions.detected) do
         exists = true
+        break
     end
 
     if not exists then
