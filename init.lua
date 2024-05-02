@@ -275,7 +275,7 @@ add({
 -- set foldmethod to treesitter if parser is available
 vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.api.nvim_create_autocmd("Filetype", {
-    callback = function()
+    callback = function(ev)
         if not require"nvim-treesitter.parsers".has_parser() then
             vim.wo.foldmethod = 'indent'
             return
@@ -284,9 +284,9 @@ vim.api.nvim_create_autocmd("Filetype", {
         vim.wo.foldmethod = 'expr'
 
         -- don't use fo-n, just indent with treesitter
-        vim.bo.autoindent  = false
-        vim.bo.smartindent = false
-        vim.bo.cindent     = false
+        vim.bo[ev.buf].autoindent  = false
+        vim.bo[ev.buf].smartindent = false
+        vim.bo[ev.buf].cindent     = false
 
         -- TODO: if longest line in buffer is too long kill
         if vim.api.nvim_buf_line_count(0) > 1024 then return end
