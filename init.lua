@@ -642,19 +642,14 @@ configs.jails = {
 }
 lspconfig.jails.setup{}
 
--- lsp stuff
--- Mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local opts = { noremap=true, silent=true }
-
 -- keymaps for built in things
 make_keymap( '',  '<C-s>', vim.cmd.wall, {} ) -- save file
 make_keymap( '!', '<C-s>', vim.cmd.wall, {} ) -- save file
 make_keymap( 'n', '<leader>te', vim.cmd.tabe, {}   ) -- new tab
 make_keymap( 'n', '<leader>tc', vim.cmd.tabc, {}   ) -- new tab
-make_keymap( 'n', '<leader>cw', '<C-w><C-q>', opts )
-make_keymap( '', '<C-l>', 'g$', opts )
-make_keymap( '', '<C-h>', 'g^', opts )
+make_keymap( 'n', '<leader>cw', '<C-w><C-q>', {} )
+make_keymap( '', '<C-l>', 'g$', {} )
+make_keymap( '', '<C-h>', 'g^', {} )
 
 
 make_keymap( '', '<leader>q', function()
@@ -666,7 +661,7 @@ make_keymap( '', '<leader>q', function()
         end
     end
     vim.cmd.copen()
-end, opts )
+end, {} )
 
 -- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
 make_keymap( 'n', '<C-x>', '[s1z=`]',                   { desc = 'Correct latest misspelled word' } )
@@ -696,14 +691,14 @@ make_keymap( 'n', '[<space>', 'v:lua.put_empty_line(v:true)',  { expr = true, de
 make_keymap( 'n', ']<space>', 'v:lua.put_empty_line(v:false)', { expr = true, desc = 'Put empty line below' } )
 --[[ ----------------------------------- END ---------------------------------- ]]
 
-make_keymap( 'n', 'Y',         'y$',   opts ) -- yank to end of line
-make_keymap( 'n', '<leader>Y', '"+y$', opts ) -- yank to end of line
+make_keymap( 'n', 'Y',         'y$',   {} ) -- yank to end of line
+make_keymap( 'n', '<leader>Y', '"+y$', {} ) -- yank to end of line
 
-make_keymap( { 'n', 'v' }, '<leader>y', '"+y', opts ) -- yank to clipboard
-make_keymap( { 'n', 'v' }, '<leader>p', '"+p', opts ) -- put from clipboard
+make_keymap( { 'n', 'v' }, '<leader>y', '"+y', {} ) -- yank to clipboard
+make_keymap( { 'n', 'v' }, '<leader>p', '"+p', {} ) -- put from clipboard
 
-make_keymap( '', '<C-d>', '<C-d>zz', opts ) -- scroll down
-make_keymap( '', '<C-u>', '<C-u>zz', opts ) -- scroll down
+make_keymap( '', '<C-d>', '<C-d>zz', {} ) -- scroll down
+make_keymap( '', '<C-u>', '<C-u>zz', {} ) -- scroll down
 
 -- change directory to current file - thanks fraser
 -- TODO: print directory I cd'd to
@@ -721,10 +716,10 @@ make_keymap( 'n', '<ESC>', function()
     vim.cmd.cclose()
     vim.cmd.lclose()
     MiniJump.stop_jumping()
-end, opts )
+end, {} )
 
 make_keymap( 'n', '<leader>cc', MiniBufremove.delete, {}   )
-make_keymap( 'n', 'Q',          vim.cmd.bd,           opts )
+make_keymap( 'n', 'Q',          vim.cmd.bd,           {} )
 
 -- jk fixes (thanks yet again fraser)
 make_keymap( 'n', 'j', '<Plug>(accelerated_jk_gj)', {} )
