@@ -337,6 +337,7 @@ require'nvim-treesitter.configs'.setup {
     auto_install = true,
     ensure_installed = {
         'asm',
+        'astro',
         'bash',
         'c',
         'cpp',
@@ -594,6 +595,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 local lspconfig = require'lspconfig'
 for _, server in pairs({
+    'astro',
     'bashls',
     'clangd',
     'cssls',
