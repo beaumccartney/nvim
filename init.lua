@@ -548,6 +548,9 @@ vim.api.nvim_create_autocmd('FileType', {
     end,
 })
 
+add('luckasRanarison/tailwind-tools.nvim')
+require'tailwind-tools'.setup({})
+
 add('neovim/nvim-lspconfig')
 
 add("folke/neodev.nvim")
@@ -605,6 +608,7 @@ for _, server in pairs({
     'jsonls',
     'lua_ls',
     'pyright',
+    'tailwindcss',
     'vtsls',
 }) do
     lspconfig[server].setup{}
