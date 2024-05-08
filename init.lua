@@ -147,7 +147,7 @@ require 'mini.pick'.setup {
     },
 }
 local builtin = MiniPick.builtin
-local extra = MiniExtra.pickers
+local extra_pickers = MiniExtra.pickers
 
 make_keymap( 'n', '<leader>ff', builtin.files,   {} )
 make_keymap( 'n', '<leader>fh', builtin.help,    {} )
@@ -155,20 +155,20 @@ make_keymap( 'n', '<leader>fb', builtin.buffers, {} )
 
 -- TODO: make cword maps use word highlighted by visual if applicable
 -- TODO: leader-8 find cword in the current buffer
-make_keymap( 'n', '<leader>/', extra.buf_lines, {} )
+make_keymap( 'n', '<leader>/', extra_pickers.buf_lines, {} )
 -- make_keymap( 'n', '<leader>8', '<Cmd>Pick buf_lines prompt="<cword>"<CR>', {} )
 -- TODO: ugrep_live (fuzzy finding + --and patterns for each word)
 make_keymap( 'n', '<leader>?', builtin.grep_live,                          {} )
 make_keymap( 'n', '<leader>*', '<Cmd>Pick grep pattern="<cword>"<CR>',     {} )
 
-make_keymap( '',  '<leader>fc', extra.commands )
-make_keymap( '',  '<leader>fd', extra.diagnostic )
-make_keymap( 'n', '<leader>fo', extra.options )
+make_keymap( '',  '<leader>fc', extra_pickers.commands )
+make_keymap( '',  '<leader>fd', extra_pickers.diagnostic )
+make_keymap( 'n', '<leader>fo', extra_pickers.options )
 make_keymap( 'n', '<leader>td', '<Cmd>Pick hipatterns highlighters={"todo" "fixme" "hack"}<CR>' )
 
-make_keymap( '', '<leader>fq', function() extra.list({ scope = 'quickfix' }) end, {})
-make_keymap( '', '<leader>fv', function() extra.visit_paths() end, {})
-make_keymap( '', '<leader>fl', function() extra.visit_labels() end, {})
+make_keymap( '', '<leader>fq', function() extra_pickers.list({ scope = 'quickfix' }) end, {})
+make_keymap( '', '<leader>fv', function() extra_pickers.visit_paths() end, {})
+make_keymap( '', '<leader>fl', function() extra_pickers.visit_labels() end, {})
 
 require 'mini.visits'.setup()
 vim.api.nvim_create_autocmd( 'BufReadPre', {
