@@ -180,7 +180,10 @@ vim.api.nvim_create_autocmd( 'BufReadPre', {
         end
     end,
 })
-make_keymap( 'n', '<leader>v', MiniVisits.select_path, {} )
+make_keymap( 'n', '<leader>vp', MiniVisits.select_path, {} )
+make_keymap( 'n', '<leader>vl', MiniVisits.select_label, {} )
+make_keymap( 'n', '<leader>va', MiniVisits.add_label, {} )
+make_keymap( 'n', '<leader>vd', MiniVisits.remove_label, {} )
 
 local ai = require'mini.ai'
 local gen_spec = ai.gen_spec
