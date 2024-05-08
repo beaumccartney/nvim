@@ -88,10 +88,13 @@ require'mini.cursorword' .setup()
 require'mini.indentscope'.setup()
 require'mini.jump'       .setup()
 require'mini.move'       .setup()
-require'mini.operators'  .setup()
 require'mini.splitjoin'  .setup()
 require'mini.statusline' .setup()
 require'mini.tabline'    .setup()
+
+require'mini.operators'  .setup {
+    exchange = { prefix = 'sx' }
+}
 
 require'mini.trailspace' .setup()
 make_keymap( 'n', '<leader>w', function()
