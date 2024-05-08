@@ -614,6 +614,7 @@ for _, server in pairs({
     'pyright',
     'tailwindcss',
     'vtsls',
+    'yamlls',
 }) do
     lspconfig[server].setup{}
 end
