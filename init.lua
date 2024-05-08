@@ -149,8 +149,9 @@ require 'mini.pick'.setup {
 local builtin = MiniPick.builtin
 local extra = MiniExtra.pickers
 
-make_keymap( 'n', '<leader>ff', builtin.files, {} )
-make_keymap( 'n', '<leader>fh', builtin.help,  {} )
+make_keymap( 'n', '<leader>ff', builtin.files,   {} )
+make_keymap( 'n', '<leader>fh', builtin.help,    {} )
+make_keymap( 'n', '<leader>fb', builtin.buffers, {} )
 
 -- TODO: make cword maps use word highlighted by visual if applicable
 -- TODO: leader-8 find cword in the current buffer
@@ -167,6 +168,7 @@ make_keymap( 'n', '<leader>td', '<Cmd>Pick hipatterns highlighters={"todo" "fixm
 
 make_keymap( '', '<leader>fq', function() extra.list({ scope = 'quickfix' }) end, {})
 make_keymap( '', '<leader>fv', function() extra.visit_paths() end, {})
+make_keymap( '', '<leader>fl', function() extra.visit_labels() end, {})
 
 require 'mini.visits'.setup()
 vim.api.nvim_create_autocmd( 'BufReadPre', {
