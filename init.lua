@@ -539,6 +539,7 @@ conform.setup {
         javascript = { { "prettierd", "prettier" } },
         json       = { { "prettierd", "prettier" } },
         odin       = { "odinfmt" },
+        python     = { "ruff_format" },
         rust       = { "rustfmt" },
         zig        = { "zigfmt" },
     }
