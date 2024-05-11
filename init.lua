@@ -373,6 +373,9 @@ require'nvim-treesitter.configs'.setup {
         'make',
         'markdown',
         'markdown_inline',
+        'ocaml',
+        'ocaml_interface',
+        'ocamllex',
         'odin',
         'printf',
         'python',
@@ -391,7 +394,7 @@ require'nvim-treesitter.configs'.setup {
     ignore_install = { 'zig' },
     indent = {
         enable = true,
-        disable = { 'odin', },
+        disable = { 'odin', 'ocaml' },
     },
 }
 
@@ -543,6 +546,7 @@ conform.setup {
         go         = { "gofmt", }, -- TODO: goimports
         javascript = { { "prettierd", "prettier" } },
         json       = { { "prettierd", "prettier" } },
+        ocaml      = { "ocp-indent", "ocamlformat", }, -- TODO: goimports
         odin       = { "odinfmt" },
         python     = { "ruff_format" },
         rust       = { "rustfmt" },
@@ -619,6 +623,7 @@ for _, server in pairs({
     'html',
     'jsonls',
     'lua_ls',
+    'ocamllsp',
     'pyright',
     'tailwindcss',
     'vtsls',
@@ -812,4 +817,6 @@ vim.cmd[[
         set grepprg=ugrep\ -RInk\ -j\ -u\ --tabs=1\ --ignore-files
         set grepformat=%f:%l:%c:%m,%f+%l+%c+%m,%-G%f\\\|%l\\\|%c\\\|%m
     endif
+
+    set rtp^="/Users/beaum/.opam/default/share/ocp-indent/vim
 ]]
