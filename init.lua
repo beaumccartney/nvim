@@ -603,7 +603,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
         make_keymap('n', '<leader>bd', diagnostic.setloclist, bufopts)
 
         make_keymap('n', '<leader>d', function()
-            diagnostic.enable(not diagnostic.is_enabled(), { bufnr = ev.buf })
+            local buf = { bufnr = ev.buf }
+            diagnostic.enable(not diagnostic.is_enabled(buf), buf)
         end, bufopts)
     end
 })
