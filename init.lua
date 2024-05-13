@@ -523,8 +523,8 @@ require'accelerated-jk'.setup {
 
 
 -- jai syntax-highlighting + folds + whatever
+vim.g.jai_compiler = vim.env.HOME .. '/thirdparty/jai/bin/jai-macos'
 add('puremourning/jai.vim')
-vim.g.jai_compiler = vim.env.HOME .. '/external/jai/bin/jai-macos'
 
 add('zbirenbaum/copilot.lua')
 require'copilot'.setup {
@@ -653,11 +653,11 @@ configs.jails = {
         filetypes           = { 'jai', },
         single_file_support = true,
         root_dir            = function( fname )
-            return util.root_pattern(unpack({
+            return util.root_pattern(
                 'build.jai',
                 'first.jai',
-                'jails.json',
-            }))(fname) or util.find_git_ancestor(fname)
+                'jails.json'
+            )(fname) or util.find_git_ancestor(fname)
 
                 -- HACK: jails crashes if I don't put this - lspconfig docs tell me explicitly to NOT do this
                 or util.path.dirname(fname)
