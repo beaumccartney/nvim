@@ -402,9 +402,10 @@ require'nvim-treesitter.configs'.setup {
 
 add('nvim-treesitter/nvim-treesitter-textobjects')
 
-add('JoosepAlviste/nvim-ts-context-commentstring')
 vim.g.skip_ts_context_commentstring_module = true
+add('JoosepAlviste/nvim-ts-context-commentstring')
 require'ts_context_commentstring'.setup {
+    enable_autocmd = false,
     languages = {
         cpp = '// %s',
         just = '# %s',
