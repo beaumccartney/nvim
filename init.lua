@@ -586,8 +586,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         end
 
         make_keymap( 'n', '<leader>gD',  lspbuf.declaration,     bufopts )
-        make_keymap( 'n', '<leader>i',   lspbuf.hover,           bufopts )
-        make_keymap( 'n', '<leader>I',   lspbuf.signature_help,  bufopts )
+        make_keymap( 'n', '<leader>i',   lspbuf.signature_help,  bufopts )
         make_keymap( 'n', '<leader>rn',  lspbuf.rename,          bufopts )
         make_keymap( 'n', '<leader>ca',  lspbuf.code_action,     bufopts )
 
