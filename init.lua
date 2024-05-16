@@ -470,13 +470,13 @@ end, {} )
 make_keymap( '', '[h', gs.prev_hunk, {} )
 make_keymap( '', ']h', gs.next_hunk, {} )
 
-add('sindrets/diffview.nvim')
 add({
     source = 'NeogitOrg/neogit',
     checkout = 'nightly',
     monitor = 'master',
     depends = {
         'nvim-lua/plenary.nvim',
+        'sindrets/diffview.nvim',
     },
 })
 local ng = require'neogit'
