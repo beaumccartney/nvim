@@ -291,14 +291,6 @@ require 'mini.completion'.setup {
     set_vim_settings = true, -- set shortmess and completeopt
 }
 
-add({
-    source = "pianocomposer321/officer.nvim",
-    depends ={ "stevearc/overseer.nvim", }
-})
-make_keymap( 'n', '<CR><CR>',        "<Cmd>Make!<CR>", {} )
-make_keymap( 'n', '<CR><SPACE><CR>', ":Make!<SPACE>",  {} )
-require'officer'.setup()
-
 add('FraserLee/ScratchPad')
 vim.g.scratchpad_autostart = 0
 vim.g.scratchpad_location  = vim.fn.stdpath( 'data' ) .. '/scratchpad'
