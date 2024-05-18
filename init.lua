@@ -291,9 +291,9 @@ require 'mini.completion'.setup {
     set_vim_settings = true, -- set shortmess and completeopt
 }
 
-add('FraserLee/ScratchPad')
 vim.g.scratchpad_autostart = 0
 vim.g.scratchpad_location  = vim.fn.stdpath( 'data' ) .. '/scratchpad'
+add('FraserLee/ScratchPad')
 make_keymap( 'n', 'S', require'scratchpad'.invoke, {} )
 
 add("stevearc/dressing.nvim")
@@ -480,12 +480,12 @@ make_keymap( 'n', '<leader>gg', ng.open, {} )
 -- additional textobject keys after "a" and "i" e.g. <something>[a|i]q where q is quote text object
 add('nvim-treesitter/nvim-treesitter-textobjects')
 
-add('sainnhe/gruvbox-material')
 vim.g.gruvbox_material_foreground = 'original'
 vim.g.gruvbox_material_background = 'hard'
+add('sainnhe/gruvbox-material')
 
-add('marko-cerovac/material.nvim')
 vim.g.material_style = "deep ocean"
+add('marko-cerovac/material.nvim')
 require'material'.setup {
     plugins = {
         "gitsigns",
