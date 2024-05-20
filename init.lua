@@ -464,8 +464,7 @@ make_keymap( '', ']h', gs.next_hunk, {} )
 
 add({
     source = 'NeogitOrg/neogit',
-    checkout = 'nightly',
-    monitor = 'master',
+    checkout = 'master',
     depends = {
         'nvim-lua/plenary.nvim',
         'sindrets/diffview.nvim',
