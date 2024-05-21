@@ -716,9 +716,6 @@ vim.cmd[[
 
     autocmd FileType odin setlocal smartindent errorformat+=%f(%l:%c)\ %m
 
-    " open help windows to the left
-    autocmd FileType help if winwidth(0) > winheight(0) | wincmd H | endif
-
     " colorscheme gruvbox-material
     colorscheme material
 
