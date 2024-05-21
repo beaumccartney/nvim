@@ -47,7 +47,6 @@ vim.opt.smartcase      = true
 
 vim.opt.pumheight      = 5
 
-vim.opt.foldmethod     = 'indent'
 vim.opt.foldlevel      = 100
 
 vim.opt.cursorline     = true
@@ -296,16 +295,11 @@ add({
     checkout = 'master',
     hooks = { post_checkout = function() vim.cmd('TSUpdate') end },
 })
--- set foldmethod to treesitter if parser is available
-vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.api.nvim_create_autocmd("Filetype", {
     callback = function(ev)
         if not require"nvim-treesitter.parsers".has_parser() then
-            vim.wo.foldmethod = 'indent'
             return
         end
-
-        vim.wo.foldmethod = 'expr'
 
         -- don't use fo-n, just indent with treesitter
         vim.bo[ev.buf].autoindent  = false
