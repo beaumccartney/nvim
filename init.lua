@@ -397,69 +397,6 @@ require'treesitter-context'.setup {
     mode = 'topline',
 }
 
-add('lewis6991/gitsigns.nvim')
-local gs_opts = {
-    current_line_blame = true,
-    current_line_blame_opts = {
-        delay = 0,
-    },
-}
-local gs = require'gitsigns'
-gs.setup(gs_opts)
-make_keymap({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>', {})
-
-make_keymap( { 'n' }, '<leader>gp', gs.preview_hunk, {} )
-
-make_keymap( { 'n' }, '<leader>gs', gs.stage_hunk, {} )
-make_keymap( { 'v' }, '<leader>gs', function() gs.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-make_keymap( { 'n' }, '<leader>gu', gs.undo_stage_hunk, {} )
-make_keymap( { 'n' }, '<leader>ga', gs.stage_buffer, {} )
-
-make_keymap( { 'n' }, '<leader>gk', gs.reset_hunk, {} )
-make_keymap( { 'v' }, '<leader>gk', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-make_keymap( { 'n' }, '<leader>gK', gs.reset_buffer, {} )
-
-make_keymap( { 'n' }, '<leader>gb', function()
-    gs.blame_line({ full = true })
-end, {} )
-
-local toggle_state = gs_opts.signs or true
-local extra_toggle_state = false
-local function signs_toggle(switch, extra)
-    toggle_state = switch or (not toggle_state)
-    gs.toggle_current_line_blame(toggle_state)
-    gs.toggle_signs(toggle_state)
-    gs.toggle_numhl(toggle_state)
-
-    extra_toggle_state = extra and (not extra_toggle_state) or false
-    gs.toggle_deleted(extra_toggle_state)
-    gs.toggle_linehl(extra_toggle_state)
-    gs.toggle_linehl(extra_toggle_state)
-    gs.toggle_word_diff(extra_toggle_state)
-end
-make_keymap( { 'n' }, '<leader>gh', signs_toggle, {} )
-
-make_keymap( { 'n' }, '<leader>gf', function()
-    signs_toggle(true, true)
-end, {} )
-
-make_keymap( '', '[h', gs.prev_hunk, {} )
-make_keymap( '', ']h', gs.next_hunk, {} )
-
-add({
-    source = 'NeogitOrg/neogit',
-    checkout = 'master',
-    depends = {
-        'nvim-lua/plenary.nvim',
-        'sindrets/diffview.nvim',
-    },
-})
-local ng = require'neogit'
-ng.setup({
-    disable_insert_on_commit = true,
-})
-make_keymap( 'n', '<leader>gg', ng.open, {} )
-
 -- additional textobject keys after "a" and "i" e.g. <something>[a|i]q where q is quote text object
 add('nvim-treesitter/nvim-treesitter-textobjects')
 
@@ -471,10 +408,8 @@ vim.g.material_style = "deep ocean"
 add('marko-cerovac/material.nvim')
 require'material'.setup {
     plugins = {
-        "gitsigns",
         "indent-blankline",
         "mini",
-        "neogit",
         "nvim-web-devicons",
         "rainbow-delimiters",
     },
@@ -512,8 +447,6 @@ require'copilot'.setup {
     },
     filetypes = {
         DressingInput = false,
-        NeogitStatus = false,
-        NeogitCommitView = false,
     },
 }
 
@@ -774,14 +707,13 @@ vim.cmd[[
 
     autocmd FileType html,css,scss,xml,javascriptreact,typescriptreact,yaml setlocal shiftwidth=2 softtabstop=2
 
-    autocmd Filetype text,markdown,git,gitcommit,NeogitCommitMessage setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
+    autocmd Filetype text,markdown,git,gitcommit setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
     autocmd BufEnter * lua pcall(require'mini.misc'.use_nested_comments)
 
     autocmd Filetype wgsl setlocal commentstring=//\ %s
 
-    autocmd FileType DressingInput,gitcommit,NeogitCommitMessage let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
+    autocmd FileType DressingInput,gitcommit let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
 
-    autocmd FileType NeogitStatus,NeogitCommitMessage,NeogitCommitView setlocal foldmethod=manual
     autocmd FileType odin setlocal smartindent errorformat+=%f(%l:%c)\ %m
 
     " open help windows to the left
