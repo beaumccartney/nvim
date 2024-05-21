@@ -101,6 +101,15 @@ make_keymap( 'n', '<leader>w', function()
     MiniTrailspace.trim_last_lines()
 end, {} )
 
+require'mini.git' .setup()
+make_keymap( {'n', 'x'}, '<leader>gs', MiniGit.show_at_cursor, {} )
+
+require'mini.diff'.setup {
+    view = { style = 'sign' },
+    mappings = { textobject = 'ih', },
+}
+make_keymap( '', '<leader>gh', MiniDiff.toggle,         {} )
+make_keymap( '', '<leader>gf', MiniDiff.toggle_overlay, {} )
 
 local hipatterns = require'mini.hipatterns'
 local hi_words = MiniExtra.gen_highlighter.words
@@ -701,7 +710,7 @@ vim.cmd[[
 
     autocmd FileType html,css,scss,xml,javascriptreact,typescriptreact,yaml setlocal shiftwidth=2 softtabstop=2
 
-    autocmd Filetype text,markdown,git,gitcommit setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
+    autocmd Filetype text,markdown,gitcommit setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
     autocmd BufEnter * lua pcall(require'mini.misc'.use_nested_comments)
 
     autocmd Filetype wgsl setlocal commentstring=//\ %s
