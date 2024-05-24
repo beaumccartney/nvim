@@ -287,6 +287,8 @@ starter.setup {
     },
 }
 
+add('tpope/vim-dispatch')
+
 vim.g.scratchpad_autostart = 0
 vim.g.scratchpad_location  = vim.fn.stdpath( 'data' ) .. '/scratchpad'
 add('FraserLee/ScratchPad')
