@@ -623,8 +623,8 @@ make_keymap( '', '<leader>q', function()
 end, {} )
 
 -- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
-make_keymap( 'n', '<C-x>', '[s1z=`]',                   { desc = 'Correct latest misspelled word' } )
-make_keymap( 'i', '<C-x>', '<C-g>u<Esc>[s1z=`]a<C-g>u', { desc = 'Correct latest misspelled word' } )
+make_keymap( 'n', '<C-z>', '[s1z=`]',                   { desc = 'Correct latest misspelled word' } )
+make_keymap( 'i', '<C-z>', '<C-g>u<Esc>[s1z=`]a<C-g>u', { desc = 'Correct latest misspelled word' } )
 
 -- from mini.basic
 make_keymap('x', 'g/', '<esc>/\\%V', { silent = false, desc = 'Search inside visual selection' })
