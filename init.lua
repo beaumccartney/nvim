@@ -292,8 +292,7 @@ require 'mini.completion'.setup {
         force_twostep  = '<C-j>',
         force_fallback = '<C-k>',
     },
-    -- HACK: high delay for no autocomplete
-    delay = { completion = 99999 },
+    delay = { completion = 0, info = 0, signature = 0 },
     lsp_completion = {
         source_func = 'omnifunc',
         auto_setup  = false
