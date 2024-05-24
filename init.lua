@@ -287,6 +287,21 @@ starter.setup {
     },
 }
 
+require 'mini.completion'.setup {
+    mappings = {
+        force_twostep  = '<C-j>',
+        force_fallback = '<C-k>',
+    },
+    -- HACK: high delay for no autocomplete
+    delay = { completion = 99999 },
+    lsp_completion = {
+        source_func = 'omnifunc',
+        auto_setup  = false
+    },
+    window = { signature = { width = 120 }, },
+    set_vim_settings = true, -- set shortmess and completeopt
+}
+
 add('tpope/vim-dispatch')
 
 vim.g.scratchpad_autostart = 0
@@ -490,6 +505,8 @@ require'neodev'.setup()
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function( ev )
+        vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+
         local bufopts = { buffer = ev.buf }
         local lsp     = vim.lsp
         local lspbuf  = lsp.buf
@@ -606,8 +623,8 @@ make_keymap( '', '<leader>q', function()
 end, {} )
 
 -- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
-make_keymap( 'n', '<C-j>', '[s1z=`]',                   { desc = 'Correct latest misspelled word' } )
-make_keymap( 'i', '<C-j>', '<C-g>u<Esc>[s1z=`]a<C-g>u', { desc = 'Correct latest misspelled word' } )
+make_keymap( 'n', '<C-x>', '[s1z=`]',                   { desc = 'Correct latest misspelled word' } )
+make_keymap( 'i', '<C-x>', '<C-g>u<Esc>[s1z=`]a<C-g>u', { desc = 'Correct latest misspelled word' } )
 
 -- from mini.basic
 make_keymap('x', 'g/', '<esc>/\\%V', { silent = false, desc = 'Search inside visual selection' })
@@ -720,7 +737,7 @@ vim.cmd[[
 
     autocmd Filetype wgsl setlocal commentstring=//\ %s
 
-    autocmd FileType DressingInput,gitcommit let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
+    autocmd FileType DressingInput,gitcommit let b:minicompletion_disable = v:true | let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
 
     autocmd FileType odin setlocal smartindent errorformat+=%f(%l:%c)\ %m
 
