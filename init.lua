@@ -105,7 +105,7 @@ make_keymap( 'n', '<leader>w', function()
 end, {} )
 
 require'mini.git' .setup()
-make_keymap( {'n', 'x'}, '<leader>gs', MiniGit.show_at_cursor, {} )
+make_keymap( {'n', 'x'}, '<leader>gg', MiniGit.show_at_cursor, {} )
 
 require'mini.diff'.setup {
     view = { style = 'sign' },
