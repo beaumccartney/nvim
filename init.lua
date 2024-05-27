@@ -23,8 +23,8 @@ vim.opt.termguicolors  = true
 vim.opt.number         = true
 vim.opt.relativenumber = true
 
-vim.opt.softtabstop    = 4
-vim.opt.shiftwidth     = 4
+vim.opt.tabstop        = 4
+vim.opt.shiftwidth     = 0 -- indent is just the length of one tab
 vim.opt.expandtab      = true
 vim.opt.smarttab       = true
 vim.opt.cindent        = true
@@ -729,7 +729,7 @@ vim.cmd[[
 
     autocmd Filetype * setlocal formatoptions+=jcqrno formatoptions-=t
 
-    autocmd FileType html,css,scss,xml,javascriptreact,typescriptreact,yaml setlocal shiftwidth=2 softtabstop=2
+    autocmd FileType html,css,scss,xml,javascriptreact,typescriptreact,yaml setlocal shiftwidth=2 tabstop=2
 
     autocmd Filetype text,markdown,gitcommit setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
     autocmd BufEnter * lua pcall(require'mini.misc'.use_nested_comments)
