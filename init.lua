@@ -477,6 +477,7 @@ local conform = require'conform'
 conform.setup {
     formatters_by_ft = {
         go         = { "gofmt", }, -- TODO: goimports
+        html       = { { "prettierd", "prettier" } },
         javascript = { { "prettierd", "prettier" } },
         json       = { { "prettierd", "prettier" } },
         ocaml      = { "ocp-indent", "ocamlformat", }, -- TODO: goimports
