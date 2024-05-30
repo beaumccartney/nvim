@@ -406,6 +406,7 @@ require'ts_context_commentstring'.setup {
     enable_autocmd = false,
     languages = {
         cpp = '// %s',
+        wgsl = '// %s',
         just = '# %s',
     },
 }
@@ -734,8 +735,6 @@ vim.cmd[[
 
     autocmd Filetype text,markdown,gitcommit setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
     autocmd BufEnter * lua pcall(require'mini.misc'.use_nested_comments)
-
-    autocmd Filetype wgsl setlocal commentstring=//\ %s
 
     autocmd FileType DressingInput,gitcommit let b:minicompletion_disable = v:true | let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
 
