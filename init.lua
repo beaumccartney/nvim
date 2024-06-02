@@ -501,8 +501,8 @@ require'tailwind-tools'.setup({})
 
 add('neovim/nvim-lspconfig')
 
-add("folke/neodev.nvim")
-require'neodev'.setup()
+add("folke/lazydev.nvim")
+require'lazydev'.setup()
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function( ev )
