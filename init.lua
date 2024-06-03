@@ -562,7 +562,7 @@ for _, server in pairs({
     'pyright',
     'rust_analyzer',
     'tailwindcss',
-    'vtsls',
+    'tsserver',
     'yamlls',
 }) do
     lspconfig[server].setup{}
