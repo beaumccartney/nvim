@@ -57,6 +57,13 @@ vim.opt.cursorcolumn   = true
 
 vim.opt.cmdheight      = 1
 
+vim.filetype.add({
+    extension = {
+        mdpp = 'markdown',
+        mdx = 'markdown.mdx'
+    },
+})
+
 local make_keymap = vim.keymap.set
 
 -- Clone 'mini.nvim' manually in a way that it gets managed by 'mini.deps'
@@ -719,12 +726,6 @@ make_keymap( 'n', '<leader>l', function()
     local linenum = vim.api.nvim_win_get_cursor( 0 )[ 1 ]
     MiniComment.toggle_lines( linenum, linenum )
 end , {} )
-
-vim.filetype.add({
-    extension = {
-        mdpp = 'markdown',
-    },
-})
 
 vim.cmd[[
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
