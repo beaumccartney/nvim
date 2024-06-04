@@ -484,15 +484,17 @@ add('stevearc/conform.nvim')
 local conform = require'conform'
 conform.setup {
     formatters_by_ft = {
-        go         = { "gofmt", }, -- TODO: goimports
-        html       = { { "prettierd", "prettier" } },
-        javascript = { { "prettierd", "prettier" } },
-        json       = { { "prettierd", "prettier" } },
-        ocaml      = { "ocp-indent", "ocamlformat", }, -- TODO: goimports
-        odin       = { "odinfmt" },
-        python     = { "ruff_format" },
-        rust       = { "rustfmt" },
-        zig        = { "zigfmt" },
+        go              = { "gofmt", }, -- TODO: goimports
+        html            = { { "prettierd", "prettier" } },
+        javascript      = { { "prettierd", "prettier" } },
+        javascriptreact = { { "prettierd", "prettier" } },
+        json            = { { "prettierd", "prettier" } },
+        ocaml           = { "ocp-indent", "ocamlformat", }, -- TODO: goimports
+        odin            = { "odinfmt" },
+        python          = { "ruff_format" },
+        rust            = { "rustfmt" },
+        typescriptreact = { { "prettierd", "prettier" } },
+        zig             = { "zigfmt" },
     }
 }
 vim.api.nvim_create_autocmd('FileType', {
