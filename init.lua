@@ -469,14 +469,15 @@ require'accelerated-jk'.setup {
 vim.g.jai_compiler = vim.env.HOME .. '/thirdparty/jai/bin/jai-macos'
 add('puremourning/jai.vim')
 
-add('zbirenbaum/copilot.lua')
-require'copilot'.setup {
-    suggestion = {
-        auto_trigger = true,
-        debounce     = 0,
+add('supermaven-inc/supermaven-nvim')
+require'supermaven-nvim'.setup {
+    keymaps = {
+        accept_suggestion = '<M-l>',
+        clear_suggestion = '<M-h>',
+        accept_word = '<M-j>',
     },
-    filetypes = {
-        DressingInput = false,
+    ignore_filetypes = {
+        DressingInput = true,
     },
 }
 
