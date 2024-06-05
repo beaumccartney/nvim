@@ -8,6 +8,8 @@
 
 
 
+vim.cmd('filetype plugin indent on')
+
 -- apparently I have to put this before the package manager
 vim.g.mapleader = ' '
 
@@ -27,6 +29,8 @@ vim.opt.tabstop        = 4
 vim.opt.shiftwidth     = 0 -- indent is just the length of one tab
 vim.opt.expandtab      = true
 vim.opt.smarttab       = true
+vim.opt.autoindent     = true
+vim.opt.smartindent    = true
 vim.opt.cindent        = true
 vim.opt.breakindent    = true
 vim.opt.breakindentopt = 'list:-1'
@@ -330,22 +334,6 @@ add({
     checkout = 'master',
     hooks = { post_checkout = function() vim.cmd('TSUpdate') end },
 })
-vim.api.nvim_create_autocmd("Filetype", {
-    callback = function(ev)
-        if not require"nvim-treesitter.parsers".has_parser() then
-            return
-        end
-
-        -- don't use fo-n, just indent with treesitter
-        vim.bo[ev.buf].autoindent  = false
-        vim.bo[ev.buf].smartindent = false
-        vim.bo[ev.buf].cindent     = false
-
-        -- TODO: if longest line in buffer is too long kill
-        if vim.api.nvim_buf_line_count(0) > 1024 then return end
-        vim.treesitter.start()
-    end,
-})
 require'nvim-treesitter.configs'.setup {
     auto_install = true,
     ensure_installed = {
@@ -404,6 +392,18 @@ require'nvim-treesitter.configs'.setup {
         disable = { 'odin', 'ocaml' },
     },
 }
+vim.api.nvim_create_autocmd("Filetype", {
+    callback = function(ev)
+        -- TODO: if longest line in buffer is too long kill
+
+        if not require "nvim-treesitter.parsers".has_parser() or
+          vim.api.nvim_buf_line_count(ev.buf) > 1024 then
+            return
+        end
+
+        vim.treesitter.start()
+    end,
+})
 
 add('nvim-treesitter/nvim-treesitter-textobjects')
 
@@ -735,7 +735,7 @@ vim.cmd[[
 
     autocmd Filetype * setlocal formatoptions+=jcqrno formatoptions-=t
 
-    autocmd FileType html,css,scss,xml,javascriptreact,typescriptreact,yaml setlocal shiftwidth=2 tabstop=2 foldmethod=expr foldexpr=nvim_treesitter#foldexpr()
+    autocmd FileType html,xml,javascriptreact,typescriptreact,yaml setlocal nocindent shiftwidth=2 tabstop=2 foldmethod=expr foldexpr=nvim_treesitter#foldexpr()
 
     autocmd Filetype text,markdown,gitcommit setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
     autocmd BufEnter * lua pcall(require'mini.misc'.use_nested_comments)
