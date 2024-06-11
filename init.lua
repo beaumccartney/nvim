@@ -211,7 +211,6 @@ local ai = require'mini.ai'
 local gen_spec = ai.gen_spec
 local extra_ai_spec = MiniExtra.gen_ai_spec
 ai.setup({
-    search_method = 'cover_or_nearest',
     custom_textobjects = {
         F = gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
         c = gen_spec.treesitter({ a = '@class.outer',    i = '@class.inner'    }),
@@ -303,7 +302,7 @@ require 'mini.completion'.setup {
         force_twostep  = '<C-j>',
         force_fallback = '<C-k>',
     },
-    delay = { completion = 0, info = 0, signature = 0 },
+    delay = { completion = 9999, info = 0, signature = 0 },
     lsp_completion = {
         source_func = 'omnifunc',
         auto_setup  = false
@@ -485,6 +484,7 @@ add('stevearc/conform.nvim')
 local conform = require'conform'
 conform.setup {
     formatters_by_ft = {
+        css             = { { "prettierd", "prettier" } },
         go              = { "gofmt", }, -- TODO: goimports
         html            = { { "prettierd", "prettier" } },
         javascript      = { { "prettierd", "prettier" } },
@@ -494,6 +494,7 @@ conform.setup {
         odin            = { "odinfmt" },
         python          = { "ruff_format" },
         rust            = { "rustfmt" },
+        typescript      = { { "prettierd", "prettier" } },
         typescriptreact = { { "prettierd", "prettier" } },
         zig             = { "zigfmt" },
     }
@@ -735,7 +736,7 @@ vim.cmd[[
 
     autocmd Filetype * setlocal formatoptions+=jcqrno formatoptions-=t
 
-    autocmd FileType html,xml,javascriptreact,typescriptreact,yaml setlocal nocindent shiftwidth=2 tabstop=2 foldmethod=expr foldexpr=nvim_treesitter#foldexpr()
+    autocmd FileType html,css,scss,json,jsonc,xml,javascript,javascriptreact,typescript,typescriptreact,astro,yaml setlocal nocindent shiftwidth=2 tabstop=2 foldmethod=expr foldexpr=nvim_treesitter#foldexpr()
 
     autocmd Filetype text,markdown,gitcommit setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
     autocmd BufEnter * lua pcall(require'mini.misc'.use_nested_comments)
