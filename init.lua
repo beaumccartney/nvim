@@ -99,11 +99,16 @@ require'mini.bracketed'  .setup()
 require'mini.bufremove'  .setup()
 require'mini.cursorword' .setup()
 require'mini.indentscope'.setup()
-require'mini.jump'       .setup()
 require'mini.move'       .setup()
 require'mini.splitjoin'  .setup()
 require'mini.statusline' .setup()
 require'mini.tabline'    .setup()
+
+require'mini.jump'       .setup {
+    delay = {
+        idle_stop = 750,
+    }
+}
 
 require'mini.operators'  .setup {
     exchange = { prefix = 'sx' }
