@@ -53,7 +53,7 @@ vim.opt.pumheight      = 5
 
 vim.opt.foldmethod     = 'indent'
 vim.opt.foldnestmax    = 10
-vim.opt.foldlevel      = 1
+vim.opt.foldlevel      = 99
 vim.g.markdown_folding = 1
 
 vim.opt.cursorline     = true
