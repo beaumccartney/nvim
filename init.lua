@@ -621,8 +621,11 @@ lspconfig.jails.setup{}
 -- keymaps for built in things
 make_keymap( '',  '<C-s>', vim.cmd.wall, {} ) -- save file
 make_keymap( '!', '<C-s>', vim.cmd.wall, {} ) -- save file
-make_keymap( 'n', '<leader>te', vim.cmd.tabe, {}   ) -- new tab
-make_keymap( 'n', '<leader>tc', vim.cmd.tabc, {}   ) -- new tab
+
+make_keymap( 'n', '<TAB>e', vim.cmd.tabedit, {} ) -- new tab
+make_keymap( 'n', '<TAB>q', vim.cmd.tabclose, {} ) -- new tab
+make_keymap( 'n', '<TAB>o', vim.cmd.tabonly, {}  ) -- new tab
+
 make_keymap( 'n', '<leader>cw', '<C-w><C-q>', {} )
 make_keymap( '', '<C-l>', 'g$', {} )
 make_keymap( '', '<C-h>', 'g^', {} )
