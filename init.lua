@@ -317,6 +317,7 @@ require 'mini.completion'.setup {
 }
 
 add('tpope/vim-dispatch')
+add('tpope/vim-abolish')
 
 vim.g.scratchpad_autostart = 0
 vim.g.scratchpad_location  = vim.fn.stdpath( 'data' ) .. '/scratchpad'
