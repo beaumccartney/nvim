@@ -89,10 +89,10 @@ require'mini.deps'.setup { path = { package = path_package } }
 
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
-add('nvim-tree/nvim-web-devicons')
-require'nvim-web-devicons'.setup()
-
-require'mini.extra'      .setup() -- first because other plugins depend on it
+-- early because other plugins depend on these
+require'mini.icons'      .setup()
+MiniIcons.mock_nvim_web_devicons() -- TODO: remove when everything supports devicons
+require'mini.extra'      .setup()
 
 require'mini.align'      .setup()
 require'mini.bracketed'  .setup()
@@ -445,7 +445,6 @@ require'material'.setup {
     plugins = {
         "indent-blankline",
         "mini",
-        "nvim-web-devicons",
         "rainbow-delimiters",
     },
 }
