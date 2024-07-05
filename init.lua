@@ -108,6 +108,10 @@ require("mini.jump").setup {
 }
 
 require("mini.pairs").setup {
+    modes = {
+        insert = true,
+        command = true,
+    },
     ["("] = { action = "open", pair = "()", neigh_pattern = "[^\\]." },
     ["["] = { action = "open", pair = "[]", neigh_pattern = "[^\\]." },
     ["{"] = { action = "open", pair = "{}", neigh_pattern = "[^\\]." },
