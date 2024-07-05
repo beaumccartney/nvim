@@ -170,9 +170,15 @@ miniclue.setup {
         -- `z` key
         { mode = "n", keys = "z" },
         { mode = "x", keys = "z" },
+
+        { mode = "n", keys = "]" },
+        { mode = "n", keys = "[" },
     },
 
     clues = {
+        { mode = "n", keys = "]b", postkeys = "]" },
+        { mode = "n", keys = "[b", postkeys = "[" },
+
         miniclue.gen_clues.builtin_completion(),
         miniclue.gen_clues.g(),
         miniclue.gen_clues.marks(),
