@@ -955,9 +955,15 @@ make_keymap("n", "<leader>..", "<Cmd>cd ..<CR>", { desc = "cd .." })
 -- fraser again goddamn
 make_keymap("n", "<ESC>", function()
     vim.cmd.nohlsearch()
-    vim.cmd.cclose()
-    vim.cmd.lclose()
     MiniJump.stop_jumping()
+
+    local is_cmdwin = vim.fn.getcmdwintype() == ""
+    if is_cmdwin then
+        vim.cmd.cclose()
+        vim.cmd.lclose()
+    else
+        vim.cmd.close()
+    end
 end)
 
 make_keymap(
