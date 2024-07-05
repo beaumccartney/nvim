@@ -320,12 +320,18 @@ make_keymap(
 make_keymap("", "<leader>fq", function()
     extra_pickers.list { scope = "quickfix" }
 end, { desc = "Find quickfix list" })
-make_keymap("", "<leader>fv", function()
-    extra_pickers.visit_paths()
-end, { desc = "Find visit files" })
-make_keymap("", "<leader>fl", function()
-    extra_pickers.visit_labels()
-end, { desc = "Find visit labels" })
+make_keymap(
+    "",
+    "<leader>fv",
+    extra_pickers.visit_paths,
+    { desc = "Find visit files" }
+)
+make_keymap(
+    "",
+    "<leader>fl",
+    extra_pickers.visit_labels,
+    { desc = "Find visit labels" }
+)
 
 require("mini.visits").setup()
 vim.api.nvim_create_autocmd("BufReadPre", {
