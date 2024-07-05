@@ -126,17 +126,17 @@ require'mini.trailspace' .setup()
 make_keymap( 'n', '<leader>w', function()
     MiniTrailspace.trim()
     MiniTrailspace.trim_last_lines()
-end )
+end, { desc="Trim whitespace" })
 
 require'mini.git' .setup()
-make_keymap( {'n', 'x'}, '<leader>gg', MiniGit.show_at_cursor )
+make_keymap( {'n', 'x'}, '<leader>gg', MiniGit.show_at_cursor, { desc="Git show at cursor" } )
 
 require'mini.diff'.setup {
     view = { style = 'sign' },
     mappings = { textobject = 'ih', },
 }
-make_keymap( '', '<leader>gh', MiniDiff.toggle )
-make_keymap( '', '<leader>gf', MiniDiff.toggle_overlay )
+make_keymap( '', '<leader>gh', MiniDiff.toggle, { desc="Toggle mini diff" } )
+make_keymap( '', '<leader>gf', MiniDiff.toggle_overlay, { desc="Toggle mini diff overlay" } )
 
 local hipatterns = require'mini.hipatterns'
 local hi_words = MiniExtra.gen_highlighter.words
@@ -184,26 +184,26 @@ require 'mini.pick'.setup {
 local builtin = MiniPick.builtin
 local extra_pickers = MiniExtra.pickers
 
-make_keymap( 'n', '<leader>ff', builtin.files )
-make_keymap( 'n', '<leader>fh', builtin.help )
-make_keymap( 'n', '<leader>fb', builtin.buffers )
+make_keymap( 'n', '<leader>ff', builtin.files, { desc="Find files" } )
+make_keymap( 'n', '<leader>fh', builtin.help, { desc="Find help" } )
+make_keymap( 'n', '<leader>fb', builtin.buffers, { desc="Find buffers" } )
 
 -- TODO: make cword maps use word highlighted by visual if applicable
 -- TODO: leader-8 find cword in the current buffer
-make_keymap( 'n', '<leader>/', extra_pickers.buf_lines )
+make_keymap( 'n', '<leader>/', extra_pickers.buf_lines, { desc="Find line(s) in buffer" } )
 -- make_keymap( 'n', '<leader>8', '<Cmd>Pick buf_lines prompt="<cword>"<CR>' )
 -- TODO: ugrep_live (fuzzy finding + --and patterns for each word)
-make_keymap( 'n', '<leader>?', builtin.grep_live )
-make_keymap( 'n', '<leader>*', '<Cmd>Pick grep pattern="<cword>"<CR>' )
+make_keymap( 'n', '<leader>?', builtin.grep_live, { desc="Live project grep" } )
+make_keymap( 'n', '<leader>*', '<Cmd>Pick grep pattern="<cword>"<CR>', { desc="Grep for word under cursor" } )
 
-make_keymap( '',  '<leader>fc', extra_pickers.commands )
-make_keymap( '',  '<leader>fd', extra_pickers.diagnostic )
-make_keymap( 'n', '<leader>fo', extra_pickers.options )
-make_keymap( 'n', '<leader>td', '<Cmd>Pick hipatterns highlighters={"todo" "fixme" "hack"}<CR>' )
+make_keymap( '',  '<leader>fc', extra_pickers.commands, { desc="Find commands" } )
+make_keymap( '',  '<leader>fd', extra_pickers.diagnostic, { desc="Find diagnostics" } )
+make_keymap( 'n', '<leader>fo', extra_pickers.options, { desc="Find options" } )
+make_keymap( 'n', '<leader>td', '<Cmd>Pick hipatterns highlighters={"todo" "fixme" "hack"}<CR>', { desc="Find todos" } )
 
-make_keymap( '', '<leader>fq', function() extra_pickers.list({ scope = 'quickfix' }) end)
-make_keymap( '', '<leader>fv', function() extra_pickers.visit_paths() end)
-make_keymap( '', '<leader>fl', function() extra_pickers.visit_labels() end)
+make_keymap( '', '<leader>fq', function() extra_pickers.list({ scope = 'quickfix' }) end, { desc="Find quickfix list" })
+make_keymap( '', '<leader>fv', function() extra_pickers.visit_paths() end, { desc="Find visit files" })
+make_keymap( '', '<leader>fl', function() extra_pickers.visit_labels() end, { desc="Find visit labels" })
 
 require 'mini.visits'.setup()
 vim.api.nvim_create_autocmd( 'BufReadPre', {
@@ -215,10 +215,10 @@ vim.api.nvim_create_autocmd( 'BufReadPre', {
         end
     end,
 })
-make_keymap( 'n', '<leader>vp', MiniVisits.select_path )
-make_keymap( 'n', '<leader>vl', MiniVisits.select_label )
-make_keymap( 'n', '<leader>va', MiniVisits.add_label )
-make_keymap( 'n', '<leader>vd', MiniVisits.remove_label )
+make_keymap( 'n', '<leader>vp', MiniVisits.select_path, { desc="Select visit file" } )
+make_keymap( 'n', '<leader>vl', MiniVisits.select_label, { desc="Select visit path" } )
+make_keymap( 'n', '<leader>va', MiniVisits.add_label, { desc="Add visit label" })
+make_keymap( 'n', '<leader>vd', MiniVisits.remove_label, { desc="Remove visit label" })
 
 local ai = require'mini.ai'
 local gen_spec = ai.gen_spec
@@ -246,18 +246,18 @@ require 'mini.files'.setup {
     },
 }
 local open = MiniFiles.open
-make_keymap( 'n', '<leader>fe', open )
+make_keymap( 'n', '<leader>fe', open, { desc="File explorer in PWD" } )
 make_keymap( 'n', '<leader>fi', function()
     local buf = vim.api.nvim_buf_get_name( 0 )
 
     local file = io.open( buf ) and buf or vim.fs.dirname( buf )
 
     open( file )
-end )
+end, { desc="File explorer in dir of current file" }  )
 
 require 'mini.misc'.setup()
 MiniMisc.setup_restore_cursor()
-make_keymap( 'n', '<leader>z', MiniMisc.zoom )
+make_keymap( 'n', '<leader>z', MiniMisc.zoom, { desc="Maximize current window" } )
 
 require 'mini.sessions'.setup()
 make_keymap( 'n', '<leader>ss', function()
@@ -273,7 +273,7 @@ make_keymap( 'n', '<leader>ss', function()
     end
 
     MiniSessions.write(session)
-end )
+end, { desc="Save session" } )
 
 local function sessionaction(action)
     local exists = false
@@ -292,13 +292,13 @@ end
 
 make_keymap( 'n', '<leader>sf', function()
     sessionaction('read')
-end )
+end, { desc="Open session" } )
 make_keymap( 'n', '<leader>sd', function()
     sessionaction('delete')
-end )
+end, { desc="Delete session" } )
 make_keymap( 'n', '<leader>sw', function()
     sessionaction('write')
-end )
+end, { desc="Save session" } )
 
 local starter = require'mini.starter'
 starter.setup {
@@ -330,7 +330,7 @@ add('tpope/vim-abolish')
 vim.g.scratchpad_autostart = 0
 vim.g.scratchpad_location  = vim.fn.stdpath( 'data' ) .. '/scratchpad'
 add('FraserLee/ScratchPad')
-make_keymap( 'n', 'S', require'scratchpad'.invoke )
+make_keymap( 'n', 'S', require'scratchpad'.invoke, { desc="Scratchpad" } )
 
 add("stevearc/dressing.nvim")
 
@@ -532,7 +532,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     callback = function( ev )
         vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
 
-        local bufopts = { buffer = ev.buf }
+        local function makebufopts(desc)
+            return { buffer = ev.buf, desc = desc }
+        end
         local lsp     = vim.lsp
         local lspbuf  = lsp.buf
         local function picklsp( scope )
@@ -541,33 +543,33 @@ vim.api.nvim_create_autocmd('LspAttach', {
             end
         end
 
-        make_keymap( 'n', '<leader>gD',  lspbuf.declaration,     bufopts )
-        make_keymap( 'n', '<leader>i',   lspbuf.signature_help,  bufopts )
-        make_keymap( 'n', '<leader>rn',  lspbuf.rename,          bufopts )
-        make_keymap( 'n', '<leader>ca',  lspbuf.code_action,     bufopts )
+        make_keymap( 'n', '<leader>gD',  lspbuf.declaration,     makebufopts("Goto declaration") )
+        make_keymap( 'n', '<leader>i',   lspbuf.signature_help,  makebufopts("Signature help") )
+        make_keymap( 'n', '<leader>rn',  lspbuf.rename,          makebufopts("Rename") )
+        make_keymap( 'n', '<leader>ca',  lspbuf.code_action,     makebufopts("Code action") )
 
-        make_keymap( 'n', '<leader>gr',  lspbuf.references,      bufopts )
-        make_keymap( 'n', '<leader>gd',  lspbuf.definition,      bufopts )
-        make_keymap( 'n', '<leader>gi',  lspbuf.implementation,  bufopts )
-        make_keymap( 'n', '<leader>gtd', lspbuf.type_definition, bufopts )
-        make_keymap( 'n', '<leader>fs',  lspbuf.document_symbol, bufopts )
-        make_keymap( 'n', '<leader>co',  lspbuf.incoming_calls,  bufopts )
-        make_keymap( 'n', '<leader>ci',  lspbuf.outgoing_calls,  bufopts )
+        make_keymap( 'n', '<leader>gr',  lspbuf.references,      makebufopts("Goto references") )
+        make_keymap( 'n', '<leader>gd',  lspbuf.definition,      makebufopts("Goto definition") )
+        make_keymap( 'n', '<leader>gi',  lspbuf.implementation,  makebufopts("Goto implementation") )
+        make_keymap( 'n', '<leader>gtd', lspbuf.type_definition, makebufopts("Goto type definition") )
+        make_keymap( 'n', '<leader>fs',  lspbuf.document_symbol, makebufopts("Document symbols") )
+        make_keymap( 'n', '<leader>co',  lspbuf.incoming_calls,  makebufopts("Incoming calls") )
+        make_keymap( 'n', '<leader>ci',  lspbuf.outgoing_calls,  makebufopts("Outgoing calls") )
 
         local inlay_hint = lsp.inlay_hint
         make_keymap( 'n', '<leader>h', function()
             local enabled = inlay_hint.is_enabled( { bufnr = ev.buf, } )
             inlay_hint.enable( not enabled, { bufnr = ev.buf, } )
-        end, bufopts )
+        end, makebufopts("Toggle inlay hints") )
 
         local diagnostic = vim.diagnostic
 
-        make_keymap('n', '<leader>bd', diagnostic.setloclist, bufopts)
+        make_keymap('n', '<leader>bd', diagnostic.setloclist, makebufopts("Diagnostic loclist"))
 
         make_keymap('n', '<leader>d', function()
             local buf = { bufnr = ev.buf }
             diagnostic.enable(not diagnostic.is_enabled(buf), buf)
-        end, bufopts)
+        end, makebufopts("Toggle diagnostics"))
     end
 })
 local lspconfig = require'lspconfig'
@@ -627,16 +629,15 @@ configs.jails = {
 lspconfig.jails.setup{}
 
 -- keymaps for built in things
-make_keymap( '',  '<C-s>', vim.cmd.wall ) -- save file
-make_keymap( '!', '<C-s>', vim.cmd.wall ) -- save file
+make_keymap( '',  '<C-s>', vim.cmd.wall, { desc="Save all buffers" } )
+make_keymap( '!', '<C-s>', vim.cmd.wall, { desc="Save all buffers" })
 
-make_keymap( 'n', '<TAB>e', vim.cmd.tabedit ) -- new tab
-make_keymap( 'n', '<TAB>q', vim.cmd.tabclose ) -- new tab
-make_keymap( 'n', '<TAB>o', vim.cmd.tabonly  ) -- new tab
+make_keymap( 'n', '<TAB>e', vim.cmd.tabedit, { desc="Open tab" })
+make_keymap( 'n', '<TAB>q', vim.cmd.tabclose, { desc="Close tab" })
+make_keymap( 'n', '<TAB>o', vim.cmd.tabonly,  { desc="Delete other tabs" })
 
-make_keymap( 'n', '<leader>cw', '<C-w><C-q>' )
-make_keymap( '', '<C-l>', 'g$' )
-make_keymap( '', '<C-h>', 'g^' )
+make_keymap( '', '<C-l>', 'g$', { desc="End of line" } )
+make_keymap( '', '<C-h>', 'g^', { desc="Start of line" } )
 
 
 make_keymap( '', '<leader>q', function()
@@ -648,7 +649,7 @@ make_keymap( '', '<leader>q', function()
         end
     end
     vim.cmd.copen()
-end )
+end, { desc="Toggle quickfix" } )
 
 -- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
 make_keymap( 'n', '<C-z>', '[s1z=',                     { desc = 'Correct latest misspelled word' } )
@@ -678,14 +679,14 @@ make_keymap( 'n', '[<space>', 'v:lua.put_empty_line(v:true)',  { expr = true, de
 make_keymap( 'n', ']<space>', 'v:lua.put_empty_line(v:false)', { expr = true, desc = 'Put empty line below' } )
 --[[ ----------------------------------- END ---------------------------------- ]]
 
-make_keymap( 'n', 'Y',         'y$' ) -- yank to end of line
-make_keymap( 'n', '<leader>Y', '"+y$' ) -- yank to end of line
+make_keymap( 'n', 'Y',         'y$', { desc="Yank to end of line" } )
+make_keymap( 'n', '<leader>Y', '"+y$', { desc="Yank to end of line" } )
 
-make_keymap( { 'n', 'v' }, '<leader>y', '"+y' ) -- yank to clipboard
-make_keymap( { 'n', 'v' }, '<leader>p', '"+p' ) -- put from clipboard
+make_keymap( { 'n', 'v' }, '<leader>y', '"+y', { desc="Yank to clipboard" } )
+make_keymap( { 'n', 'v' }, '<leader>p', '"+p', { desc="Put from clipboard" } )
 
-make_keymap( '', '<C-d>', '<C-d>zz' ) -- scroll down
-make_keymap( '', '<C-u>', '<C-u>zz' ) -- scroll down
+make_keymap( '', '<C-d>', '<C-d>zz', { desc="Scroll down" } )
+make_keymap( '', '<C-u>', '<C-u>zz', { desc="Scroll up" } )
 
 -- change directory to current file - thanks fraser
 -- TODO: print directory I cd'd to
@@ -694,8 +695,8 @@ make_keymap( '', '<C-u>', '<C-u>zz' ) -- scroll down
 --     - current buffer
 --     - current window
 --     - etc.
-make_keymap( 'n', '<leader>cd', '<Cmd>cd %:p:h<CR>' )
-make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>' )
+make_keymap( 'n', '<leader>cd', '<Cmd>cd %:p:h<CR>', { desc="cd to current file's directory" } )
+make_keymap( 'n', '<leader>..', '<Cmd>cd ..<CR>', { desc="cd .." } )
 
 -- fraser again goddamn
 make_keymap( 'n', '<ESC>', function()
@@ -705,8 +706,8 @@ make_keymap( 'n', '<ESC>', function()
     MiniJump.stop_jumping()
 end )
 
-make_keymap( 'n', '<leader>cc', MiniBufremove.delete   )
-make_keymap( 'n', 'Q',          vim.cmd.bd )
+make_keymap( 'n', '<leader>cc', MiniBufremove.delete, { desc="Remove buffer - keep window layout" }  )
+make_keymap( 'n', 'Q',          vim.cmd.bd, { desc="Delete buffer" } )
 
 -- jk fixes (thanks yet again fraser)
 make_keymap( 'n', 'j', '<Plug>(accelerated_jk_gj)' )
@@ -745,7 +746,7 @@ make_keymap( 'n', '<leader>l', function()
 
     local linenum = vim.api.nvim_win_get_cursor( 0 )[ 1 ]
     MiniComment.toggle_lines( linenum, linenum )
-end )
+end, { desc="Write centered line" } )
 
 vim.cmd[[
     autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
