@@ -1,9 +1,6 @@
 -- TODO:
--- :s respects case
--- wrap mapping function
--- give all my keymaps descriptions
 -- put all autocommands in a group so they don't get re-added on re-source
--- have mini pickers put shit in qf list where possible and replace with gf variants where not
+-- do cooler stuff with mini.pick
 
 
 
