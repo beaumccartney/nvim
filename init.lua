@@ -345,7 +345,7 @@ vim.api.nvim_create_autocmd("BufReadPre", {
 })
 make_keymap(
     "n",
-    "<leader>vp",
+    "<leader>vv",
     MiniVisits.select_path,
     { desc = "Select visit file" }
 )
