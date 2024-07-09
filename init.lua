@@ -313,12 +313,7 @@ make_keymap(
     extra_pickers.commands,
     { desc = "Find commands" }
 )
-make_keymap(
-    "n",
-    "<leader>fk",
-    extra_pickers.keymaps,
-    { desc = "Find keymaps" }
-)
+make_keymap("n", "<leader>fk", extra_pickers.keymaps, { desc = "Find keymaps" })
 make_keymap(
     "n",
     "<leader>fd",
@@ -389,7 +384,10 @@ local gen_spec = ai.gen_spec
 local extra_ai_spec = MiniExtra.gen_ai_spec
 ai.setup({
     custom_textobjects = {
-        F = gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+        F = gen_spec.treesitter({
+            a = "@function.outer",
+            i = "@function.inner",
+        }),
         c = gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
         S = gen_spec.treesitter({ a = "@block.outer", i = "@block.inner" }),
         j = extra_ai_spec.line(),
