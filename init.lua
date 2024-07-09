@@ -761,7 +761,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         )
         make_keymap(
             "n",
-            "<leader>gtd",
+            "<leader>gt",
             lspbuf.type_definition,
             makebufopts("Goto type definition")
         )
