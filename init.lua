@@ -224,9 +224,9 @@ require("mini.diff").setup({
     view = { style = "sign" },
     mappings = { textobject = "ih" },
 })
-make_keymap("", "<leader>gh", MiniDiff.toggle, { desc = "Toggle mini diff" })
+make_keymap("n", "<leader>gh", MiniDiff.toggle, { desc = "Toggle mini diff" })
 make_keymap(
-    "",
+    "n",
     "<leader>gf",
     MiniDiff.toggle_overlay,
     { desc = "Toggle mini diff overlay" }
@@ -308,7 +308,7 @@ make_keymap(
 )
 
 make_keymap(
-    "",
+    "n",
     "<leader>fc",
     extra_pickers.commands,
     { desc = "Find commands" }
@@ -320,7 +320,7 @@ make_keymap(
     { desc = "Find keymaps" }
 )
 make_keymap(
-    "",
+    "n",
     "<leader>fd",
     extra_pickers.diagnostic,
     { desc = "Find diagnostics" }
@@ -333,17 +333,17 @@ make_keymap(
     { desc = "Find todos" }
 )
 
-make_keymap("", "<leader>fq", function()
+make_keymap("n", "<leader>fq", function()
     extra_pickers.list({ scope = "quickfix" })
 end, { desc = "Find quickfix list" })
 make_keymap(
-    "",
+    "n",
     "<leader>fv",
     extra_pickers.visit_paths,
     { desc = "Find visit files" }
 )
 make_keymap(
-    "",
+    "n",
     "<leader>fl",
     extra_pickers.visit_labels,
     { desc = "Find visit labels" }
@@ -874,7 +874,7 @@ make_keymap("n", "<TAB>o", vim.cmd.tabonly, { desc = "Delete other tabs" })
 make_keymap("", "<C-l>", "g$", { desc = "End of line" })
 make_keymap("", "<C-h>", "g^", { desc = "Start of line" })
 
-make_keymap("", "<leader>q", function()
+make_keymap("n", "<leader>q", function()
     local windows = vim.fn.getwininfo()
     for _, win in pairs(windows) do
         if win["quickfix"] == 1 then
