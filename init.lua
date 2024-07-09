@@ -92,7 +92,6 @@ MiniIcons.mock_nvim_web_devicons() -- TODO: remove when everything supports devi
 require("mini.extra").setup()
 
 require("mini.align").setup()
-require("mini.bracketed").setup()
 require("mini.bufremove").setup()
 require("mini.cursorword").setup()
 require("mini.indentscope").setup()
@@ -100,6 +99,11 @@ require("mini.move").setup()
 require("mini.splitjoin").setup()
 require("mini.statusline").setup()
 require("mini.tabline").setup()
+
+require("mini.bracketed").setup({
+    -- mini.indentscope provides these
+    indent = { suffix = "" },
+})
 
 require("mini.jump").setup({
     delay = {
