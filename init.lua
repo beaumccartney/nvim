@@ -314,6 +314,12 @@ make_keymap(
     { desc = "Find commands" }
 )
 make_keymap(
+    "n",
+    "<leader>fk",
+    extra_pickers.keymaps,
+    { desc = "Find keymaps" }
+)
+make_keymap(
     "",
     "<leader>fd",
     extra_pickers.diagnostic,
