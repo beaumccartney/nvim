@@ -639,6 +639,11 @@ require("material").setup({
     },
 })
 
+add("folke/tokyonight.nvim")
+require("tokyonight").setup({
+    style = "night",
+})
+
 add("lukas-reineke/indent-blankline.nvim")
 require("ibl").setup({ scope = { enabled = false } })
 
@@ -1043,7 +1048,8 @@ vim.cmd([[
     autocmd FileType gitconfig,go setlocal noexpandtab tabstop=8
 
     " colorscheme gruvbox-material
-    colorscheme material
+    " colorscheme material
+    colorscheme tokyonight-night
 
     set rtp^="/Users/beaum/.opam/default/share/ocp-indent/vim
 ]])
