@@ -2,8 +2,6 @@
 -- put all autocommands in a group so they don't get re-added on re-source
 -- do cooler stuff with mini.pick
 
-vim.cmd("filetype plugin indent on")
-
 -- apparently I have to put this before the package manager
 vim.g.mapleader = " "
 
@@ -98,6 +96,12 @@ require("mini.move").setup()
 require("mini.splitjoin").setup()
 require("mini.statusline").setup()
 require("mini.tabline").setup()
+
+require("mini.basics").setup({
+    options = {
+        extra_ui = true,
+    },
+})
 
 require("mini.bracketed").setup({
     -- mini.indentscope provides these
@@ -806,11 +810,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
             diagnostic.setloclist,
             makebufopts("Diagnostic loclist")
         )
-
-        make_keymap("n", "<leader>d", function()
-            local buf = { bufnr = ev.buf }
-            diagnostic.enable(not diagnostic.is_enabled(buf), buf)
-        end, makebufopts("Toggle diagnostics"))
     end,
 })
 local lspconfig = require("lspconfig")
@@ -869,10 +868,6 @@ configs.jails = {
 }
 lspconfig.jails.setup({})
 
--- keymaps for built in things
-make_keymap("", "<C-s>", vim.cmd.wall, { desc = "Save all buffers" })
-make_keymap("!", "<C-s>", vim.cmd.wall, { desc = "Save all buffers" })
-
 make_keymap("n", "<TAB>e", vim.cmd.tabedit, { desc = "Open tab" })
 make_keymap("n", "<TAB>q", vim.cmd.tabclose, { desc = "Close tab" })
 make_keymap("n", "<TAB>o", vim.cmd.tabonly, { desc = "Delete other tabs" })
@@ -899,49 +894,6 @@ make_keymap(
     "<C-g>u<Esc>[s1z=`]a<C-g>u",
     { desc = "Correct latest misspelled word" }
 )
-
--- from mini.basic
-make_keymap(
-    "x",
-    "g/",
-    "<esc>/\\%V",
-    { silent = false, desc = "Search inside visual selection" }
-)
-
---[[ BEGIN https://github.com/echasnovski/mini.nvim/blob/1fdbb864e2015eb6f501394d593630f825154385/lua/mini/basics.lua#L549C11-L549C11 ]]
--- Add empty lines before and after cursor line supporting dot-repeat
-local cache_empty_line = nil
-function put_empty_line(put_above)
-    -- This has a typical workflow for enabling dot-repeat:
-    -- - On first call it sets `operatorfunc`, caches data, and calls
-    --   `operatorfunc` on current cursor position.
-    -- - On second call it performs task: puts `v:count1` empty lines
-    --   above/below current line.
-    if type(put_above) == "boolean" then
-        vim.o.operatorfunc = "v:lua.put_empty_line"
-        cache_empty_line = { put_above = put_above }
-        return "g@l"
-    end
-    local target_line = vim.fn.line(".")
-        - (cache_empty_line.put_above and 1 or 0)
-    vim.fn.append(target_line, vim.fn["repeat"]({ "" }, vim.v.count1))
-end
-make_keymap(
-    "n",
-    "[<space>",
-    "v:lua.put_empty_line(v:true)",
-    { expr = true, desc = "Put empty line above" }
-)
-make_keymap(
-    "n",
-    "]<space>",
-    "v:lua.put_empty_line(v:false)",
-    { expr = true, desc = "Put empty line below" }
-)
---[[ ----------------------------------- END ---------------------------------- ]]
-
-make_keymap({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to clipboard" })
-make_keymap({ "n", "v" }, "<leader>p", '"+p', { desc = "Put from clipboard" })
 
 make_keymap("", "<C-d>", "<C-d>zz", { desc = "Scroll down" })
 make_keymap("", "<C-u>", "<C-u>zz", { desc = "Scroll up" })
@@ -1028,8 +980,6 @@ make_keymap("n", "<leader>l", function()
 end, { desc = "Write centered line" })
 
 vim.cmd([[
-    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank( { timeout = 100 } )
-
     autocmd Filetype * setlocal formatoptions+=jcqrno formatoptions-=t
 
     autocmd FileType html,css,scss,json,jsonc,xml,javascript,javascriptreact,typescript,typescriptreact,astro,yaml setlocal nocindent shiftwidth=2 tabstop=2 foldmethod=expr foldexpr=nvim_treesitter#foldexpr()
