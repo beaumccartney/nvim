@@ -941,9 +941,6 @@ make_keymap(
 )
 --[[ ----------------------------------- END ---------------------------------- ]]
 
-make_keymap("n", "Y", "y$", { desc = "Yank to end of line" })
-make_keymap("n", "<leader>Y", '"+y$', { desc = "Yank to end of line" })
-
 make_keymap({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to clipboard" })
 make_keymap({ "n", "v" }, "<leader>p", '"+p', { desc = "Put from clipboard" })
 
