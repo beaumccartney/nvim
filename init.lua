@@ -15,7 +15,6 @@ end
 
 vim.g.zig_fmt_autosave = 0
 
-vim.opt.termguicolors = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 
