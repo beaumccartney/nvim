@@ -691,6 +691,12 @@ require("supermaven-nvim").setup({
         cterm = 6,
     },
 })
+make_keymap(
+    "n",
+    "\\p",
+    require("supermaven-nvim.api").toggle,
+    { desc = "Toggle copilot" }
+)
 
 add("stevearc/conform.nvim")
 local conform = require("conform")
