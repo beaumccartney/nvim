@@ -60,6 +60,9 @@ vim.filetype.add({
 })
 
 local make_keymap = vim.keymap.set
+local function in_cmdwin()
+    return vim.fn.getcmdwintype() ~= ""
+end
 
 -- Clone 'mini.nvim' manually in a way that it gets managed by 'mini.deps'
 local path_package = vim.fn.stdpath("data") .. "/site/"
@@ -936,12 +939,11 @@ make_keymap("n", "<ESC>", function()
     vim.cmd.nohlsearch()
     MiniJump.stop_jumping()
 
-    local is_cmdwin = vim.fn.getcmdwintype() == ""
-    if is_cmdwin then
+    if in_cmdwin() then
+        vim.cmd.close()
+    else
         vim.cmd.cclose()
         vim.cmd.lclose()
-    else
-        vim.cmd.close()
     end
 end)
 
