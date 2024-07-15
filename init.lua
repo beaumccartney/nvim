@@ -178,8 +178,13 @@ miniclue.setup({
         { mode = "n", keys = "z" },
         { mode = "x", keys = "z" },
 
+        -- bracketed
         { mode = "n", keys = "]" },
         { mode = "n", keys = "[" },
+
+        -- Backslash triggers
+        { mode = "n", keys = "\\" },
+        { mode = "x", keys = "\\" },
     },
 
     clues = {
