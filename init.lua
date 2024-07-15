@@ -691,12 +691,11 @@ require("supermaven-nvim").setup({
         cterm = 6,
     },
 })
-make_keymap(
-    "n",
-    "\\p",
-    require("supermaven-nvim.api").toggle,
-    { desc = "Toggle copilot" }
-)
+make_keymap("n", "\\f", function()
+    local supermaven = require("supermaven-nvim.api")
+    supermaven.toggle()
+    print((supermaven.is_running() and "   " or "no ") .. "copilot")
+end, { desc = "Toggle copilot" })
 
 add("stevearc/conform.nvim")
 local conform = require("conform")
@@ -815,7 +814,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
         local inlay_hint = lsp.inlay_hint
         make_keymap("n", "\\H", function()
             local enabled = inlay_hint.is_enabled({ bufnr = ev.buf })
-            inlay_hint.enable(not enabled, { bufnr = ev.buf })
+            local new = not enabled
+            inlay_hint.enable(new, { bufnr = ev.buf })
+
+            print((new and "   " or "no ") .. "inlay hints")
         end, makebufopts("Toggle inlay hints"))
 
         local diagnostic = vim.diagnostic
