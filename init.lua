@@ -819,6 +819,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         )
 
         local inlay_hint = lsp.inlay_hint
+        inlay_hint.enable(true, { bufnr = ev.buf })
         make_keymap("n", "\\H", function()
             local enabled = inlay_hint.is_enabled({ bufnr = ev.buf })
             local new = not enabled
