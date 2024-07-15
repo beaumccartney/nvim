@@ -897,6 +897,11 @@ make_keymap("", "<C-l>", "g$", { desc = "End of line" })
 make_keymap("", "<C-h>", "g^", { desc = "Start of line" })
 
 make_keymap("n", "\\q", function()
+    if in_cmdwin() then
+        error("cannot toggle quickfix in cmdwin")
+        return
+    end
+
     local windows = vim.fn.getwininfo()
     for _, win in pairs(windows) do
         if win["quickfix"] == 1 then
