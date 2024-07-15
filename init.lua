@@ -236,10 +236,10 @@ require("mini.diff").setup({
     view = { style = "sign" },
     mappings = { textobject = "ih" },
 })
-make_keymap("n", "<leader>gh", MiniDiff.toggle, { desc = "Toggle mini diff" })
+make_keymap("n", "\\D", MiniDiff.toggle, { desc = "Toggle mini diff" })
 make_keymap(
     "n",
-    "<leader>gf",
+    "\\g",
     MiniDiff.toggle_overlay,
     { desc = "Toggle mini diff overlay" }
 )
@@ -813,7 +813,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         )
 
         local inlay_hint = lsp.inlay_hint
-        make_keymap("n", "<leader>h", function()
+        make_keymap("n", "\\H", function()
             local enabled = inlay_hint.is_enabled({ bufnr = ev.buf })
             inlay_hint.enable(not enabled, { bufnr = ev.buf })
         end, makebufopts("Toggle inlay hints"))
@@ -891,7 +891,7 @@ make_keymap("n", "<TAB>o", vim.cmd.tabonly, { desc = "Delete other tabs" })
 make_keymap("", "<C-l>", "g$", { desc = "End of line" })
 make_keymap("", "<C-h>", "g^", { desc = "Start of line" })
 
-make_keymap("n", "<leader>q", function()
+make_keymap("n", "\\q", function()
     local windows = vim.fn.getwininfo()
     for _, win in pairs(windows) do
         if win["quickfix"] == 1 then
