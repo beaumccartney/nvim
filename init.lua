@@ -242,13 +242,13 @@ require("mini.diff").setup({
 make_keymap("n", "\\D", function()
     MiniDiff.toggle(0)
 
-    print((MiniDiff.get_buf_data(0) and "   " or "no ") .. "diff")
-end, { desc = "Toggle mini diff" })
+    print((MiniDiff.get_buf_data(0) and "   " or "no ") .. "diff gutter")
+end, { desc = "Toggle diff gutter" })
 make_keymap("n", "\\g", function()
     MiniDiff.toggle_overlay(0)
 
     print((MiniDiff.get_buf_data(0).overlay and "   " or "no ") .. "diff overlay")
-end, { desc = "Toggle mini diff overlay" })
+end, { desc = "Toggle diff overlay" })
 
 local hipatterns = require("mini.hipatterns")
 local hi_words = MiniExtra.gen_highlighter.words
