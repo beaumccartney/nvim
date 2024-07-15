@@ -245,6 +245,7 @@ make_keymap("n", "\\D", function()
     print((MiniDiff.get_buf_data(0) and "   " or "no ") .. "diff gutter")
 end, { desc = "Toggle diff gutter" })
 make_keymap("n", "\\g", function()
+    MiniDiff.enable(0) -- overlay doesn't work if the plugin is disabled
     MiniDiff.toggle_overlay(0)
 
     print((MiniDiff.get_buf_data(0).overlay and "   " or "no ") .. "diff overlay")
