@@ -731,6 +731,9 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.formatexpr = "v:lua.require'conform'.formatexpr()"
     end,
 })
+make_keymap("n", "<leader>F", function()
+    conform.format({ async = true, lsp_format = "fallback" })
+end, { desc = "Format buffer" })
 
 add("luckasRanarison/tailwind-tools.nvim")
 require("tailwind-tools").setup({})
