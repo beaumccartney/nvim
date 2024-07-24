@@ -811,13 +811,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
         )
         make_keymap(
             "n",
-            "<leader>co",
+            "<leader>ci",
             lspbuf.incoming_calls,
             makebufopts("Incoming calls")
         )
         make_keymap(
             "n",
-            "<leader>ci",
+            "<leader>co",
             lspbuf.outgoing_calls,
             makebufopts("Outgoing calls")
         )
