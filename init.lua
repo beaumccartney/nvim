@@ -516,43 +516,6 @@ require("mini.completion").setup({
     set_vim_settings = true, -- set shortmess and completeopt
 })
 
--- ML SETUP
-vim.g.molten_auto_image_popup = true
-vim.g.molten_image_provider = "image.nvim"
-add({
-    source = "benlubas/molten-nvim",
-    post_checkout = function()
-        vim.cmd("UpdateRemotePlugins")
-    end,
-})
-vim.keymap.set("n", "<leader>ge", "<CMD>MoltenEvaluateOperator<CR>",
-    { desc = "run operator selection" })
--- vim.keymap.set("n", "<leader>gee", "<CMD>MoltenEvaluateLine<CR>",
---     { desc = "evaluate line" })
-vim.keymap.set("n", "<leader>gE", "<CMD>MoltenReevaluateCell<CR>",
-    { desc = "re-evaluate cell" })
-vim.keymap.set("v", "<leader>ge", "<CMD><C-u>MoltenEvaluateVisual<CR>gv",
-    { desc = "evaluate visual selection" })
-
--- NOTE: too get this, run `luarocks --local --lua-version=5.1 install magick`
-package.path = package.path
-    .. ";"
-    .. vim.env.HOME
-    .. "/.luarocks/share/lua/5.1/?/init.lua"
-package.path = package.path
-    .. ";"
-    .. vim.env.HOME
-    .. "/.luarocks/share/lua/5.1/?.lua"
-add("3rd/image.nvim")
-require("image").setup({
-    backend = "kitty",
-    max_height_window_percentage = math.huge, -- this is necessary for a good experience
-    max_width_window_percentage = math.huge,
-    window_overlap_clear_enabled = true,
-    max_width = 100, -- tweak to preference
-    max_height = 48, -- ^
-})
-
 add("tpope/vim-dispatch")
 add("tpope/vim-abolish")
 
