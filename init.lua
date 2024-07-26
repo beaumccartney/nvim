@@ -691,6 +691,8 @@ require("supermaven-nvim").setup({
     },
     ignore_filetypes = {
         DressingInput = true,
+        scratchpad = true,
+        gitcommit = true,
     },
     -- thanks fraser: https://github.com/FraserLee/dotfiles/blob/8348d9620d747b39d6ce061dc6f7cdb252576b36/.vimrc#L538-L540
     color = {
