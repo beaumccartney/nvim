@@ -964,11 +964,10 @@ end)
 
 make_keymap(
     "n",
-    "<leader>cc",
+    "<leader>x",
     MiniBufremove.delete,
     { desc = "Remove buffer - keep window layout" }
 )
-make_keymap("n", "<leader>x", vim.cmd.bd, { desc = "Delete buffer" })
 
 -- jk fixes (thanks yet again fraser)
 make_keymap("n", "j", "<Plug>(accelerated_jk_gj)")
