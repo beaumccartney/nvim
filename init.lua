@@ -690,7 +690,7 @@ conform.setup({
         javascriptreact = { { "prettierd", "prettier" } },
         json = { { "prettierd", "prettier" } },
         lua = { "stylua" },
-        ocaml = { "ocp-indent", "ocamlformat" }, -- TODO: goimports
+        ocaml = { "ocp-indent", "ocamlformat" },
         odin = { "odinfmt" },
         python = { "ruff_format" },
         rust = { "rustfmt" },
