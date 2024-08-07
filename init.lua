@@ -681,21 +681,22 @@ end, { desc = "Toggle copilot" })
 
 add("stevearc/conform.nvim")
 local conform = require("conform")
+local prettier_spec = { "prettierd", "prettier", stop_after_first = true }
 conform.setup({
     formatters_by_ft = {
-        css = { { "prettierd", "prettier" } },
+        css = prettier_spec,
         go = { "gofmt" }, -- TODO: goimports
-        html = { { "prettierd", "prettier" } },
-        javascript = { { "prettierd", "prettier" } },
-        javascriptreact = { { "prettierd", "prettier" } },
-        json = { { "prettierd", "prettier" } },
+        html = prettier_spec,
+        javascript = prettier_spec,
+        javascriptreact = prettier_spec,
+        json = prettier_spec,
         lua = { "stylua" },
         ocaml = { "ocp-indent", "ocamlformat" },
         odin = { "odinfmt" },
         python = { "ruff_format" },
         rust = { "rustfmt" },
-        typescript = { { "prettierd", "prettier" } },
-        typescriptreact = { { "prettierd", "prettier" } },
+        typescript = prettier_spec,
+        typescriptreact = prettier_spec,
         zig = { "zigfmt" },
     },
 })
