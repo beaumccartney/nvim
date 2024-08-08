@@ -685,6 +685,8 @@ quicker.setup()
 
 make_keymap("n", "\\q", quicker.toggle, { desc = "Toggle quickfix" })
 
+add("kevinhwang91/nvim-bqf")
+
 add("stevearc/conform.nvim")
 local conform = require("conform")
 local prettier_spec = { "prettierd", "prettier", stop_after_first = true }
