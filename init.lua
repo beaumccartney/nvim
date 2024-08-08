@@ -679,6 +679,12 @@ make_keymap("n", "\\f", function()
     print((supermaven.is_running() and "   " or "no ") .. "copilot")
 end, { desc = "Toggle copilot" })
 
+add("stevearc/quicker.nvim")
+local quicker = require("quicker")
+quicker.setup()
+
+make_keymap("n", "\\q", quicker.toggle, { desc = "Toggle quickfix" })
+
 add("stevearc/conform.nvim")
 local conform = require("conform")
 local prettier_spec = { "prettierd", "prettier", stop_after_first = true }
@@ -879,22 +885,6 @@ make_keymap("n", "<TAB>o", vim.cmd.tabonly, { desc = "Delete other tabs" })
 
 make_keymap("", "<C-l>", "g$", { desc = "End of line" })
 make_keymap("", "<C-h>", "g^", { desc = "Start of line" })
-
-make_keymap("n", "\\q", function()
-    if in_cmdwin() then
-        error("cannot toggle quickfix in cmdwin")
-        return
-    end
-
-    local windows = vim.fn.getwininfo()
-    for _, win in pairs(windows) do
-        if win["quickfix"] == 1 then
-            vim.cmd.cclose()
-            return
-        end
-    end
-    vim.cmd.copen()
-end, { desc = "Toggle quickfix" })
 
 -- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
 make_keymap("n", "<C-z>", "[s1z=", { desc = "Correct latest misspelled word" })
