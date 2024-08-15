@@ -930,7 +930,7 @@ end)
 
 make_keymap(
     "n",
-    "<leader>x",
+    "X",
     MiniBufremove.delete,
     { desc = "Remove buffer - keep window layout" }
 )
