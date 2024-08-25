@@ -989,7 +989,7 @@ vim.cmd([[
 
     autocmd FileType DressingInput,gitcommit let b:minicompletion_disable = v:true | let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
 
-    autocmd FileType odin setlocal smartindent errorformat+=%f(%l:%c)\ %m
+    autocmd FileType odin setlocal smartindent
 
     autocmd FileType gitconfig,go setlocal noexpandtab tabstop=8
 
