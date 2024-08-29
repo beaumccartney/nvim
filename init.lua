@@ -794,6 +794,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
         )
         make_keymap(
             "n",
+            "<leader>ws",
+            picklsp("workspace_symbol"),
+            makebufopts("Workspace symbols")
+        )
+        make_keymap(
+            "n",
             "<leader>ci",
             lspbuf.incoming_calls,
             makebufopts("Incoming calls")
