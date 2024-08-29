@@ -997,6 +997,8 @@ vim.cmd([[
 
     autocmd FileType odin setlocal smartindent | compiler odin
 
+    autocmd FileType jai compiler jai
+
     autocmd FileType gitconfig,go setlocal noexpandtab tabstop=8
 
     " colorscheme gruvbox-material
