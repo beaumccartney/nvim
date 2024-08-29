@@ -652,8 +652,8 @@ require("accelerated-jk").setup({
 })
 
 -- jai syntax-highlighting + folds + whatever
-add("puremourning/jai.vim")
 vim.g.jai_compiler = "jai"
+add("beaumccartney/jai.vim")
 
 add("supermaven-inc/supermaven-nvim")
 require("supermaven-nvim").setup({
