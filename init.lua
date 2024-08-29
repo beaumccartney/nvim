@@ -789,7 +789,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         make_keymap(
             "n",
             "<leader>fs",
-            lspbuf.document_symbol,
+            picklsp("document_symbol"),
             makebufopts("Document symbols")
         )
         make_keymap(
