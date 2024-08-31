@@ -89,6 +89,7 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 -- early because other plugins depend on these
 require("mini.icons").setup()
 MiniIcons.mock_nvim_web_devicons() -- TODO: remove when everything supports devicons
+MiniIcons.tweak_lsp_kind() -- TODO: remove when everything supports devicons
 require("mini.extra").setup()
 
 require("mini.align").setup()
