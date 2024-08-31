@@ -917,7 +917,7 @@ make_keymap("", "<C-u>", "<C-u>zz", { desc = "Scroll up" })
 make_keymap(
     "n",
     "<leader>cd",
-    "<Cmd>cd %:p:h<CR>",
+    "<Cmd>cd %:p:h | pwd<CR>",
     { desc = "cd to current file's directory" }
 )
 make_keymap("n", "<leader>..", "<Cmd>cd ..<CR>", { desc = "cd .." })
