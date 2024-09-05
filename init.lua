@@ -56,6 +56,10 @@ vim.filetype.add({
     extension = {
         mdpp = "markdown",
         mdx = "markdown.mdx",
+        vs = "glsl",
+        fs = "glsl",
+        vert = "glsl",
+        frag = "glsl",
     },
 })
 
