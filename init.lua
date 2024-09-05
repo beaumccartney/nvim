@@ -110,6 +110,7 @@ require("mini.basics").setup({
         extra_ui = true,
     },
 })
+vim.keymap.del("", "\\b") -- kill toggle dark mode map
 
 require("mini.bracketed").setup({
     -- mini.indentscope provides these
@@ -200,7 +201,7 @@ remap("x", "gx", "<Leader>gx")
 require("mini.operators").setup()
 
 require("mini.trailspace").setup()
-make_keymap("n", "<leader>w", function()
+make_keymap("n", "<BS>", function()
     MiniTrailspace.trim()
     MiniTrailspace.trim_last_lines()
 end, { desc = "Trim whitespace" })
@@ -775,7 +776,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         )
         make_keymap(
             "n",
-            "<leader>ws",
+            "<leader>w",
             picklsp("workspace_symbol"),
             makebufopts("Workspace symbols")
         )
@@ -872,7 +873,7 @@ make_keymap("n", "<TAB>q", vim.cmd.tabclose, { desc = "Close tab" })
 make_keymap("n", "<TAB>o", vim.cmd.tabonly, { desc = "Delete other tabs" })
 
 make_keymap("", "L", "$", { desc = "End of line" })
-make_keymap("", "H", "^", { desc = "Start of line" })
+make_keymap("", "H", "0^", { desc = "Start of line" })
 
 -- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
 make_keymap("n", "<C-z>", "[s1z=", { desc = "Correct latest misspelled word" })
@@ -918,6 +919,13 @@ make_keymap(
     "n",
     "X",
     MiniBufremove.delete,
+    { desc = "Remove buffer - keep window layout" }
+)
+
+make_keymap(
+    "n",
+    "<leader>x",
+    MiniBufremove.wipeout,
     { desc = "Remove buffer - keep window layout" }
 )
 
