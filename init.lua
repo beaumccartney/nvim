@@ -682,7 +682,6 @@ conform.setup({
         json = prettier_spec,
         lua = { "stylua" },
         ocaml = { "ocp-indent", "ocamlformat" },
-        odin = { "odinfmt" },
         python = { "ruff_format" },
         rust = { "rustfmt" },
         typescript = prettier_spec,
