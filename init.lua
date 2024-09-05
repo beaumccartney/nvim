@@ -660,30 +660,6 @@ require("accelerated-jk").setup({
 vim.g.jai_compiler = "jai"
 add("beaumccartney/jai.vim")
 
-add("supermaven-inc/supermaven-nvim")
-require("supermaven-nvim").setup({
-    keymaps = {
-        accept_suggestion = "<M-l>",
-        clear_suggestion = "<M-h>",
-        accept_word = "<M-j>",
-    },
-    ignore_filetypes = {
-        DressingInput = true,
-        scratchpad = true,
-        gitcommit = true,
-    },
-    -- thanks fraser: https://github.com/FraserLee/dotfiles/blob/8348d9620d747b39d6ce061dc6f7cdb252576b36/.vimrc#L538-L540
-    color = {
-        suggestion_color = "#00ffff",
-        cterm = 6,
-    },
-})
-make_keymap("n", "\\f", function()
-    local supermaven = require("supermaven-nvim.api")
-    supermaven.toggle()
-    print((supermaven.is_running() and "   " or "no ") .. "copilot")
-end, { desc = "Toggle copilot" })
-
 add("stevearc/quicker.nvim")
 local quicker = require("quicker")
 quicker.setup()
