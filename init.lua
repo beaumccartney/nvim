@@ -802,6 +802,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end, makebufopts("Toggle inlay hints"))
 
         local diagnostic = vim.diagnostic
+        diagnostic.enable(false, { bufnr = ev.buf })
 
         make_keymap(
             "n",
