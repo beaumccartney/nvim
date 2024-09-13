@@ -48,7 +48,6 @@ vim.opt.foldlevel = 99
 vim.g.markdown_folding = 1
 
 vim.opt.cursorline = true
-vim.opt.cursorcolumn = true
 
 vim.opt.cmdheight = 1
 
