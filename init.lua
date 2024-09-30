@@ -899,7 +899,7 @@ make_keymap(
     "<Cmd>cd %:p:h | pwd<CR>",
     { desc = "cd to current file's directory" }
 )
-make_keymap("n", "<leader>..", "<Cmd>cd ..<CR>", { desc = "cd .." })
+make_keymap("n", "<leader>..", "<Cmd>cd .. | pwd<CR>", { desc = "cd .." })
 
 -- fraser again goddamn
 make_keymap("n", "<ESC>", function()
