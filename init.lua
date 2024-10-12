@@ -600,6 +600,7 @@ add("JoosepAlviste/nvim-ts-context-commentstring")
 require("ts_context_commentstring").setup({
     enable_autocmd = false,
     languages = {
+        c = "// %s",
         cpp = "// %s",
         wgsl = "// %s",
         just = "# %s",
