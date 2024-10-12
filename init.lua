@@ -113,7 +113,8 @@ vim.keymap.del("", "\\b") -- kill toggle dark mode map
 
 require("mini.bracketed").setup({
     -- mini.indentscope provides these
-    indent = { suffix = "" },
+    indent   = { suffix = "" },
+    quickfix = { suffix = "" }, -- TODO(beau): quickfix and loclist that wraps and works like cnext and cprev
 })
 
 require("mini.jump").setup({
