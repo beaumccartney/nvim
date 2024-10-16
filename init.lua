@@ -554,9 +554,6 @@ require("nvim-treesitter.configs").setup({
         "make",
         "markdown",
         "markdown_inline",
-        "ocaml",
-        "ocaml_interface",
-        "ocamllex",
         "odin",
         "printf",
         "python",
@@ -576,7 +573,7 @@ require("nvim-treesitter.configs").setup({
     ignore_install = { "zig" },
     indent = {
         enable = true,
-        disable = { "odin", "ocaml" },
+        disable = { "odin" },
     },
 })
 vim.api.nvim_create_autocmd("Filetype", {
@@ -682,7 +679,6 @@ conform.setup({
         javascriptreact = prettier_spec,
         json = prettier_spec,
         lua = { "stylua" },
-        ocaml = { "ocp-indent", "ocamlformat" },
         python = { "ruff_format" },
         rust = { "rustfmt" },
         typescript = prettier_spec,
@@ -825,7 +821,6 @@ for _, server in pairs({
     "html",
     "jsonls",
     "lua_ls",
-    "ocamllsp",
     "pyright",
     "rust_analyzer",
     "tailwindcss",
@@ -994,6 +989,4 @@ vim.cmd([[
     " colorscheme gruvbox-material
     " colorscheme material
     colorscheme tokyonight-night
-
-    set rtp^="/Users/beaum/.opam/default/share/ocp-indent/vim
 ]])
