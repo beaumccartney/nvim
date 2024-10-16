@@ -874,7 +874,8 @@ make_keymap("n", "<TAB>q", vim.cmd.tabclose, { desc = "Close tab" })
 make_keymap("n", "<TAB>o", vim.cmd.tabonly, { desc = "Delete other tabs" })
 
 make_keymap("", "L", "$", { desc = "End of line" })
-make_keymap("", "H", "0^", { desc = "Start of line" })
+make_keymap({"n", "v"}, "H", "0^", { desc = "Start of line" })
+make_keymap("o", "H", "^", { desc = "Start of line" })
 
 -- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
 make_keymap("n", "<C-z>", "[s1z=", { desc = "Correct latest misspelled word" })
