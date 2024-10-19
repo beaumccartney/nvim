@@ -51,6 +51,8 @@ vim.opt.cursorline = true
 
 vim.opt.cmdheight = 1
 
+vim.opt.wrap = true
+
 vim.filetype.add({
     extension = {
         mdpp = "markdown",
