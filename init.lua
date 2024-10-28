@@ -18,7 +18,7 @@ vim.opt.relativenumber = true
 
 vim.opt.tabstop = 8
 vim.opt.shiftwidth = 0 -- indent is just the length of one tab
-vim.opt.expandtab = true
+vim.opt.expandtab = false
 vim.opt.smarttab = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
