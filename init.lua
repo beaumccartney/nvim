@@ -26,6 +26,8 @@ vim.opt.cindent = true
 vim.opt.breakindent = true
 vim.opt.breakindentopt = "list:-1"
 vim.opt.linebreak = true
+vim.opt.wrap = true
+vim.opt.showbreak = "+++ "
 
 vim.opt.scrolloff = 10
 vim.opt.colorcolumn = "81"
@@ -51,7 +53,6 @@ vim.opt.cursorline = true
 
 vim.opt.cmdheight = 1
 
-vim.opt.wrap = true
 
 vim.filetype.add({
     extension = {
