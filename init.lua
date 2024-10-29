@@ -106,11 +106,7 @@ require("mini.splitjoin").setup()
 require("mini.statusline").setup()
 require("mini.tabline").setup()
 
-require("mini.basics").setup({
-    options = {
-        extra_ui = true,
-    },
-})
+require("mini.basics").setup()
 vim.keymap.del("", "\\b") -- kill toggle dark mode map
 
 require("mini.bracketed").setup({
