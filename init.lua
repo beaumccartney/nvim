@@ -53,6 +53,7 @@ vim.opt.cursorline = true
 
 vim.opt.cmdheight = 1
 
+vim.opt.fixeol = false
 
 vim.filetype.add({
     extension = {
