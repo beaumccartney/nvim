@@ -235,7 +235,7 @@ local hi_words = MiniExtra.gen_highlighter.words
 hipatterns.setup({
     highlighters = {
         todo = hi_words(
-            { "TODO", "REVIEW", "INCOMPLETE" },
+            { "TODO", "REVIEW", "INCOMPLETE", "CLEANUP" },
             "MiniHipatternsTodo"
         ),
         fixme = hi_words(
@@ -243,7 +243,7 @@ hipatterns.setup({
             "MiniHipatternsFixme"
         ),
         note = hi_words({ "NOTE", "INFO" }, "MiniHipatternsNote"),
-        hack = hi_words({ "HACK", "XXX" }, "MiniHipatternsHack"),
+        hack = hi_words({ "HACK", "XXX", "TEMP" }, "MiniHipatternsHack"),
 
         hex_color = hipatterns.gen_highlighter.hex_color(),
     },
