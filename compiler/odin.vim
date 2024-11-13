@@ -1,1 +1,1 @@
-CompilerSet errorformat=%f(%l:%c)\ %m
+CompilerSet errorformat+=%f(%l:%c)\ %m
