@@ -990,3 +990,7 @@ vim.cmd([[
     " colorscheme material
     colorscheme tokyonight-night
 ]])
+
+if vim.uv.fs_stat("nvim-local.lua") then
+	dofile("nvim-local.lua")
+end
