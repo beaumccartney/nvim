@@ -813,7 +813,6 @@ local lspconfig = require("lspconfig")
 for _, server in pairs({
     "astro",
     "bashls",
-    "clangd",
     "cssls",
     "dockerls",
     "eslint",
