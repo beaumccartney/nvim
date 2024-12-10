@@ -986,6 +986,8 @@ vim.cmd([[
 
     autocmd FileType gitconfig,go setlocal noexpandtab tabstop=8
 
+    autocmd FileType dosbatch setlocal commentstring=::\ %s
+
     " colorscheme gruvbox-material
     " colorscheme material
     colorscheme tokyonight-night
