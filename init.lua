@@ -173,7 +173,6 @@ miniclue.setup({
         miniclue.gen_clues.registers(),
         miniclue.gen_clues.windows({
             submode_move = true,
-            submode_navigate = true,
             submode_resize = true,
         }),
         miniclue.gen_clues.z(),
