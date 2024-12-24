@@ -54,6 +54,8 @@ vim.opt.cmdheight = 1
 
 vim.opt.fixeol = false
 
+vim.opt.nrformats:append("alpha")
+
 vim.filetype.add({
     extension = {
         mdpp = "markdown",
