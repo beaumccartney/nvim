@@ -200,14 +200,6 @@ make_keymap("n", "<BS>", function()
     MiniTrailspace.trim_last_lines()
 end, { desc = "Trim whitespace" })
 
-require("mini.git").setup()
-make_keymap(
-    { "n", "x" },
-    "<leader>gg",
-    MiniGit.show_at_cursor,
-    { desc = "Git show at cursor" }
-)
-
 require("mini.diff").setup({
     view = { style = "sign" },
     mappings = { textobject = "ih" },
@@ -491,6 +483,9 @@ require("mini.completion").setup({
 
 add("tpope/vim-dispatch")
 add("tpope/vim-abolish")
+add("tpope/vim-fugitive")
+add("tpope/vim-rhubarb")
+add("junegunn/gv.vim")
 
 vim.g.scratchpad_autostart = 0
 vim.g.scratchpad_location = vim.fn.stdpath("data") .. "/scratchpad"
