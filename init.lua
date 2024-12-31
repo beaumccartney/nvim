@@ -200,22 +200,6 @@ make_keymap("n", "<BS>", function()
     MiniTrailspace.trim_last_lines()
 end, { desc = "Trim whitespace" })
 
-require("mini.diff").setup({
-    view = { style = "sign" },
-    mappings = { textobject = "ih" },
-})
-make_keymap("n", "\\D", function()
-    MiniDiff.toggle(0)
-
-    print((MiniDiff.get_buf_data(0) and "   " or "no ") .. "diff gutter")
-end, { desc = "Toggle diff gutter" })
-make_keymap("n", "\\g", function()
-    MiniDiff.enable(0) -- overlay doesn't work if the plugin is disabled
-    MiniDiff.toggle_overlay(0)
-
-    print((MiniDiff.get_buf_data(0).overlay and "   " or "no ") .. "diff overlay")
-end, { desc = "Toggle diff overlay" })
-
 local hipatterns = require("mini.hipatterns")
 local hi_words = MiniExtra.gen_highlighter.words
 hipatterns.setup({
@@ -486,6 +470,59 @@ add("tpope/vim-abolish")
 add("tpope/vim-fugitive")
 add("tpope/vim-rhubarb")
 add("junegunn/gv.vim")
+
+add("lewis6991/gitsigns.nvim")
+local gs = require("gitsigns")
+local gs_opts = {
+    current_line_blame = true,
+    current_line_blame_opts = {
+        delay = 0,
+    },
+}
+gs.setup(gs_opts)
+
+local gs = require'gitsigns'
+gs.setup(gs_opts)
+make_keymap({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { desc = "Select git hunk" })
+
+make_keymap( { 'n' }, '<leader>gp', gs.preview_hunk, { desc = "Preview hunk" } )
+
+make_keymap( { 'n' }, 'gh', gs.stage_hunk, { desc = "Stage hunk" } )
+make_keymap( { 'v' }, 'gh', function() gs.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end, { desc = "Stage hunk" })
+make_keymap( { 'n' }, '<leader>gh', gs.undo_stage_hunk, { desc = "Undo stage hunk" } )
+
+make_keymap( { 'n' }, 'gH', gs.reset_hunk, { desc = "Reset hunk" } )
+make_keymap( { 'v' }, 'gH', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end, { desc = "Reset hunk" })
+make_keymap( { 'n' }, '<leader>gH', gs.reset_buffer, { desc = "Reset buffer" } )
+
+make_keymap( { 'n' }, '<leader>gb', function()
+    gs.blame_line({ full = true })
+end, { desc = "Blame line" } )
+
+local toggle_state = gs_opts.signs or true
+local extra_toggle_state = false
+local function signs_toggle(switch, extra)
+    toggle_state = switch or (not toggle_state)
+    gs.toggle_current_line_blame(toggle_state)
+    gs.toggle_signs(toggle_state)
+    gs.toggle_numhl(toggle_state)
+
+    extra_toggle_state = extra and (not extra_toggle_state) or false
+    gs.toggle_deleted(extra_toggle_state)
+    gs.toggle_linehl(extra_toggle_state)
+    gs.toggle_word_diff(extra_toggle_state)
+
+    print((toggle_state and "   " or "no ") .. "git gutter")
+end
+make_keymap( { 'n' }, '\\g', signs_toggle, { desc = "Toggle git gutter" } )
+
+make_keymap( { 'n' }, '\\G', function()
+    signs_toggle(true, true)
+    print((extra_toggle_state and "   " or "no ") .. "git overlay")
+end, { desc = "Toggle git overlay" } )
+
+make_keymap( '', '[h', gs.prev_hunk, { desc = "Go to next hunk" } )
+make_keymap( '', ']h', gs.next_hunk, { desc = "Go to prev hunk" } )
 
 vim.g.scratchpad_autostart = 0
 vim.g.scratchpad_location = vim.fn.stdpath("data") .. "/scratchpad"
