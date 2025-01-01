@@ -705,9 +705,6 @@ make_keymap("n", "<leader>F", function()
     conform.format({ async = true, lsp_format = "fallback" })
 end, { desc = "Format buffer" })
 
-add("luckasRanarison/tailwind-tools.nvim")
-require("tailwind-tools").setup({})
-
 add("neovim/nvim-lspconfig")
 
 add("folke/lazydev.nvim")
