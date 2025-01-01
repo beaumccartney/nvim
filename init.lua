@@ -473,11 +473,9 @@ local gs_opts = {
 }
 gs.setup(gs_opts)
 
-local gs = require'gitsigns'
-gs.setup(gs_opts)
 make_keymap({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { desc = "Select git hunk" })
 
-make_keymap( { 'n' }, '<leader>gp', gs.preview_hunk, { desc = "Preview hunk" } )
+make_keymap( { 'n' }, '<leader>gp', gs.preview_hunk_inline, { desc = "Preview hunk" } )
 
 make_keymap( { 'n' }, 'gh', gs.stage_hunk, { desc = "Stage hunk" } )
 make_keymap( { 'v' }, 'gh', function() gs.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end, { desc = "Stage hunk" })
@@ -491,29 +489,32 @@ make_keymap( { 'n' }, '<leader>gb', function()
     gs.blame_line({ full = true })
 end, { desc = "Blame line" } )
 
-local toggle_state = gs_opts.signs or true
+local gitsigns_toggle_state = gs_opts.signs or true
 local extra_toggle_state = false
 local function signs_toggle(switch, extra)
-    toggle_state = switch or (not toggle_state)
-    gs.toggle_current_line_blame(toggle_state)
-    gs.toggle_signs(toggle_state)
-    gs.toggle_numhl(toggle_state)
+    gitsigns_toggle_state = switch or not gitsigns_toggle_state
+    gs.toggle_current_line_blame(gitsigns_toggle_state)
+    gs.toggle_signs(gitsigns_toggle_state)
+    gs.toggle_numhl(gitsigns_toggle_state)
 
-    extra_toggle_state = extra and (not extra_toggle_state) or false
+    extra_toggle_state = extra and not extra_toggle_state or false
     gs.toggle_deleted(extra_toggle_state)
     gs.toggle_linehl(extra_toggle_state)
     gs.toggle_word_diff(extra_toggle_state)
 
-    print((toggle_state and "   " or "no ") .. "git gutter")
+    if not extra then
+        print((gitsigns_toggle_state and "   " or "no ") .. "git gutter")
+    else
+        print((extra_toggle_state and "   " or "no ") .. "git overlay")
+    end
 end
 map_toggle("g", signs_toggle, "Toggle git gutter")
 map_toggle("G", function()
-    signs_toggle(true, true)
-    print((extra_toggle_state and "   " or "no ") .. "git overlay")
+     signs_toggle(true, true)
 end, "Toggle git overlay")
 
-make_keymap( '', '[h', gs.prev_hunk, { desc = "Go to next hunk" } )
-make_keymap( '', ']h', gs.next_hunk, { desc = "Go to prev hunk" } )
+make_keymap( '', '[h', function() gs.nav_hunk('prev', { preview = true, target = 'all'}) end, { desc = "Go to next hunk" } )
+make_keymap( '', ']h', function() gs.nav_hunk('next', { preview = true, target = 'all'}) end, { desc = "Go to prev hunk" } )
 
 vim.g.scratchpad_autostart = 0
 vim.g.scratchpad_location = vim.fn.stdpath("data") .. "/scratchpad"
