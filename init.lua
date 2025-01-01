@@ -40,6 +40,7 @@ vim.opt.undofile = true
 vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+vim.opt.infercase = true
 
 vim.opt.pumheight = 5
 
@@ -56,6 +57,15 @@ vim.opt.fixeol = false
 
 vim.opt.nrformats:append("alpha")
 
+vim.opt.completeopt = "menuone,noinsert,noselect,fuzzy"
+
+vim.opt.virtualedit = "block"
+
+vim.opt.wrap = false
+
+vim.opt.listchars = 'tab:> ,extends:…,precedes:…,nbsp:␣' -- Define which helper symbols to show
+vim.opt.list      = true                                 -- Show some helper symbols
+
 vim.filetype.add({
     extension = {
         mdpp = "markdown",
@@ -68,6 +78,9 @@ vim.filetype.add({
 })
 
 local make_keymap = vim.keymap.set
+local map_toggle = function(lhs, rhs, desc)
+    make_keymap("n", [[\]] .. lhs, rhs, { desc = desc })
+end
 local function in_cmdwin()
     return vim.fn.getcmdwintype() ~= ""
 end
@@ -108,9 +121,6 @@ require("mini.move").setup()
 require("mini.splitjoin").setup()
 require("mini.statusline").setup()
 require("mini.tabline").setup()
-
-require("mini.basics").setup()
-vim.keymap.del("", "\\b") -- kill toggle dark mode map
 
 require("mini.jump").setup()
 
@@ -496,12 +506,11 @@ local function signs_toggle(switch, extra)
 
     print((toggle_state and "   " or "no ") .. "git gutter")
 end
-make_keymap( { 'n' }, '\\g', signs_toggle, { desc = "Toggle git gutter" } )
-
-make_keymap( { 'n' }, '\\G', function()
+map_toggle("g", signs_toggle, "Toggle git gutter")
+map_toggle("G", function()
     signs_toggle(true, true)
     print((extra_toggle_state and "   " or "no ") .. "git overlay")
-end, { desc = "Toggle git overlay" } )
+end, "Toggle git overlay")
 
 make_keymap( '', '[h', gs.prev_hunk, { desc = "Go to next hunk" } )
 make_keymap( '', ']h', gs.next_hunk, { desc = "Go to prev hunk" } )
@@ -879,6 +888,67 @@ make_keymap("n", "<ESC>", function()
         vim.cmd.lclose()
     end
 end)
+make_keymap({ "n", "x" }, "gy", '"+y', { desc = "Copy to system clipboard" })
+make_keymap({ "n", "x" }, "gY", '"+y$', { desc = "Copy to end of line to system clipboard" })
+make_keymap("n", "gp", '"+p', { desc = "Paste from system clipboard" })
+-- - Paste in Visual with `P` to not copy selected text (`:h v_P`)
+make_keymap("x", "gp", '"+P', { desc = "Paste from system clipboard" })
+
+make_keymap(
+    "n",
+    "gV",
+    '"`[" . strpart(getregtype(), 0, 1) . "`]"',
+    {
+        expr = true,
+        replace_keycodes = false,
+        desc = "Visually select changed text",
+    }
+)
+make_keymap(
+    "x",
+    "g/",
+    "<esc>/\\%V",
+    { silent = false, desc = "Search inside visual selection" }
+)
+
+make_keymap("n", "<C-S>", "<Cmd>silent! wall | redraw<CR>", { desc = "Save" })
+make_keymap(
+    { "i", "x" },
+    "<C-S>",
+    "<Esc><Cmd>silent! wall | redraw<CR>",
+    { desc = "Save and go to Normal mode" }
+)
+
+map_toggle(
+    "c",
+    "<Cmd>setlocal cursorline! cursorline?<CR>",
+    "Toggle 'cursorline'"
+)
+map_toggle(
+    "C",
+    "<Cmd>setlocal cursorcolumn! cursorcolumn?<CR>",
+    "Toggle 'cursorcolumn'"
+)
+map_toggle("d", function()
+    local toggle_state = not vim.diagnostic.is_enabled()
+    vim.diagnostic.enable(toggle_state, { bufnr = 0 })
+
+    print((toggle_state and "   " or "no ") .. "diagnostics")
+end, "Toggle diagnostic")
+map_toggle(
+    "h",
+    '<Cmd>let v:hlsearch = 1 - v:hlsearch | echo (v:hlsearch ? "  " : "no") . "hlsearch"<CR>',
+    "Toggle search highlight"
+)
+map_toggle(
+    "i",
+    "<Cmd>setlocal ignorecase! ignorecase?<CR>",
+    "Toggle 'ignorecase'"
+)
+map_toggle("l", "<Cmd>setlocal list! list?<CR>", "Toggle 'list'")
+map_toggle("s", "<Cmd>setlocal spell! spell?<CR>", "Toggle 'spell'")
+map_toggle("w", "<Cmd>setlocal wrap! wrap?<CR>", "Toggle 'wrap'")
+
 
 make_keymap(
     "n",
@@ -905,6 +975,10 @@ make_keymap("v", "k", "gk")
 -- write centered line - 80 character line with text in the middle and dashes
 -- padding it
 vim.cmd([[
+    filetype plugin indent on
+
+    autocmd TextYankPost * silent! lua vim.hl.on_yank({ timeout=100 })
+
     autocmd Filetype * setlocal formatoptions+=jcqrno formatoptions-=t
 
     autocmd FileType html,css,scss,json,jsonc,xml,javascript,javascriptreact,typescript,typescriptreact,astro,yaml setlocal nocindent shiftwidth=2 tabstop=2 foldmethod=expr foldexpr=nvim_treesitter#foldexpr()
@@ -925,6 +999,10 @@ vim.cmd([[
     " colorscheme gruvbox-material
     " colorscheme material
     colorscheme tokyonight-night
+
+    if !exists("syntax_on")
+        syntax enable
+    endif
 ]])
 
 if vim.uv.fs_stat("nvim-local.lua") then
