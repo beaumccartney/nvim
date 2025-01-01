@@ -893,6 +893,7 @@ make_keymap("n", "<ESC>", function()
 	else
 		vim.cmd.cclose()
 		vim.cmd.lclose()
+		vim.cmd.pclose()
 	end
 end)
 make_keymap({ "n", "x" }, "gy", '"+y', { desc = "Copy to system clipboard" })
