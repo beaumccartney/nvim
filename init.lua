@@ -990,5 +990,5 @@ vim.cmd([[
 ]])
 
 if vim.uv.fs_stat("nvim-local.lua") then
-	dofile("nvim-local.lua")
+    dofile("nvim-local.lua")
 end
