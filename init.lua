@@ -112,11 +112,7 @@ require("mini.tabline").setup()
 require("mini.basics").setup()
 vim.keymap.del("", "\\b") -- kill toggle dark mode map
 
-require("mini.jump").setup({
-    delay = {
-        idle_stop = 750,
-    },
-})
+require("mini.jump").setup()
 
 local miniclue = require("mini.clue")
 miniclue.setup({
