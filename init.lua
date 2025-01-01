@@ -868,6 +868,9 @@ make_keymap(
 make_keymap("", "<C-d>", "<C-d>zz", { desc = "Scroll down" })
 make_keymap("", "<C-u>", "<C-u>zz", { desc = "Scroll up" })
 
+make_keymap("n", "]w", "<Cmd>wincmd w<CR>", { desc = "Next window" })
+make_keymap("n", "[w", "<Cmd>wincmd W<CR>", { desc = "Previous window" })
+
 -- change directory to current file - thanks fraser
 -- TODO: print directory I cd'd to
 -- TODO: look at vim cd commands and see if one of them is applicable
