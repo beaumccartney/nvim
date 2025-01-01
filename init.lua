@@ -737,12 +737,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
             lspbuf.declaration,
             makebufopts("Goto declaration")
         )
-        make_keymap(
-            "n",
-            "<leader>i",
-            lspbuf.signature_help,
-            makebufopts("Signature help")
-        )
         make_keymap("n", "<leader>rn", lspbuf.rename, makebufopts("Rename"))
         make_keymap(
             "n",
@@ -756,12 +750,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
             "<leader>gr",
             lspbuf.references,
             makebufopts("Goto references")
-        )
-        make_keymap(
-            "n",
-            "<leader>gd",
-            lspbuf.definition,
-            makebufopts("Goto definition")
         )
         make_keymap(
             "n",
@@ -822,10 +810,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 local lspconfig = require("lspconfig")
 for _, server in pairs({
-    "astro",
     "bashls",
     "cssls",
-    "dockerls",
     "eslint",
     "gopls",
     "html",
@@ -833,7 +819,6 @@ for _, server in pairs({
     "lua_ls",
     "pyright",
     "rust_analyzer",
-    "tailwindcss",
     "ts_ls",
     "yamlls",
 }) do
