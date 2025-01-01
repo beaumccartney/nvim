@@ -447,21 +447,6 @@ starter.setup({
     },
 })
 
--- TODO(beau): see if it works well with non-lsp, then smite cause probably not
-require("mini.completion").setup({
-    mappings = {
-        force_twostep = "<C-j>",
-        force_fallback = "<C-k>",
-    },
-    delay = { completion = 9999, info = 0, signature = 0 },
-    lsp_completion = {
-        source_func = "omnifunc",
-        auto_setup = false,
-    },
-    window = { signature = { width = 120 } },
-    set_vim_settings = true, -- set shortmess and completeopt
-})
-
 add("tpope/vim-dispatch")
 add("tpope/vim-abolish")
 add("tpope/vim-fugitive")
@@ -730,8 +715,6 @@ require("lazydev").setup()
 
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(ev)
-        vim.bo[ev.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
-
         local function makebufopts(desc)
             return { buffer = ev.buf, desc = desc }
         end
@@ -932,7 +915,7 @@ vim.cmd([[
     autocmd Filetype text,markdown,gitcommit setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
     autocmd BufEnter * lua pcall(require'mini.misc'.use_nested_comments)
 
-    autocmd FileType DressingInput,gitcommit let b:minicompletion_disable = v:true | let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
+    autocmd FileType DressingInput,gitcommit let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
 
     autocmd FileType odin setlocal smartindent | compiler odin
 
