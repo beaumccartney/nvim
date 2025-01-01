@@ -599,13 +599,11 @@ vim.api.nvim_create_autocmd("Filetype", {
         -- TODO: if longest line in buffer is too long kill
 
         if
-            not require("nvim-treesitter.parsers").has_parser()
-            or vim.api.nvim_buf_line_count(ev.buf) > 1024
+            require("nvim-treesitter.parsers").has_parser()
+            and vim.api.nvim_buf_line_count(ev.buf) > 1024
         then
-            return
+            vim.treesitter.start()
         end
-
-        vim.treesitter.start()
     end,
 })
 
