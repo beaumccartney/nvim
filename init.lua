@@ -623,7 +623,7 @@ vim.api.nvim_create_autocmd("Filetype", {
 
 		if
 			require("nvim-treesitter.parsers").has_parser()
-			and vim.api.nvim_buf_line_count(ev.buf) > 1024
+			and vim.api.nvim_buf_line_count(ev.buf) < 4096
 		then
 			vim.treesitter.start()
 		end
