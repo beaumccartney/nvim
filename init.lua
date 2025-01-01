@@ -451,6 +451,7 @@ starter.setup({
     },
 })
 
+-- TODO(beau): see if it works well with non-lsp, then smite cause probably not
 require("mini.completion").setup({
     mappings = {
         force_twostep = "<C-j>",
@@ -854,40 +855,6 @@ for _, server in pairs({
 }) do
     lspconfig[server].setup({})
 end
-lspconfig.ols.setup({
-    init_options = {
-        enable_document_symbols = true,
-        enable_snippets = false,
-        enable_inlay_hints = true,
-        enable_references = true,
-        enable_hover = true,
-        enable_procedure_context = true,
-    },
-})
-
-local configs = require("lspconfig.configs")
-
-if configs.jails then
-    error("Jails config exists")
-end
-
--- HACK: jails crashes if I don't the call to dirname - lspconfig docs tell me explicitly to NOT do this
-local util = lspconfig.util
-configs.jails = {
-    default_config = {
-        cmd = { "jails" },
-        filetypes = { "jai" },
-        single_file_support = true,
-        root_dir = function(fname)
-            return util.root_pattern("build.jai", "first.jai", "jails.json")(
-                fname
-            ) or util.find_git_ancestor(fname) or util.path.dirname(
-                fname
-            )
-        end,
-    },
-}
-lspconfig.jails.setup({})
 
 make_keymap("n", "<TAB>e", vim.cmd.tabedit, { desc = "Open tab" })
 make_keymap("n", "<TAB>q", vim.cmd.tabclose, { desc = "Close tab" })
