@@ -57,7 +57,7 @@ vim.opt.fixeol = false
 
 vim.opt.nrformats:append("alpha")
 
-vim.opt.completeopt = "menuone,noinsert,noselect,fuzzy"
+vim.opt.completeopt = "menuone,fuzzy,preview"
 
 vim.opt.virtualedit = "block"
 
