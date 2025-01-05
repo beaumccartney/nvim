@@ -852,6 +852,8 @@ make_keymap("n", "<TAB>e", vim.cmd.tabedit, { desc = "Open tab" })
 make_keymap("n", "<TAB>q", vim.cmd.tabclose, { desc = "Close tab" })
 make_keymap("n", "<TAB>o", vim.cmd.tabonly, { desc = "Delete other tabs" })
 
+make_keymap("!", "<C-h>", "<Left>", { desc = "" })
+make_keymap("!", "<C-l>", "<Right>", { desc = "" })
 make_keymap("", "L", "g$", { desc = "End of line" })
 make_keymap({ "n", "v" }, "H", "g0g^", { desc = "Start of line" })
 make_keymap("o", "H", "g^", { desc = "Start of line" })
