@@ -898,7 +898,7 @@ make_keymap("n", "<ESC>", function()
 		vim.cmd.lclose()
 		vim.cmd.pclose()
 	end
-end)
+end, { desc = "Clear all windows and highlighting state" })
 make_keymap({ "n", "x" }, "gy", '"+y', { desc = "Copy to system clipboard" })
 make_keymap(
 	{ "n", "x" },
