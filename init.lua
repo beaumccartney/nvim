@@ -698,12 +698,6 @@ require("accelerated-jk").setup({
 vim.g.jai_compiler = "jai"
 add("beaumccartney/jai.vim")
 
-add("stevearc/quicker.nvim")
-local quicker = require("quicker")
-quicker.setup()
-
-make_keymap("n", "\\q", quicker.toggle, { desc = "Toggle quickfix" })
-
 add("kevinhwang91/nvim-bqf")
 
 add("stevearc/conform.nvim")
