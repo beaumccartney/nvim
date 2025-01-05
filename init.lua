@@ -533,10 +533,10 @@ map_toggle("G", function()
 end, "Toggle git overlay")
 
 make_keymap("", "[h", function()
-	gs.nav_hunk("prev", { preview = true, target = "all" })
+	gs.nav_hunk("prev", { target = "all" })
 end, { desc = "Go to next hunk" })
 make_keymap("", "]h", function()
-	gs.nav_hunk("next", { preview = true, target = "all" })
+	gs.nav_hunk("next", { target = "all" })
 end, { desc = "Go to prev hunk" })
 
 vim.g.scratchpad_autostart = 0
@@ -1016,6 +1016,7 @@ vim.cmd([[
 	endif
 ]])
 
+-- TODO(beau): autocommand to source this file every time its saved if in the same directory
 if vim.uv.fs_stat("nvim-local.lua") then
 	dofile("nvim-local.lua")
 end
