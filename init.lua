@@ -457,6 +457,8 @@ starter.setup({
 	},
 })
 
+add("ludovicchabant/vim-gutentags")
+
 add("tpope/vim-dispatch")
 add("tpope/vim-abolish")
 add("tpope/vim-fugitive")
