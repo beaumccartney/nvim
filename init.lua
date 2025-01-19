@@ -836,8 +836,6 @@ for _, server in pairs({
 	"html",
 	"jsonls",
 	"lua_ls",
-	"pyright",
-	"rust_analyzer",
 	"ts_ls",
 	"yamlls",
 }) do
