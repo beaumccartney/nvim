@@ -57,6 +57,7 @@ vim.opt.fixeol = false
 
 vim.opt.nrformats:append("alpha")
 
+vim.opt.complete:append("i,d,f")
 vim.opt.completeopt = "menuone,fuzzy,preview"
 
 vim.opt.virtualedit = "block"
