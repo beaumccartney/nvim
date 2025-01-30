@@ -925,14 +925,6 @@ make_keymap(
 	{ silent = false, desc = "Search inside visual selection" }
 )
 
-make_keymap("n", "<C-S>", "<Cmd>silent! wall | redraw<CR>", { desc = "Save" })
-make_keymap(
-	{ "i", "x" },
-	"<C-S>",
-	"<Esc><Cmd>silent! wall | redraw<CR>",
-	{ desc = "Save and go to Normal mode" }
-)
-
 map_toggle(
 	"c",
 	"<Cmd>setlocal cursorline! cursorline?<CR>",
