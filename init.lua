@@ -377,21 +377,6 @@ ai.setup({
 	},
 })
 
-require("mini.files").setup({
-	windows = {
-		max_number = 3,
-	},
-})
-local open = MiniFiles.open
-make_keymap("n", "<leader>fe", open, { desc = "File explorer in PWD" })
-make_keymap("n", "<leader>fi", function()
-	local buf = vim.api.nvim_buf_get_name(0)
-
-	local file = io.open(buf) and buf or vim.fs.dirname(buf)
-
-	open(file)
-end, { desc = "File explorer in dir of current file" })
-
 require("mini.misc").setup()
 MiniMisc.setup_restore_cursor()
 make_keymap(
@@ -548,12 +533,36 @@ add("FraserLee/ScratchPad")
 make_keymap("n", "S", require("scratchpad").invoke, { desc = "Scratchpad" })
 
 add("stevearc/dressing.nvim")
-
 require("dressing").setup({
 	input = {
 		insert_only = false,
 		start_in_insert = false,
 	},
+})
+
+add("stevearc/oil.nvim")
+require("oil").setup({
+	columns = {
+		"icon",
+		"permissions",
+		"size",
+		"mtime",
+	},
+	skip_confirm_for_simple_edits = true,
+	watch_for_changes = true,
+	view_options = {
+		show_hidden = true,
+	},
+	keymaps = {
+		["gx"] = false,
+		["<leader>gx"] = "actions.open_external",
+		["gs"] = false,
+		["<leader>gs"] = { "actions.change_sort", mode = "n" },
+	},
+	buf_options = {
+		buflisted = true,
+	},
+	cleanup_delay_ms = 500,
 })
 
 add({
