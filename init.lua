@@ -23,6 +23,10 @@ vim.opt.smarttab = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
 vim.opt.cindent = true
+
+vim.opt.fileformat = "unix"
+vim.opt.fileformats = "unix,dos"
+
 vim.opt.breakindent = true
 vim.opt.breakindentopt = "list:-1"
 vim.opt.linebreak = true
