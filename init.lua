@@ -383,7 +383,7 @@ ai.setup({
 
 require("mini.files").setup({
 	windows = {
-		max_number = 3,
+		max_number = 2,
 	},
 })
 local open = MiniFiles.open
