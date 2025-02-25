@@ -220,11 +220,11 @@ hipatterns.setup({
 			"MiniHipatternsTodo"
 		),
 		fixme = hi_words(
-			{ "FIXME", "BUG", "ROBUSTNESS", "CRASH" },
+			{ "FIXME", "BUG", "ROBUSTNESS", "CRASH", "URGENT" },
 			"MiniHipatternsFixme"
 		),
-		note = hi_words({ "NOTE", "INFO" }, "MiniHipatternsNote"),
-		hack = hi_words({ "HACK", "XXX", "TEMP" }, "MiniHipatternsHack"),
+		note = hi_words({ "NOTE", "INFO", "IMPORTANT" }, "MiniHipatternsNote"),
+		hack = hi_words({ "HACK", "XXX", "TEMP", "DELETEME" }, "MiniHipatternsHack"),
 
 		hex_color = hipatterns.gen_highlighter.hex_color(),
 	},
