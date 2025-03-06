@@ -22,7 +22,9 @@ vim.opt.expandtab = false
 vim.opt.smarttab = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
+
 vim.opt.cindent = true
+vim.opt.cinoptions:append("l1,L0,=0,Ps,(s,m1")
 
 vim.opt.fileformat = "unix"
 vim.opt.fileformats = "unix,dos"
@@ -619,11 +621,10 @@ require("nvim-treesitter.configs").setup({
 		"vimdoc",
 		"yaml",
 	},
-	-- TODO: use ziglibs zig ts parser
 	ignore_install = { "zig" },
 	indent = {
 		enable = true,
-		disable = { "odin" },
+		disable = { "c", "odin" },
 	},
 })
 vim.api.nvim_create_autocmd("Filetype", {
