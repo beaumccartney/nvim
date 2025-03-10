@@ -901,12 +901,7 @@ make_keymap("n", "<ESC>", function()
 	end
 end, { desc = "Clear all windows and highlighting state" })
 make_keymap({ "n", "x" }, "gy", '"+y', { desc = "Copy to system clipboard" })
-make_keymap(
-	{ "n", "x" },
-	"gY",
-	'"+y$',
-	{ desc = "Copy to end of line to system clipboard" }
-)
+make_keymap({ "n", "x" }, "gY", '"+y$', { desc = "Copy to end of line to system clipboard" })
 make_keymap("n", "gp", '"+p', { desc = "Paste from system clipboard" })
 -- - Paste in Visual with `P` to not copy selected text (`:h v_P`)
 make_keymap("x", "gp", '"+P', { desc = "Paste from system clipboard" })
