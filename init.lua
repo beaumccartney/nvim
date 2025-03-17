@@ -83,6 +83,7 @@ vim.filetype.add({
 		fs = "glsl",
 		vert = "glsl",
 		frag = "glsl",
+		m = "objc",
 	},
 })
 
