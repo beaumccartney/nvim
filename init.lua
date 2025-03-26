@@ -75,6 +75,8 @@ vim.opt.list = true -- Show some helper symbols
 
 vim.opt.switchbuf = "useopen,usetab"
 
+vim.opt.guifont = "Maple Mono NF"
+
 vim.filetype.add({
 	extension = {
 		mdpp = "markdown",
