@@ -874,6 +874,8 @@ make_keymap("", "<C-u>", "<C-u>zz", { desc = "Scroll up" })
 
 make_keymap("n", "]w", "<Cmd>wincmd w<CR>", { desc = "Next window" })
 make_keymap("n", "[w", "<Cmd>wincmd W<CR>", { desc = "Previous window" })
+make_keymap("n", "]W", "<Cmd>wincmd b<CR>", { desc = "Next window" })
+make_keymap("n", "[W", "<Cmd>wincmd t<CR>", { desc = "Previous window" })
 
 -- change directory to current file - thanks fraser
 -- TODO: print directory I cd'd to
@@ -906,6 +908,7 @@ end, { desc = "Clear all windows and highlighting state" })
 make_keymap({ "n", "x" }, "gy", '"+y', { desc = "Copy to system clipboard" })
 make_keymap({ "n", "x" }, "gY", '"+y$', { desc = "Copy to end of line to system clipboard" })
 make_keymap("n", "gp", '"+p', { desc = "Paste from system clipboard" })
+make_keymap("n", "gP", '"+P', { desc = "Paste from system clipboard" })
 -- - Paste in Visual with `P` to not copy selected text (`:h v_P`)
 make_keymap("x", "gp", '"+P', { desc = "Paste from system clipboard" })
 
