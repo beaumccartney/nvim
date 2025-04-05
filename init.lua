@@ -856,8 +856,14 @@ end
 make_keymap("n", "<TAB>q", vim.cmd.tabclose, { desc = "Close tab" })
 make_keymap("n", "<TAB>o", vim.cmd.tabonly, { desc = "Delete other tabs" })
 
-make_keymap("", "L", "g$", { desc = "End of line" })
-make_keymap({ "n", "v" }, "H", "g0g^", { desc = "Start of line" })
+make_keymap("", "L", function()
+	local keys = vim.opt.wrap and "g_" or "$"
+	vim.api.nvim_feedkeys(keys, "", false)
+end, { desc = "End of line" })
+make_keymap({ "n", "v" }, "H", function()
+	local keys = vim.opt.wrap and "g^" or "^"
+	vim.api.nvim_feedkeys(keys, "", false)
+end, { desc = "Start of line" })
 make_keymap("o", "H", "g^", { desc = "Start of line" })
 
 -- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
