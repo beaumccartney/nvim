@@ -841,8 +841,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		)
 	end,
 })
-local lspconfig = require("lspconfig")
-for _, server in pairs({
+vim.lsp.enable({
 	"bashls",
 	"cssls",
 	"eslint",
@@ -852,9 +851,7 @@ for _, server in pairs({
 	"lua_ls",
 	"ts_ls",
 	"yamlls",
-}) do
-	lspconfig[server].setup({})
-end
+})
 
 make_keymap("n", "<TAB>q", vim.cmd.tabclose, { desc = "Close tab" })
 make_keymap("n", "<TAB>o", vim.cmd.tabonly, { desc = "Delete other tabs" })
