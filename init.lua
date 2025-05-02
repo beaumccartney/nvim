@@ -748,6 +748,9 @@ add("neovim/nvim-lspconfig")
 add("folke/lazydev.nvim")
 require("lazydev").setup()
 
+add("chomosuke/typst-preview.nvim")
+require("typst-preview").setup()
+
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(ev)
 		local function makebufopts(desc)
