@@ -749,7 +749,16 @@ add("folke/lazydev.nvim")
 require("lazydev").setup()
 
 add("chomosuke/typst-preview.nvim")
-require("typst-preview").setup()
+do
+	local tinymist = vim.fn.exepath("tinymist")
+	local websocat = vim.fn.exepath("websocat")
+	require("typst-preview").setup({
+		dependencies_bin = {
+			tinymist = #tinymist > 0 and tinymist or nil,
+			websocat = #websocat > 0 and websocat or nil,
+		},
+	})
+end
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(ev)
