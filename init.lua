@@ -558,6 +558,23 @@ vim.g.scratchpad_location = vim.fn.stdpath("data") .. "/scratchpad"
 add("FraserLee/ScratchPad")
 make_keymap("n", "S", require("scratchpad").invoke, { desc = "Scratchpad" })
 
+add("chomosuke/typst-preview.nvim")
+do
+	local tinymist = vim.fn.exepath("tinymist")
+	local websocat = vim.fn.exepath("websocat")
+	require("typst-preview").setup({
+		dependencies_bin = {
+			tinymist = #tinymist > 0 and tinymist or nil,
+			websocat = #websocat > 0 and websocat or nil,
+		},
+	})
+end
+
+add("brianhuster/live-preview.nvim")
+
+add("hat0uma/csvview.nvim")
+require("csvview").setup()
+
 add("stevearc/dressing.nvim")
 
 require("dressing").setup({
@@ -747,18 +764,6 @@ add("neovim/nvim-lspconfig")
 
 add("folke/lazydev.nvim")
 require("lazydev").setup()
-
-add("chomosuke/typst-preview.nvim")
-do
-	local tinymist = vim.fn.exepath("tinymist")
-	local websocat = vim.fn.exepath("websocat")
-	require("typst-preview").setup({
-		dependencies_bin = {
-			tinymist = #tinymist > 0 and tinymist or nil,
-			websocat = #websocat > 0 and websocat or nil,
-		},
-	})
-end
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(ev)
