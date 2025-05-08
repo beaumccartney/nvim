@@ -868,19 +868,6 @@ vim.lsp.enable({
 	"yamlls",
 })
 
-make_keymap("n", "<TAB>q", vim.cmd.tabclose, { desc = "Close tab" })
-make_keymap("n", "<TAB>o", vim.cmd.tabonly, { desc = "Delete other tabs" })
-
-make_keymap("", "L", function()
-	local keys = vim.opt.wrap and "g_" or "$"
-	vim.api.nvim_feedkeys(keys, "", false)
-end, { desc = "End of line" })
-make_keymap({ "n", "v" }, "H", function()
-	local keys = vim.opt.wrap and "g^" or "^"
-	vim.api.nvim_feedkeys(keys, "", false)
-end, { desc = "Start of line" })
-make_keymap("o", "H", "g^", { desc = "Start of line" })
-
 -- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
 make_keymap("n", "<C-z>", "[s1z=", { desc = "Correct latest misspelled word" })
 make_keymap(
@@ -895,23 +882,6 @@ make_keymap("", "<C-u>", "<C-u>zz", { desc = "Scroll up" })
 
 make_keymap("n", "]w", "<Cmd>wincmd w<CR>", { desc = "Next window" })
 make_keymap("n", "[w", "<Cmd>wincmd W<CR>", { desc = "Previous window" })
-make_keymap("n", "]W", "<Cmd>wincmd b<CR>", { desc = "Next window" })
-make_keymap("n", "[W", "<Cmd>wincmd t<CR>", { desc = "Previous window" })
-
--- change directory to current file - thanks fraser
--- TODO: print directory I cd'd to
--- TODO: look at vim cd commands and see if one of them is applicable
---     - current file
---     - current buffer
---     - current window
---     - etc.
-make_keymap(
-	"n",
-	"<leader>cd",
-	"<Cmd>cd %:p:h | pwd<CR>",
-	{ desc = "cd to current file's directory" }
-)
-make_keymap("n", "<leader>..", "<Cmd>cd .. | pwd<CR>", { desc = "cd .." })
 make_keymap("n", "]W", "<Cmd>wincmd b<CR>", { desc = "Bottom right window" })
 make_keymap("n", "[W", "<Cmd>wincmd t<CR>", { desc = "Top left window" })
 
