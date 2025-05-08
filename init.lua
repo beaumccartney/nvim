@@ -912,6 +912,8 @@ make_keymap(
 	{ desc = "cd to current file's directory" }
 )
 make_keymap("n", "<leader>..", "<Cmd>cd .. | pwd<CR>", { desc = "cd .." })
+make_keymap("n", "]W", "<Cmd>wincmd b<CR>", { desc = "Bottom right window" })
+make_keymap("n", "[W", "<Cmd>wincmd t<CR>", { desc = "Top left window" })
 
 -- fraser again goddamn
 make_keymap("n", "<ESC>", function()
