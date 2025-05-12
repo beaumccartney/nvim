@@ -13,6 +13,9 @@ end
 
 vim.g.zig_fmt_autosave = 0
 
+vim.opt.autowrite = true
+vim.opt.autowriteall = true
+
 vim.opt.number = true
 vim.opt.relativenumber = true
 
