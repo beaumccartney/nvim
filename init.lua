@@ -970,7 +970,7 @@ vim.cmd([[
 
 	autocmd Filetype * setlocal formatoptions+=jcqrno formatoptions-=t
 
-	autocmd FileType html,css,scss,json,jsonc,xml,javascript,javascriptreact,typescript,typescriptreact,astro,yaml setlocal nocindent shiftwidth=2 tabstop=2 foldmethod=expr foldexpr=nvim_treesitter#foldexpr()
+	autocmd FileType html,css,scss,json,jsonc,xml,javascript,javascriptreact,typescript,typescriptreact,astro,yaml setlocal nocindent expandtab tabstop=2 foldmethod=expr foldexpr=nvim_treesitter#foldexpr()
 
 	autocmd Filetype text,markdown,gitcommit setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
 	autocmd BufEnter * lua pcall(require'mini.misc'.use_nested_comments)
