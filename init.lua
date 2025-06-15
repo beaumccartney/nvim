@@ -11,8 +11,6 @@ if vim.env.STARSHIP_SHELL then
 	vim.opt.shell = vim.env.STARSHIP_SHELL
 end
 
-vim.g.zig_fmt_autosave = 0
-
 vim.opt.autowrite = true
 vim.opt.autowriteall = true
 
