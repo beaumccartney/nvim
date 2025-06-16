@@ -992,29 +992,6 @@ vim.cmd([[
 	endif
 ]])
 
-do
-	local function build_avante(info)
-		vim.system({ "make" }, { cwd = info.path })
-	end
-	add({
-		source  = "yetone/avante.nvim",
-		monitor = "main",
-		depends = {
-			"nvim-treesitter/nvim-treesitter",
-			"nvim-lua/plenary.nvim",
-			"MunifTanjim/nui.nvim",
-			"echasnovski/mini.nvim",
-			"stevearc/dressing.nvim",
-		},
-		hooks = {
-			post_checkout = build_avante,
-			post_install  = build_avante,
-		},
-	})
-end
-
-require("avante").setup({})
-
 -- TODO(beau): autocommand to source this file every time its saved if in the same directory
 if vim.uv.fs_stat("nvim-local.lua") then
 	dofile("nvim-local.lua")
