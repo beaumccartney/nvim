@@ -91,8 +91,12 @@ vim.filetype.add({
 })
 
 local make_keymap = vim.keymap.set
-local map_toggle = function(lhs, rhs, desc)
-	make_keymap("n", [[\]] .. lhs, rhs, { desc = desc })
+local map_toggle = function(lhs, rhs, desc, other_opts)
+	local opts = other_opts and other_opts or {}
+	if desc then
+		opts.desc = desc
+	end
+	make_keymap("n", [[\]] .. lhs, rhs, opts)
 end
 local function in_cmdwin()
 	return vim.fn.getcmdwintype() ~= ""
@@ -825,13 +829,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		)
 
 		local inlay_hint = lsp.inlay_hint
-		make_keymap("n", "\\H", function()
+		map_toggle("H", function()
 			local enabled = inlay_hint.is_enabled({ bufnr = ev.buf })
 			local new = not enabled
 			inlay_hint.enable(new, { bufnr = ev.buf })
 
 			print((new and "   " or "no ") .. "inlay hints")
-		end, makebufopts("Toggle inlay hints"))
+		end, "Toggle inlay hints", { buffer = ev.buf })
 
 		local diagnostic = vim.diagnostic
 		diagnostic.enable(false, { bufnr = ev.buf })
