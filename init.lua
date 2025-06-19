@@ -203,7 +203,7 @@ miniclue.setup({
 	},
 })
 
-require("mini.operators").setup()
+require("mini.operators").setup({ replace = { prefix = "gz" } })
 
 require("mini.trailspace").setup()
 make_keymap("n", "<BS>", function()
@@ -777,26 +777,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			lspbuf.declaration,
 			makebufopts("Goto declaration")
 		)
-		make_keymap("n", "<leader>rn", lspbuf.rename, makebufopts("Rename"))
-		make_keymap(
-			"n",
-			"<leader>ca",
-			lspbuf.code_action,
-			makebufopts("Code action")
-		)
 
-		make_keymap(
-			"n",
-			"<leader>gr",
-			lspbuf.references,
-			makebufopts("Goto references")
-		)
-		make_keymap(
-			"n",
-			"<leader>gi",
-			lspbuf.implementation,
-			makebufopts("Goto implementation")
-		)
 		make_keymap(
 			"n",
 			"<leader>gt",
