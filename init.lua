@@ -851,6 +851,7 @@ vim.lsp.enable({
 	"gopls",
 	"html",
 	"jsonls",
+	"ltex_plus",
 	"lua_ls",
 	"tinymist",
 	"ts_ls",
