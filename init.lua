@@ -896,7 +896,7 @@ map_toggle("d", function()
 	vim.diagnostic.enable(toggle_state, { bufnr = 0 })
 
 	print((toggle_state and "   " or "no ") .. "diagnostics")
-end, "Toggle diagnostic")
+end, "Toggle diagnostics")
 map_toggle(
 	"h",
 	'<Cmd>let v:hlsearch = 1 - v:hlsearch | echo (v:hlsearch ? "  " : "no") . "hlsearch"<CR>',
