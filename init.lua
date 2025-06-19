@@ -778,23 +778,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			makebufopts("Goto declaration")
 		)
 
+		-- REVIEW: map without leader
 		make_keymap(
 			"n",
 			"<leader>gt",
 			lspbuf.type_definition,
 			makebufopts("Goto type definition")
-		)
-		make_keymap(
-			"n",
-			"<leader>fs",
-			picklsp("document_symbol"),
-			makebufopts("Document symbols")
-		)
-		make_keymap(
-			"n",
-			"<leader>w",
-			picklsp("workspace_symbol"),
-			makebufopts("Workspace symbols")
 		)
 		make_keymap(
 			"n",
