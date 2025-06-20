@@ -937,15 +937,9 @@ vim.cmd([[
 	autocmd FileType gitconfig,go setlocal noexpandtab tabstop=8
 
 	autocmd FileType dosbatch setlocal commentstring=::\ %s
-
-	" colorscheme gruvbox-material
-	" colorscheme material
-	colorscheme tokyonight-night
-
-	if !exists("syntax_on")
-		syntax enable
-	endif
 ]])
+
+vim.cmd.colorscheme("tokyonight-night")
 
 -- TODO(beau): autocommand to source this file every time its saved if in the same directory
 if vim.uv.fs_stat("nvim-local.lua") then
