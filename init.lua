@@ -90,13 +90,12 @@ vim.filetype.add({
 	},
 })
 
-local make_keymap = vim.keymap.set
 local map_toggle = function(lhs, rhs, desc, other_opts)
 	local opts = other_opts and other_opts or {}
 	if desc then
 		opts.desc = desc
 	end
-	make_keymap("n", [[\]] .. lhs, rhs, opts)
+	vim.keymap.set("n", [[\]] .. lhs, rhs, opts)
 end
 local function in_cmdwin()
 	return vim.fn.getcmdwintype() ~= ""
@@ -206,7 +205,7 @@ miniclue.setup({
 require("mini.operators").setup({ replace = { prefix = "gz" } })
 
 require("mini.trailspace").setup()
-make_keymap("n", "<BS>", function()
+vim.keymap.set("n", "<BS>", function()
 	MiniTrailspace.trim()
 	MiniTrailspace.trim_last_lines()
 end, { desc = "Trim whitespace" })
@@ -264,59 +263,59 @@ require("mini.pick").setup({
 local builtin = MiniPick.builtin
 local extra_pickers = MiniExtra.pickers
 
-make_keymap("n", "<leader>ff", builtin.files, { desc = "Find files" })
-make_keymap("n", "<leader>fh", builtin.help, { desc = "Find help" })
-make_keymap("n", "<leader>fb", builtin.buffers, { desc = "Find buffers" })
+vim.keymap.set("n", "<leader>ff", builtin.files, { desc = "Find files" })
+vim.keymap.set("n", "<leader>fh", builtin.help, { desc = "Find help" })
+vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find buffers" })
 
 -- TODO: make cword maps use word highlighted by visual if applicable
 -- TODO: leader-8 find cword in the current buffer
-make_keymap(
+vim.keymap.set(
 	"n",
 	"<leader>/",
 	extra_pickers.buf_lines,
 	{ desc = "Find line(s) in buffer" }
 )
--- make_keymap( 'n', '<leader>8', '<Cmd>Pick buf_lines prompt="<cword>"<CR>' )
+-- vim.keymap.set( 'n', '<leader>8', '<Cmd>Pick buf_lines prompt="<cword>"<CR>' )
 -- TODO: ugrep_live (fuzzy finding + --and patterns for each word)
-make_keymap("n", "<leader>?", builtin.grep_live, { desc = "Live project grep" })
-make_keymap(
+vim.keymap.set("n", "<leader>?", builtin.grep_live, { desc = "Live project grep" })
+vim.keymap.set(
 	"n",
 	"<leader>*",
 	'<Cmd>Pick grep pattern="<cword>"<CR>',
 	{ desc = "Grep for word under cursor" }
 )
 
-make_keymap(
+vim.keymap.set(
 	"n",
 	"<leader>fc",
 	extra_pickers.commands,
 	{ desc = "Find commands" }
 )
-make_keymap("n", "<leader>fk", extra_pickers.keymaps, { desc = "Find keymaps" })
-make_keymap(
+vim.keymap.set("n", "<leader>fk", extra_pickers.keymaps, { desc = "Find keymaps" })
+vim.keymap.set(
 	"n",
 	"<leader>fd",
 	extra_pickers.diagnostic,
 	{ desc = "Find diagnostics" }
 )
-make_keymap("n", "<leader>fo", extra_pickers.options, { desc = "Find options" })
-make_keymap(
+vim.keymap.set("n", "<leader>fo", extra_pickers.options, { desc = "Find options" })
+vim.keymap.set(
 	"n",
 	"<leader>td",
 	'<Cmd>Pick hipatterns highlighters={"todo" "fixme" "hack"}<CR>',
 	{ desc = "Find todos" }
 )
 
-make_keymap("n", "<leader>fq", function()
+vim.keymap.set("n", "<leader>fq", function()
 	extra_pickers.list({ scope = "quickfix" })
 end, { desc = "Find quickfix list" })
-make_keymap(
+vim.keymap.set(
 	"n",
 	"<leader>fv",
 	extra_pickers.visit_paths,
 	{ desc = "Find visit files" }
 )
-make_keymap(
+vim.keymap.set(
 	"n",
 	"<leader>fl",
 	extra_pickers.visit_labels,
@@ -333,25 +332,25 @@ vim.api.nvim_create_autocmd("BufReadPre", {
 		end
 	end,
 })
-make_keymap(
+vim.keymap.set(
 	"n",
 	"<leader>vv",
 	MiniVisits.select_path,
 	{ desc = "Select visit file" }
 )
-make_keymap(
+vim.keymap.set(
 	"n",
 	"<leader>vl",
 	MiniVisits.select_label,
 	{ desc = "Select visit path" }
 )
-make_keymap(
+vim.keymap.set(
 	"n",
 	"<leader>va",
 	MiniVisits.add_label,
 	{ desc = "Add visit label" }
 )
-make_keymap(
+vim.keymap.set(
 	"n",
 	"<leader>vd",
 	MiniVisits.remove_label,
@@ -375,8 +374,8 @@ require("mini.files").setup({
 	},
 })
 local open = MiniFiles.open
-make_keymap("n", "<leader>fe", open, { desc = "File explorer in PWD" })
-make_keymap("n", "<leader>fi", function()
+vim.keymap.set("n", "<leader>fe", open, { desc = "File explorer in PWD" })
+vim.keymap.set("n", "<leader>fi", function()
 	local buf = vim.api.nvim_buf_get_name(0)
 
 	local file = io.open(buf) and buf or vim.fs.dirname(buf)
@@ -386,7 +385,7 @@ end, { desc = "File explorer in dir of current file" })
 
 require("mini.misc").setup()
 MiniMisc.setup_restore_cursor()
-make_keymap(
+vim.keymap.set(
 	"n",
 	"<leader>z",
 	MiniMisc.zoom,
@@ -394,7 +393,7 @@ make_keymap(
 )
 
 require("mini.sessions").setup()
-make_keymap("n", "<leader>ss", function()
+vim.keymap.set("n", "<leader>ss", function()
 	local session = #vim.v.this_session == 0
 			and vim.fn.input({
 				prompt = "Session name: ",
@@ -430,13 +429,13 @@ local function sessionaction(action)
 	MiniSessions.select(action)
 end
 
-make_keymap("n", "<leader>sf", function()
+vim.keymap.set("n", "<leader>sf", function()
 	sessionaction("read")
 end, { desc = "Open session" })
-make_keymap("n", "<leader>sd", function()
+vim.keymap.set("n", "<leader>sd", function()
 	sessionaction("delete")
 end, { desc = "Delete session" })
-make_keymap("n", "<leader>sw", function()
+vim.keymap.set("n", "<leader>sw", function()
 	sessionaction("write")
 end, { desc = "Save session" })
 
@@ -468,38 +467,38 @@ local gs_opts = {
 }
 gs.setup(gs_opts)
 
-make_keymap(
+vim.keymap.set(
 	{ "o", "x" },
 	"ih",
 	":<C-U>Gitsigns select_hunk<CR>",
 	{ desc = "Select git hunk" }
 )
 
-make_keymap(
+vim.keymap.set(
 	{ "n" },
 	"<leader>gp",
 	gs.preview_hunk_inline,
 	{ desc = "Preview hunk" }
 )
 
-make_keymap({ "n" }, "gh", gs.stage_hunk, { desc = "Stage hunk" })
-make_keymap({ "v" }, "gh", function()
+vim.keymap.set({ "n" }, "gh", gs.stage_hunk, { desc = "Stage hunk" })
+vim.keymap.set({ "v" }, "gh", function()
 	gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
 end, { desc = "Stage hunk" })
-make_keymap(
+vim.keymap.set(
 	{ "n" },
 	"<leader>gh",
 	gs.undo_stage_hunk,
 	{ desc = "Undo stage hunk" }
 )
 
-make_keymap({ "n" }, "gH", gs.reset_hunk, { desc = "Reset hunk" })
-make_keymap({ "v" }, "gH", function()
+vim.keymap.set({ "n" }, "gH", gs.reset_hunk, { desc = "Reset hunk" })
+vim.keymap.set({ "v" }, "gH", function()
 	gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
 end, { desc = "Reset hunk" })
-make_keymap({ "n" }, "<leader>gH", gs.reset_buffer, { desc = "Reset buffer" })
+vim.keymap.set({ "n" }, "<leader>gH", gs.reset_buffer, { desc = "Reset buffer" })
 
-make_keymap({ "n" }, "<leader>gb", function()
+vim.keymap.set({ "n" }, "<leader>gb", function()
 	gs.blame_line({ full = true })
 end, { desc = "Blame line" })
 
@@ -527,17 +526,17 @@ map_toggle("G", function()
 	signs_toggle(true, true)
 end, "Toggle git overlay")
 
-make_keymap("", "[h", function()
+vim.keymap.set("", "[h", function()
 	gs.nav_hunk("prev", { target = "all" })
 end, { desc = "Go to next hunk" })
-make_keymap("", "]h", function()
+vim.keymap.set("", "]h", function()
 	gs.nav_hunk("next", { target = "all" })
 end, { desc = "Go to prev hunk" })
 
 vim.g.scratchpad_autostart = 0
 vim.g.scratchpad_location = vim.fn.stdpath("data") .. "/scratchpad"
 add("FraserLee/ScratchPad")
-make_keymap("n", "S", require("scratchpad").invoke, { desc = "Scratchpad" })
+vim.keymap.set("n", "S", require("scratchpad").invoke, { desc = "Scratchpad" })
 
 add("chomosuke/typst-preview.nvim")
 do
@@ -728,7 +727,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.opt_local.formatexpr = "v:lua.require'conform'.formatexpr()"
 	end,
 })
-make_keymap("n", "<leader>F", function()
+vim.keymap.set("n", "<leader>F", function()
 	conform.format({ async = true, lsp_format = "fallback" })
 end, { desc = "Format buffer" })
 
@@ -750,7 +749,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			end
 		end
 
-		make_keymap(
+		vim.keymap.set(
 			"n",
 			"<leader>gD",
 			lspbuf.declaration,
@@ -758,19 +757,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		)
 
 		-- REVIEW: map without leader
-		make_keymap(
+		vim.keymap.set(
 			"n",
 			"<leader>gt",
 			lspbuf.type_definition,
 			makebufopts("Goto type definition")
 		)
-		make_keymap(
+		vim.keymap.set(
 			"n",
 			"<leader>ci",
 			lspbuf.incoming_calls,
 			makebufopts("Incoming calls")
 		)
-		make_keymap(
+		vim.keymap.set(
 			"n",
 			"<leader>co",
 			lspbuf.outgoing_calls,
@@ -789,7 +788,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local diagnostic = vim.diagnostic
 		diagnostic.enable(false, { bufnr = ev.buf })
 
-		make_keymap(
+		vim.keymap.set(
 			"n",
 			"<leader>bd",
 			diagnostic.setloclist,
@@ -813,24 +812,24 @@ vim.lsp.enable({
 })
 
 -- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
-make_keymap("n", "<C-z>", "[s1z=", { desc = "Correct latest misspelled word" })
-make_keymap(
+vim.keymap.set("n", "<C-z>", "[s1z=", { desc = "Correct latest misspelled word" })
+vim.keymap.set(
 	"i",
 	"<C-z>",
 	"<C-g>u<Esc>[s1z=`]a<C-g>u",
 	{ desc = "Correct latest misspelled word" }
 )
 
-make_keymap("", "<C-d>", "<C-d>zz", { desc = "Scroll down" })
-make_keymap("", "<C-u>", "<C-u>zz", { desc = "Scroll up" })
+vim.keymap.set("", "<C-d>", "<C-d>zz", { desc = "Scroll down" })
+vim.keymap.set("", "<C-u>", "<C-u>zz", { desc = "Scroll up" })
 
-make_keymap("n", "]w", "<Cmd>wincmd w<CR>", { desc = "Next window" })
-make_keymap("n", "[w", "<Cmd>wincmd W<CR>", { desc = "Previous window" })
-make_keymap("n", "]W", "<Cmd>wincmd b<CR>", { desc = "Bottom right window" })
-make_keymap("n", "[W", "<Cmd>wincmd t<CR>", { desc = "Top left window" })
+vim.keymap.set("n", "]w", "<Cmd>wincmd w<CR>", { desc = "Next window" })
+vim.keymap.set("n", "[w", "<Cmd>wincmd W<CR>", { desc = "Previous window" })
+vim.keymap.set("n", "]W", "<Cmd>wincmd b<CR>", { desc = "Bottom right window" })
+vim.keymap.set("n", "[W", "<Cmd>wincmd t<CR>", { desc = "Top left window" })
 
 -- fraser again goddamn
-make_keymap("n", "<ESC>", function()
+vim.keymap.set("n", "<ESC>", function()
 	vim.cmd.nohlsearch()
 	MiniJump.stop_jumping()
 
@@ -842,19 +841,19 @@ make_keymap("n", "<ESC>", function()
 		vim.cmd.pclose()
 	end
 end, { desc = "Clear all windows and highlighting state" })
-make_keymap({ "n", "x" }, "gy", '"+y', { desc = "Copy to system clipboard" })
-make_keymap({ "n", "x" }, "gY", '"+y$', { desc = "Copy to end of line to system clipboard" })
-make_keymap("n", "gp", '"+p', { desc = "Paste from system clipboard" })
-make_keymap("n", "gP", '"+P', { desc = "Paste from system clipboard" })
+vim.keymap.set({ "n", "x" }, "gy", '"+y', { desc = "Copy to system clipboard" })
+vim.keymap.set({ "n", "x" }, "gY", '"+y$', { desc = "Copy to end of line to system clipboard" })
+vim.keymap.set("n", "gp", '"+p', { desc = "Paste from system clipboard" })
+vim.keymap.set("n", "gP", '"+P', { desc = "Paste from system clipboard" })
 -- - Paste in Visual with `P` to not copy selected text (`:h v_P`)
-make_keymap("x", "gp", '"+P', { desc = "Paste from system clipboard" })
+vim.keymap.set("x", "gp", '"+P', { desc = "Paste from system clipboard" })
 
-make_keymap("n", "gV", '"`[" . strpart(getregtype(), 0, 1) . "`]"', {
+vim.keymap.set("n", "gV", '"`[" . strpart(getregtype(), 0, 1) . "`]"', {
 	expr = true,
 	replace_keycodes = false,
 	desc = "Visually select changed text",
 })
-make_keymap(
+vim.keymap.set(
 	"x",
 	"g/",
 	"<esc>/\\%V",
@@ -891,14 +890,14 @@ map_toggle("l", "<Cmd>setlocal list! list?<CR>", "Toggle 'list'")
 map_toggle("s", "<Cmd>setlocal spell! spell?<CR>", "Toggle 'spell'")
 map_toggle("w", "<Cmd>setlocal wrap! wrap?<CR>", "Toggle 'wrap'")
 
-make_keymap(
+vim.keymap.set(
 	"n",
 	"X",
 	MiniBufremove.delete,
 	{ desc = "Remove buffer - keep window layout" }
 )
 
-make_keymap(
+vim.keymap.set(
 	"n",
 	"<leader>x",
 	MiniBufremove.wipeout,
@@ -907,11 +906,11 @@ make_keymap(
 
 -- jk fixes (thanks yet again fraser)
 -- TODO(beau): if there's a count, normal j/k
-make_keymap("n", "j", "<Plug>(accelerated_jk_gj)")
-make_keymap("n", "k", "<Plug>(accelerated_jk_gk)")
+vim.keymap.set("n", "j", "<Plug>(accelerated_jk_gj)")
+vim.keymap.set("n", "k", "<Plug>(accelerated_jk_gk)")
 
-make_keymap("v", "j", "gj")
-make_keymap("v", "k", "gk")
+vim.keymap.set("v", "j", "gj")
+vim.keymap.set("v", "k", "gk")
 
 ---------------------------------------------------------------------------
 -- write centered line - 80 character line with text in the middle and dashes
