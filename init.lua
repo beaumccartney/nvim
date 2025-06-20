@@ -359,25 +359,13 @@ make_keymap(
 )
 
 local ai = require("mini.ai")
-local gen_spec = ai.gen_spec
 local extra_ai_spec = MiniExtra.gen_ai_spec
 ai.setup({
 	custom_textobjects = {
-		F = gen_spec.treesitter({
-			a = "@function.outer",
-			i = "@function.inner",
-		}),
-		c = gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
-		S = gen_spec.treesitter({ a = "@block.outer", i = "@block.inner" }),
 		j = extra_ai_spec.line(),
 		d = extra_ai_spec.number(),
 		g = extra_ai_spec.buffer(),
 		e = extra_ai_spec.diagnostic(),
-		-- TODO:
-		--      assignment inner
-		--      assignment outer
-		--      assignment lhs
-		--      assignment rhs
 	},
 })
 
@@ -579,18 +567,17 @@ require("dressing").setup({
 
 add({
 	source = "nvim-treesitter/nvim-treesitter",
-	checkout = "master",
+	checkout = "main",
 	hooks = {
 		post_checkout = function()
-			vim.cmd("TSUpdate")
+			require("nvim-treesitter").update()
 		end,
 	},
 })
-require("nvim-treesitter.configs").setup({
-	auto_install = true,
-	ensure_installed = {
+do
+	local treesitter = require("nvim-treesitter")
+	treesitter.install({
 		"asm",
-		"astro",
 		"bash",
 		"c",
 		"cpp",
@@ -633,27 +620,22 @@ require("nvim-treesitter.configs").setup({
 		"vim",
 		"vimdoc",
 		"yaml",
-	},
-	ignore_install = { "zig" },
-	indent = {
-		enable = true,
-		disable = { "c", "odin" },
-	},
-})
-vim.api.nvim_create_autocmd("Filetype", {
-	callback = function(ev)
-		-- TODO: if longest line in buffer is too long kill
+	})
 
-		if
-			require("nvim-treesitter.parsers").has_parser()
-			and vim.api.nvim_buf_line_count(ev.buf) < 4096
-		then
-			vim.treesitter.start()
-		end
-	end,
-})
-
-add("nvim-treesitter/nvim-treesitter-textobjects")
+	vim.api.nvim_create_autocmd("Filetype", {
+		pattern = "*",
+		callback = function(ev)
+			-- TODO: if longest line in buffer is too long kill
+			if vim.api.nvim_buf_line_count(ev.buf) < 4096 then
+				local ok, parser = pcall(vim.treesitter.get_parser, ev.buf)
+				if ok and parser then
+					vim.treesitter.start()
+					-- vim.bo[ev.buf].syntax = 'ON'
+				end
+			end
+		end,
+	})
+end
 
 vim.g.skip_ts_context_commentstring_module = true
 add("JoosepAlviste/nvim-ts-context-commentstring")
@@ -675,9 +657,6 @@ require("treesitter-context").setup({
 	trim_scope = "inner",
 	mode = "topline",
 })
-
--- additional textobject keys after "a" and "i" e.g. <something>[a|i]q where q is quote text object
-add("nvim-treesitter/nvim-treesitter-textobjects")
 
 vim.g.gruvbox_material_foreground = "original"
 vim.g.gruvbox_material_background = "hard"
