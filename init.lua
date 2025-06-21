@@ -485,12 +485,6 @@ vim.keymap.set({ "n" }, "gh", gs.stage_hunk, { desc = "Stage hunk" })
 vim.keymap.set({ "v" }, "gh", function()
 	gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
 end, { desc = "Stage hunk" })
-vim.keymap.set(
-	{ "n" },
-	"<leader>gh",
-	gs.undo_stage_hunk,
-	{ desc = "Undo stage hunk" }
-)
 
 vim.keymap.set({ "n" }, "gH", gs.reset_hunk, { desc = "Reset hunk" })
 vim.keymap.set({ "v" }, "gH", function()
@@ -511,7 +505,6 @@ local function signs_toggle(switch, extra)
 	gs.toggle_numhl(gitsigns_toggle_state)
 
 	extra_toggle_state = extra and not extra_toggle_state or false
-	gs.toggle_deleted(extra_toggle_state)
 	gs.toggle_linehl(extra_toggle_state)
 	gs.toggle_word_diff(extra_toggle_state)
 
