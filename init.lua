@@ -720,9 +720,6 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.opt_local.formatexpr = "v:lua.require'conform'.formatexpr()"
 	end,
 })
-vim.keymap.set("n", "<leader>F", function()
-	conform.format({ async = true, lsp_format = "fallback" })
-end, { desc = "Format buffer" })
 
 add("neovim/nvim-lspconfig")
 
