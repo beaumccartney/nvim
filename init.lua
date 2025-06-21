@@ -609,6 +609,7 @@ do
 		"toml",
 		"tsx",
 		"typescript",
+		"typst",
 		"vim",
 		"vimdoc",
 		"yaml",
