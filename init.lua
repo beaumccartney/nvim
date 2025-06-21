@@ -728,62 +728,63 @@ require("lazydev").setup()
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(ev)
+		local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
+
 		local function makebufopts(desc)
 			return { buffer = ev.buf, desc = desc }
 		end
-		local lsp = vim.lsp
-		local lspbuf = lsp.buf
-		local function picklsp(scope)
-			return function()
-				MiniExtra.pickers.lsp({ scope = scope })
+
+		-- REVIEW: map without leader
+		local lspmaps = {
+			["textDocument/declaration"] = {
+				lhs  = "<leader>gD",
+				rhs  = vim.lsp.buf.declaration,
+				desc = "Goto declaration",
+			},
+			["textDocument/typeDefinition"] = {
+				lhs  = "<leader>gt",
+				rhs  = vim.lsp.buf.type_definition,
+				desc = "Goto type definition",
+			},
+			["callHierarchy/incomingCalls"] = {
+				lhs  = "<leader>ci",
+				rhs  = vim.lsp.buf.incoming_calls,
+				desc = "Incoming calls",
+			},
+			["callHierarchy/outgoingCalls"] = {
+				lhs  = "<leader>co",
+				rhs  = vim.lsp.buf.outgoing_calls,
+				desc = "Outgoing calls",
+			},
+		}
+		for method, mapopts in pairs(lspmaps) do
+			if client:supports_method(method) then
+				vim.keymap.set(
+					"n",
+					mapopts.lhs,
+					mapopts.rhs,
+					{ buffer = ev.buf, desc = mapopts.desc }
+				)
 			end
 		end
 
-		vim.keymap.set(
-			"n",
-			"<leader>gD",
-			lspbuf.declaration,
-			makebufopts("Goto declaration")
-		)
+		if client:supports_method("textDocument/inlayHint") then
+			map_toggle("H", function()
+				local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = ev.buf })
+				local new = not enabled
+				vim.lsp.inlay_hint.enable(new, { bufnr = ev.buf })
 
-		-- REVIEW: map without leader
-		vim.keymap.set(
-			"n",
-			"<leader>gt",
-			lspbuf.type_definition,
-			makebufopts("Goto type definition")
-		)
-		vim.keymap.set(
-			"n",
-			"<leader>ci",
-			lspbuf.incoming_calls,
-			makebufopts("Incoming calls")
-		)
-		vim.keymap.set(
-			"n",
-			"<leader>co",
-			lspbuf.outgoing_calls,
-			makebufopts("Outgoing calls")
-		)
-
-		local inlay_hint = lsp.inlay_hint
-		map_toggle("H", function()
-			local enabled = inlay_hint.is_enabled({ bufnr = ev.buf })
-			local new = not enabled
-			inlay_hint.enable(new, { bufnr = ev.buf })
-
-			print((new and "   " or "no ") .. "inlay hints")
-		end, "Toggle inlay hints", { buffer = ev.buf })
-
-		local diagnostic = vim.diagnostic
-		diagnostic.enable(false, { bufnr = ev.buf })
+				print((new and "   " or "no ") .. "inlay hints")
+			end, "Toggle inlay hints", { buffer = ev.buf })
+		end
 
 		vim.keymap.set(
 			"n",
 			"<leader>bd",
-			diagnostic.setloclist,
-			makebufopts("Diagnostic loclist")
+			vim.diagnostic.setloclist,
+			{ buffer = ev.buf, desc = "Diagnostic loclist" }
 		)
+		vim.diagnostic.enable(false, { bufnr = ev.buf })
 	end,
 })
 vim.lsp.enable({
