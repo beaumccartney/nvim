@@ -800,6 +800,19 @@ vim.lsp.enable({
 	"ts_ls",
 	"yamlls",
 })
+vim.diagnostic.config({
+	virtual_text     = true,
+	virtual_lines    = true,
+	signs            = true,
+	update_in_insert = true,
+	jump             = { float = true },
+})
+map_toggle("d", function()
+	local toggle_state = not vim.diagnostic.is_enabled()
+	vim.diagnostic.enable(toggle_state, { bufnr = 0 })
+
+	print((toggle_state and "   " or "no ") .. "diagnostics")
+end, "Toggle diagnostics")
 
 -- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
 vim.keymap.set("n", "<C-z>", "[s1z=", { desc = "Correct latest misspelled word" })
@@ -860,12 +873,6 @@ map_toggle(
 	"<Cmd>setlocal cursorcolumn! cursorcolumn?<CR>",
 	"Toggle 'cursorcolumn'"
 )
-map_toggle("d", function()
-	local toggle_state = not vim.diagnostic.is_enabled()
-	vim.diagnostic.enable(toggle_state, { bufnr = 0 })
-
-	print((toggle_state and "   " or "no ") .. "diagnostics")
-end, "Toggle diagnostics")
 map_toggle(
 	"h",
 	'<Cmd>let v:hlsearch = 1 - v:hlsearch | echo (v:hlsearch ? "  " : "no") . "hlsearch"<CR>',
