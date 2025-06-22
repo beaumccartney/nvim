@@ -368,21 +368,6 @@ ai.setup({
 	},
 })
 
-require("mini.files").setup({
-	windows = {
-		max_number = 2,
-	},
-})
-local open = MiniFiles.open
-vim.keymap.set("n", "<leader>fe", open, { desc = "File explorer in PWD" })
-vim.keymap.set("n", "<leader>fi", function()
-	local buf = vim.api.nvim_buf_get_name(0)
-
-	local file = io.open(buf) and buf or vim.fs.dirname(buf)
-
-	open(file)
-end, { desc = "File explorer in dir of current file" })
-
 require("mini.misc").setup()
 MiniMisc.setup_restore_cursor()
 vim.keymap.set(
@@ -547,6 +532,29 @@ add("brianhuster/live-preview.nvim")
 
 add("hat0uma/csvview.nvim")
 require("csvview").setup()
+
+add("stevearc/oil.nvim")
+require("oil").setup({
+	columns = {
+		"icon",
+		"permissions",
+		"size",
+		"mtime",
+	},
+	skip_confirm_for_simple_edits = true,
+	watch_for_changes = true,
+	view_options = {
+		show_hidden = true,
+	},
+	keymaps = {
+		["gx"        ] = false,
+		["gX"        ] = "actions.open_external",
+		["gs"        ] = false,
+		["<leader>gs"] = { "actions.change_sort", mode = "n" },
+	},
+	cleanup_delay_ms = 0,
+})
+vim.keymap.set('n', '-', vim.cmd.Oil, { desc = "Open parent directory" })
 
 add("stevearc/dressing.nvim")
 
