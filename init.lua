@@ -616,6 +616,7 @@ do
 		"make",
 		"markdown",
 		"markdown_inline",
+		"objc",
 		"odin",
 		"printf",
 		"python",
