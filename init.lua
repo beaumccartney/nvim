@@ -551,6 +551,8 @@ require("oil").setup({
 		["gX"        ] = "actions.open_external",
 		["gs"        ] = false,
 		["<leader>gs"] = { "actions.change_sort", mode = "n" },
+		["<C-c>"     ] = false,
+		["q"         ] = { "actions.close", mode = "n" },
 	},
 	cleanup_delay_ms = 0,
 })
