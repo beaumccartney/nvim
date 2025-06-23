@@ -818,7 +818,7 @@ vim.diagnostic.config({
 	jump             = { float = true },
 })
 map_toggle("d", function()
-	local toggle_state = not vim.diagnostic.is_enabled()
+	local toggle_state = not vim.diagnostic.is_enabled({ bufnr = 0 })
 	vim.diagnostic.enable(toggle_state, { bufnr = 0 })
 
 	print((toggle_state and "   " or "no ") .. "diagnostics")
