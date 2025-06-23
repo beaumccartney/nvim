@@ -90,7 +90,7 @@ vim.filetype.add({
 	},
 })
 
-local map_toggle = function(lhs, rhs, desc, other_opts)
+local function map_toggle(lhs, rhs, desc, other_opts)
 	local opts = other_opts and other_opts or {}
 	if desc then
 		opts.desc = desc
