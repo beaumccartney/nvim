@@ -826,7 +826,7 @@ vim.diagnostic.config({
 	update_in_insert = true,
 	jump             = { float = true },
 })
-map_toggle("d", function()
+map_toggle("D", function()
 	local toggle_state = not vim.diagnostic.is_enabled({ bufnr = 0 })
 	vim.diagnostic.enable(toggle_state, { bufnr = 0 })
 
