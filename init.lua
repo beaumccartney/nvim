@@ -129,8 +129,6 @@ end
 -- Set up 'mini.deps' (customize to your liking)
 require("mini.deps").setup({ path = { package = path_package } })
 
-local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
-
 -- early because other plugins depend on these
 require("mini.icons").setup()
 MiniIcons.mock_nvim_web_devicons() -- TODO: remove when everything supports devicons
@@ -442,15 +440,15 @@ starter.setup({
 	},
 })
 
-add("ludovicchabant/vim-gutentags")
+MiniDeps.add("ludovicchabant/vim-gutentags")
 
-add("tpope/vim-dispatch")
-add("tpope/vim-abolish")
-add("tpope/vim-fugitive")
-add("tpope/vim-rhubarb")
-add("junegunn/gv.vim")
+MiniDeps.add("tpope/vim-dispatch")
+MiniDeps.add("tpope/vim-abolish")
+MiniDeps.add("tpope/vim-fugitive")
+MiniDeps.add("tpope/vim-rhubarb")
+MiniDeps.add("junegunn/gv.vim")
 
-add("lewis6991/gitsigns.nvim")
+MiniDeps.add("lewis6991/gitsigns.nvim")
 local gs = require("gitsigns")
 local gs_opts = {
 	current_line_blame = true,
@@ -521,10 +519,10 @@ end, { desc = "Go to prev hunk" })
 
 vim.g.scratchpad_autostart = 0
 vim.g.scratchpad_location = vim.fn.stdpath("data") .. "/scratchpad"
-add("FraserLee/ScratchPad")
+MiniDeps.add("FraserLee/ScratchPad")
 vim.keymap.set("n", "S", require("scratchpad").invoke, { desc = "Scratchpad" })
 
-add("chomosuke/typst-preview.nvim")
+MiniDeps.add("chomosuke/typst-preview.nvim")
 do
 	local tinymist = vim.fn.exepath("tinymist")
 	local websocat = vim.fn.exepath("websocat")
@@ -536,12 +534,12 @@ do
 	})
 end
 
-add("brianhuster/live-preview.nvim")
+MiniDeps.add("brianhuster/live-preview.nvim")
 
-add("hat0uma/csvview.nvim")
+MiniDeps.add("hat0uma/csvview.nvim")
 require("csvview").setup()
 
-add("stevearc/oil.nvim")
+MiniDeps.add("stevearc/oil.nvim")
 require("oil").setup({
 	columns = {
 		"icon",
@@ -566,7 +564,7 @@ require("oil").setup({
 })
 vim.keymap.set('n', '-', vim.cmd.Oil, { desc = "Open parent directory" })
 
-add("stevearc/dressing.nvim")
+MiniDeps.add("stevearc/dressing.nvim")
 
 require("dressing").setup({
 	input = {
@@ -575,7 +573,7 @@ require("dressing").setup({
 	},
 })
 
-add({
+MiniDeps.add({
 	source = "nvim-treesitter/nvim-treesitter",
 	checkout = "main",
 	hooks = {
@@ -650,7 +648,7 @@ do
 end
 
 vim.g.skip_ts_context_commentstring_module = true
-add("JoosepAlviste/nvim-ts-context-commentstring")
+MiniDeps.add("JoosepAlviste/nvim-ts-context-commentstring")
 require("ts_context_commentstring").setup({
 	enable_autocmd = false,
 	languages = {
@@ -661,9 +659,9 @@ require("ts_context_commentstring").setup({
 	},
 })
 
-add("HiPhish/rainbow-delimiters.nvim")
+MiniDeps.add("HiPhish/rainbow-delimiters.nvim")
 
-add("nvim-treesitter/nvim-treesitter-context")
+MiniDeps.add("nvim-treesitter/nvim-treesitter-context")
 require("treesitter-context").setup({
 	multiline_threshold = 4,
 	trim_scope = "inner",
@@ -672,10 +670,10 @@ require("treesitter-context").setup({
 
 vim.g.gruvbox_material_foreground = "original"
 vim.g.gruvbox_material_background = "hard"
-add("sainnhe/gruvbox-material")
+MiniDeps.add("sainnhe/gruvbox-material")
 
 vim.g.material_style = "deep ocean"
-add("marko-cerovac/material.nvim")
+MiniDeps.add("marko-cerovac/material.nvim")
 require("material").setup({
 	plugins = {
 		"indent-blankline",
@@ -684,37 +682,37 @@ require("material").setup({
 	},
 })
 
-add("folke/tokyonight.nvim")
+MiniDeps.add("folke/tokyonight.nvim")
 require("tokyonight").setup({
 	style = "night",
 })
 
-add("lukas-reineke/indent-blankline.nvim")
+MiniDeps.add("lukas-reineke/indent-blankline.nvim")
 require("ibl").setup({ scope = { enabled = false } })
 
 vim.g.VM_maps = {
 	["Add Cursor Down"] = "<C-j>",
 	["Add Cursor Up"] = "<C-k>",
 }
-add("mg979/vim-visual-multi")
+MiniDeps.add("mg979/vim-visual-multi")
 
 -- highlight cursor after large jump
-add("rainbowhxch/beacon.nvim")
+MiniDeps.add("rainbowhxch/beacon.nvim")
 
 -- fast j and k YEAH BUDDY
 -- holding j, k, w, b, W, B, etc goes fast after a while
-add("rainbowhxch/accelerated-jk.nvim")
+MiniDeps.add("rainbowhxch/accelerated-jk.nvim")
 require("accelerated-jk").setup({
 	acceleration_motions = { "w", "b", "W", "B" },
 })
 
 -- jai syntax-highlighting + folds + whatever
 vim.g.jai_compiler = "jai"
-add("beaumccartney/jai.vim")
+MiniDeps.add("beaumccartney/jai.vim")
 
-add("kevinhwang91/nvim-bqf")
+MiniDeps.add("kevinhwang91/nvim-bqf")
 
-add("stevearc/conform.nvim")
+MiniDeps.add("stevearc/conform.nvim")
 local conform = require("conform")
 local prettier_spec = { "prettierd", "prettier", stop_after_first = true }
 conform.setup({
@@ -741,9 +739,9 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-add("neovim/nvim-lspconfig")
+MiniDeps.add("neovim/nvim-lspconfig")
 
-add("folke/lazydev.nvim")
+MiniDeps.add("folke/lazydev.nvim")
 require("lazydev").setup()
 
 vim.api.nvim_create_autocmd("LspAttach", {
