@@ -86,6 +86,7 @@ vim.filetype.add({
 		fs = "glsl",
 		vert = "glsl",
 		frag = "glsl",
+		hlsl = "hlsl",
 		m = "objc",
 	},
 })
@@ -549,6 +550,7 @@ do
 		"gomod",
 		"gosum",
 		"gowork",
+		"hlsl",
 		"html",
 		"javascript",
 		"jsdoc",
@@ -600,6 +602,7 @@ require("ts_context_commentstring").setup({
 	languages = {
 		c = "// %s",
 		cpp = "// %s",
+		hlsl = "// %s",
 		wgsl = "// %s",
 		just = "# %s",
 	},
