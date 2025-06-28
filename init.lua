@@ -209,7 +209,7 @@ miniclue.setup({
 	},
 })
 
-require("mini.operators").setup({ replace = { prefix = "gz" } })
+require("mini.operators").setup({ replace = { prefix = "gb" } })
 
 require("mini.trailspace").setup()
 vim.keymap.set("n", "<BS>", function()
