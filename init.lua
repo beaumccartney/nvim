@@ -587,7 +587,7 @@ do
 			if vim.api.nvim_buf_line_count(ev.buf) < 4096 then
 				local ok, parser = pcall(vim.treesitter.get_parser, ev.buf)
 				if ok and parser then
-					vim.treesitter.start()
+					vim.treesitter.start(ev.buf)
 					-- vim.bo[ev.buf].syntax = 'ON'
 				end
 			end
