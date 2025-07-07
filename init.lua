@@ -937,7 +937,44 @@ do
 			end,
 		},
 	})
-	require("avante").setup()
+	vim.opt.laststatus = 3
+	require("avante").setup({
+		-- debug = true,
+		input = {
+			provider = "dressing",
+		},
+		mappings = {
+			cancel = {
+				normal = { "<C-c>", "<Esc>", "q" },
+				insert = { "<C-c>" },
+			},
+			-- NOTE: The following will be safely set by avante.nvim
+			sidebar = {
+				close = { "<ESC>", "q" },
+				close_from_input = { normal = "<Esc>", insert = "<C-d>" },
+			},
+		},
+		windows = {
+			position = "smart",
+			edit = {
+				start_insert = false, -- Start insert mode when opening the edit window
+			},
+			ask = {
+				start_insert = false, -- Start insert mode when opening the ask window
+			},
+		},
+		-- repo_map = {
+		-- 	ignore_patterns = { "%.git", "%.worktree", "__pycache__", "node_modules" }, -- ignore files matching these
+		-- 	negate_patterns = {}, -- negate ignore files matching these.
+		-- },
+		selector = {
+			provider = "mini_pick",
+		},
+		disabled_tools = {},
+		custom_tools = {},
+		slash_commands = {},
+
+	})
 end
 
 -- TODO(beau): autocommand to source this file every time its saved if in the same directory
