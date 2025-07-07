@@ -330,15 +330,6 @@ vim.keymap.set(
 )
 
 require("mini.visits").setup()
-vim.api.nvim_create_autocmd("BufReadPre", {
-	callback = function(args)
-		local currentDir = vim.fn.getcwd()
-		local bufDir = vim.fn.fnamemodify(args.file, ":p:h")
-		if not vim.startswith(bufDir, currentDir) then
-			vim.b.minivisits_disable = true
-		end
-	end,
-})
 vim.keymap.set(
 	"n",
 	"<leader>vv",
