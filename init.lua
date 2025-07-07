@@ -905,6 +905,41 @@ vim.cmd([[
 
 vim.cmd.colorscheme("tokyonight-night")
 
+do
+	local build_avante_command = vim.fn.has("win32") == 1
+			and {
+				"powershell",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"Build.ps1",
+				"-BuildFromSource",
+				"false",
+			}
+		or { "make" }
+	local function build_avante(path)
+		vim.system(build_avante_command, { cwd = path })
+	end
+	MiniDeps.add({
+		source = "yetone/avante.nvim",
+		depends = {
+			"nvim-lua/plenary.nvim",
+			"MunifTanjim/nui.nvim",
+			"echasnovski/mini.nvim",
+			"stevearc/dressing.nvim",
+		},
+		hooks = {
+			post_checkout = function(args)
+				build_avante(args.path)
+			end,
+			post_install = function(args)
+				build_avante(args.path)
+			end,
+		},
+	})
+	require("avante").setup()
+end
+
 -- TODO(beau): autocommand to source this file every time its saved if in the same directory
 if vim.uv.fs_stat("nvim-local.lua") then
 	dofile("nvim-local.lua")
