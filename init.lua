@@ -688,10 +688,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(ev)
 		local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
 
-		local function makebufopts(desc)
-			return { buffer = ev.buf, desc = desc }
-		end
-
 		-- REVIEW: map without leader
 		local lspmaps = {
 			["textDocument/declaration"] = {
