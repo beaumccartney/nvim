@@ -252,11 +252,6 @@ hipatterns.setup({
 })
 
 require("mini.comment").setup({
-	options = {
-		custom_commentstring = function()
-			return require("ts_context_commentstring").calculate_commentstring()
-		end,
-	},
 	mappings = { textobject = "ic" },
 })
 
@@ -596,19 +591,6 @@ do
 		end,
 	})
 end
-
-vim.g.skip_ts_context_commentstring_module = true
-MiniDeps.add("JoosepAlviste/nvim-ts-context-commentstring")
-require("ts_context_commentstring").setup({
-	enable_autocmd = false,
-	languages = {
-		c = "// %s",
-		cpp = "// %s",
-		hlsl = "// %s",
-		wgsl = "// %s",
-		just = "# %s",
-	},
-})
 
 MiniDeps.add("HiPhish/rainbow-delimiters.nvim")
 
