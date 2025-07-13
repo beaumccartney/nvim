@@ -11,6 +11,7 @@ if vim.env.STARSHIP_SHELL then
 	vim.opt.shell = vim.env.STARSHIP_SHELL
 end
 
+vim.opt.autoread = true
 vim.opt.autowrite = true
 vim.opt.autowriteall = true
 
@@ -36,6 +37,7 @@ vim.opt.linebreak = true
 vim.opt.showbreak = "+++ "
 
 vim.opt.scrolloff = 10
+vim.opt.sidescrolloff = 8
 vim.opt.colorcolumn = "81"
 vim.opt.splitbelow = true
 vim.opt.splitright = true
@@ -50,6 +52,9 @@ vim.opt.smartcase = true
 vim.opt.infercase = true
 
 vim.opt.pumheight = 5
+vim.opt.pumblend = 55
+
+vim.opt.winblend = 40
 
 vim.opt.foldmethod = "indent"
 vim.opt.foldnestmax = 10
@@ -60,12 +65,16 @@ vim.opt.cursorline = true
 
 vim.opt.cmdheight = 1
 
+vim.opt.signcolumn="yes"
+
+vim.opt.showmode = false
+
 vim.opt.fixeol = false
 
 vim.opt.nrformats:append("alpha")
 
 vim.opt.complete:append("i,d,f")
-vim.opt.completeopt = "menuone,fuzzy,preview"
+vim.opt.completeopt = "menuone,fuzzy,preview,noselect"
 
 vim.opt.virtualedit = "block"
 
@@ -75,6 +84,8 @@ vim.opt.listchars = "tab:> ,extends:…,precedes:…,nbsp:␣" -- Define which h
 vim.opt.list = true -- Show some helper symbols
 
 vim.opt.switchbuf = "useopen,usetab"
+
+vim.opt.iskeyword:append("-")
 
 vim.opt.guifont = "Maple Mono NF"
 
