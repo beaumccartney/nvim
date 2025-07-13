@@ -854,9 +854,6 @@ vim.keymap.set("n", "k", "<Plug>(accelerated_jk_gk)")
 vim.keymap.set("v", "j", "gj")
 vim.keymap.set("v", "k", "gk")
 
----------------------------------------------------------------------------
--- write centered line - 80 character line with text in the middle and dashes
--- padding it
 vim.cmd([[
 	filetype plugin indent on
 
