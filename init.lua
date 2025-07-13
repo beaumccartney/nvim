@@ -999,7 +999,14 @@ do
 	})
 end
 
--- TODO(beau): autocommand to source this file every time its saved if in the same directory
-if vim.uv.fs_stat("nvim-local.lua") then
-	dofile("nvim-local.lua")
+local nvim_local_file = "nvim-local.lua"
+if vim.uv.fs_stat(nvim_local_file) then
+	dofile(nvim_local_file)
 end
+vim.api.nvim_create_autocmd("BufWritePost", {
+	pattern  = nvim_local_file,
+	group    = augroup,
+	callback = function(ev)
+		vim.cmd.source({ args = { ev.file } })
+	end,
+})
