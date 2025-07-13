@@ -1,6 +1,7 @@
 -- TODO:
--- put all autocommands in a group so they don't get re-added on re-source
 -- do cooler stuff with mini.pick
+
+local augroup = vim.api.nvim_create_augroup("augroup", { clear = true })
 
 -- apparently I have to put this before the package manager
 vim.g.mapleader = " "
@@ -574,7 +575,8 @@ do
 	})
 
 	vim.api.nvim_create_autocmd("Filetype", {
-		pattern = "*",
+		pattern  = "*",
+		group    = augroup,
 		callback = function(ev)
 			-- TODO: if longest line in buffer is too long kill
 			if vim.api.nvim_buf_line_count(ev.buf) < 4096 then
@@ -661,8 +663,8 @@ conform.setup({
 	},
 })
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = vim.tbl_keys(conform.formatters_by_ft),
-	-- group = vim.api.nvim_create_augroup('conform_formatexpr', { clear = true }),
+	pattern  = vim.tbl_keys(conform.formatters_by_ft),
+	group    = augroup,
 	callback = function()
 		vim.opt_local.formatexpr = "v:lua.require'conform'.formatexpr()"
 	end,
@@ -674,6 +676,7 @@ MiniDeps.add("folke/lazydev.nvim")
 require("lazydev").setup()
 
 vim.api.nvim_create_autocmd("LspAttach", {
+	group    = augroup,
 	callback = function(ev)
 		local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
 
@@ -854,28 +857,73 @@ vim.keymap.set("n", "k", "<Plug>(accelerated_jk_gk)")
 vim.keymap.set("v", "j", "gj")
 vim.keymap.set("v", "k", "gk")
 
-vim.cmd([[
-	filetype plugin indent on
+vim.api.nvim_create_autocmd("Filetype", {
+	pattern = "*",
+	group = augroup,
+	callback = function()
+		vim.opt_local.formatoptions:append("jcqrno")
+		vim.opt_local.formatoptions:remove("t")
+	end,
+})
+vim.api.nvim_create_autocmd("BufEnter", {
+	pattern = "*",
+	group = augroup,
+	callback = function(ev)
+		MiniMisc.use_nested_comments(ev.buf)
+	end,
+})
+vim.api.nvim_create_autocmd("TextYankPost", {
+	pattern = "*",
+	group = augroup,
+	callback = function()
+		vim.hl.on_yank({ timeout = 100 })
+	end,
+})
+vim.api.nvim_create_autocmd("Filetype", {
+	pattern = "DressingInput,gitcommit",
+	group = augroup,
+	callback = function()
+		vim.b.minivisits_disable     = true
+		vim.b.minitrailspace_disable = true
+	end,
+})
 
-	autocmd TextYankPost * silent! lua vim.hl.on_yank({ timeout=100 })
+vim.api.nvim_create_autocmd("Filetype", {
+	pattern = "text,markdown,gitcommit",
+	group = augroup,
+	callback = function()
+		vim.opt_local.spell = true
+		vim.opt_local.autoindent = true
+		vim.opt_local.comments:remove("fb:*")
+		vim.opt_local.comments:remove("fb:-")
+		vim.opt_local.comments:remove("fb:+")
+	end,
+})
 
-	autocmd Filetype * setlocal formatoptions+=jcqrno formatoptions-=t
-
-	autocmd FileType html,css,scss,json,jsonc,xml,javascript,javascriptreact,typescript,typescriptreact,astro,yaml setlocal nocindent expandtab tabstop=2 foldmethod=expr foldexpr=nvim_treesitter#foldexpr()
-
-	autocmd Filetype text,markdown,gitcommit setlocal spell autoindent comments-=fb:* comments-=fb:- comments-=fb:+
-	autocmd BufEnter * lua pcall(require'mini.misc'.use_nested_comments)
-
-	autocmd FileType DressingInput,gitcommit let b:minivisits_disable = v:true | let b:minitrailspace_disable = v:true
-
-	autocmd FileType odin setlocal smartindent | compiler odin
-
-	autocmd FileType jai compiler jai
-
-	autocmd FileType gitconfig,go setlocal noexpandtab tabstop=8
-
-	autocmd FileType dosbatch setlocal commentstring=::\ %s
-]])
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = {
+		"html",
+		"css",
+		"scss",
+		"json",
+		"jsonc",
+		"xml",
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"astro",
+		"yaml",
+	},
+	group = augroup,
+	callback = function()
+		vim.opt_local.cindent = false
+		vim.opt_local.expandtab = true
+		vim.opt_local.tabstop = 2
+		vim.opt_local.foldmethod = expr
+		vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+	end,
+})
 
 vim.cmd.colorscheme("tokyonight-night")
 
