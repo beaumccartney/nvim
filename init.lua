@@ -737,14 +737,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 				print((new and "   " or "no ") .. "inlay hints")
 			end, "Toggle inlay hints", { buffer = ev.buf })
 		end
-
-		vim.keymap.set(
-			"n",
-			"<leader>bd",
-			vim.diagnostic.setloclist,
-			{ buffer = ev.buf, desc = "Diagnostic loclist" }
-		)
-		vim.diagnostic.enable(false, { bufnr = ev.buf })
 	end,
 })
 vim.lsp.enable({
@@ -761,12 +753,30 @@ vim.lsp.enable({
 	"ts_ls",
 	"yamlls",
 })
+
+vim.keymap.set(
+	"n",
+	"<leader>dl",
+	vim.diagnostic.setloclist,
+	{ desc = "Diagnostic location list" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>da",
+	vim.diagnostic.setqflist,
+	{ desc = "Diagnostic quickfix list" }
+)
 vim.diagnostic.config({
-	virtual_text     = true,
-	virtual_lines    = true,
-	signs            = true,
+	virtual_text = true,
+	virtual_lines = true,
+	signs = true,
 	update_in_insert = true,
-	jump             = { float = true },
+	jump = { float = true },
+})
+vim.api.nvim_create_autocmd( "BufNew", {
+	callback = function(ev)
+		vim.diagnostic.enable(false, { bufnr = ev.buf })
+	end
 })
 map_toggle("D", function()
 	local toggle_state = not vim.diagnostic.is_enabled({ bufnr = 0 })
