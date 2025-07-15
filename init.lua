@@ -917,7 +917,6 @@ vim.api.nvim_create_autocmd("Filetype", {
 	group = augroup,
 	callback = function()
 		vim.opt_local.spell = true
-		vim.opt_local.autoindent = true
 		vim.opt_local.comments:remove("fb:*")
 		vim.opt_local.comments:remove("fb:-")
 		vim.opt_local.comments:remove("fb:+")
