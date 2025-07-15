@@ -26,7 +26,6 @@ vim.opt.smarttab = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
 
-vim.opt.cindent = true
 vim.opt.cinoptions:append("l1,L0,=0,Ps,(s,m1")
 
 vim.opt.fileformat = "unix"
@@ -897,31 +896,6 @@ vim.api.nvim_create_autocmd("Filetype", {
 		vim.opt_local.comments:remove("fb:*")
 		vim.opt_local.comments:remove("fb:-")
 		vim.opt_local.comments:remove("fb:+")
-	end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = {
-		"html",
-		"css",
-		"scss",
-		"json",
-		"jsonc",
-		"xml",
-		"javascript",
-		"javascriptreact",
-		"typescript",
-		"typescriptreact",
-		"astro",
-		"yaml",
-	},
-	group = augroup,
-	callback = function()
-		vim.opt_local.cindent = false
-		vim.opt_local.expandtab = true
-		vim.opt_local.tabstop = 2
-		vim.opt_local.foldmethod = expr
-		vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 	end,
 })
 
