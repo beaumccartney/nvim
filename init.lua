@@ -642,6 +642,21 @@ MiniDeps.add("beaumccartney/jai.vim")
 
 MiniDeps.add("kevinhwang91/nvim-bqf")
 
+MiniDeps.add("mfussenegger/nvim-lint")
+do
+	local lint = require("lint")
+	lint.linters_by_ft = {
+		c = { "cppcheck" },
+		cpp = { "cppcheck" },
+		fish = { "fish" },
+		-- REVIEW: directx shader compiler?
+	}
+	vim.api.nvim_create_autocmd("BufWritePost", {
+		callback = function() lint.try_lint() end,
+		group = augroup,
+	})
+end
+
 MiniDeps.add("stevearc/conform.nvim")
 local conform = require("conform")
 local prettier_spec = { "prettierd", "prettier", stop_after_first = true }
