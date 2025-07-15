@@ -1,7 +1,7 @@
 -- TODO:
 -- do cooler stuff with mini.pick
 
-local augroup = vim.api.nvim_create_augroup("augroup", { clear = true })
+local clear_augroup = vim.api.nvim_create_augroup("augroup", { clear = true })
 
 -- apparently I have to put this before the package manager
 vim.g.mapleader = " "
@@ -574,7 +574,7 @@ do
 
 	vim.api.nvim_create_autocmd("Filetype", {
 		pattern  = "*",
-		group    = augroup,
+		group    = clear_augroup,
 		callback = function(ev)
 			-- TODO: if longest line in buffer is too long kill
 			if vim.api.nvim_buf_line_count(ev.buf) < 4096 then
@@ -652,7 +652,7 @@ do
 	}
 	vim.api.nvim_create_autocmd("BufWritePost", {
 		callback = function() lint.try_lint() end,
-		group = augroup,
+		group = clear_augroup,
 	})
 end
 
@@ -679,7 +679,7 @@ conform.setup({
 })
 vim.api.nvim_create_autocmd("FileType", {
 	pattern  = vim.tbl_keys(conform.formatters_by_ft),
-	group    = augroup,
+	group    = clear_augroup,
 	callback = function()
 		vim.opt_local.formatexpr = "v:lua.require'conform'.formatexpr()"
 	end,
@@ -691,7 +691,7 @@ MiniDeps.add("folke/lazydev.nvim")
 require("lazydev").setup()
 
 vim.api.nvim_create_autocmd("LspAttach", {
-	group    = augroup,
+	group    = clear_augroup,
 	callback = function(ev)
 		local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
 
@@ -883,7 +883,7 @@ vim.keymap.set("v", "k", "gk")
 
 vim.api.nvim_create_autocmd("Filetype", {
 	pattern = "*",
-	group = augroup,
+	group = clear_augroup,
 	callback = function()
 		vim.opt_local.formatoptions:append("jcqrno")
 		vim.opt_local.formatoptions:remove("t")
@@ -891,21 +891,21 @@ vim.api.nvim_create_autocmd("Filetype", {
 })
 vim.api.nvim_create_autocmd("BufEnter", {
 	pattern = "*",
-	group = augroup,
+	group = clear_augroup,
 	callback = function(ev)
 		MiniMisc.use_nested_comments(ev.buf)
 	end,
 })
 vim.api.nvim_create_autocmd("TextYankPost", {
 	pattern = "*",
-	group = augroup,
+	group = clear_augroup,
 	callback = function()
 		vim.hl.on_yank({ timeout = 100 })
 	end,
 })
 vim.api.nvim_create_autocmd("Filetype", {
 	pattern = "DressingInput,gitcommit",
-	group = augroup,
+	group = clear_augroup,
 	callback = function()
 		vim.b.minivisits_disable     = true
 		vim.b.minitrailspace_disable = true
@@ -914,7 +914,7 @@ vim.api.nvim_create_autocmd("Filetype", {
 
 vim.api.nvim_create_autocmd("Filetype", {
 	pattern = "text,markdown,gitcommit",
-	group = augroup,
+	group = clear_augroup,
 	callback = function()
 		vim.opt_local.spell = true
 		vim.opt_local.comments:remove("fb:*")
@@ -1003,7 +1003,7 @@ if vim.uv.fs_stat(nvim_local_file) then
 end
 vim.api.nvim_create_autocmd("BufWritePost", {
 	pattern  = nvim_local_file,
-	group    = augroup,
+	group    = clear_augroup,
 	callback = function(ev)
 		vim.cmd.source({ args = { ev.file } })
 	end,
