@@ -668,10 +668,12 @@ conform.setup({
 		javascriptreact = prettier_spec,
 		json = prettier_spec,
 		lua = { "stylua" },
+		markdown = prettier_spec,
 		python = { "ruff_format" },
 		rust = { "rustfmt" },
 		typescript = prettier_spec,
 		typescriptreact = prettier_spec,
+		yaml = prettier_spec,
 		zig = { "zigfmt" },
 	},
 })
@@ -739,10 +741,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 vim.lsp.enable({
-	"bashls",
 	"basedpyright",
+	"bashls",
 	"cssls",
-	"eslint",
 	"gopls",
 	"html",
 	"jsonls",
