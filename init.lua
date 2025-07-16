@@ -813,7 +813,9 @@ vim.keymap.set("n", "<ESC>", function()
 		vim.cmd.cclose()
 		vim.cmd.lclose()
 		vim.cmd.pclose()
-		vim.cmd.helpclose()
+		if vim.o.filetype ~= "help" then
+			vim.cmd.helpclose()
+		end
 	end
 end, { desc = "Clear all windows and highlighting state" })
 vim.keymap.set({ "n", "x" }, "gy", '"+y', { desc = "Copy to system clipboard" })
