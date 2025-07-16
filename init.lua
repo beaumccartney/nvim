@@ -813,6 +813,7 @@ vim.keymap.set("n", "<ESC>", function()
 		vim.cmd.cclose()
 		vim.cmd.lclose()
 		vim.cmd.pclose()
+		vim.cmd.fclose()
 		if vim.o.filetype ~= "help" then
 			vim.cmd.helpclose()
 		end
