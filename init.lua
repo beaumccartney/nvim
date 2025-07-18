@@ -84,8 +84,6 @@ vim.opt.list = true -- Show some helper symbols
 
 vim.opt.switchbuf = "useopen,usetab"
 
-vim.opt.iskeyword:append("-")
-
 vim.opt.guifont = "Maple Mono NF"
 
 vim.filetype.add({
