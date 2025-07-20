@@ -367,12 +367,7 @@ ai.setup({
 
 require("mini.misc").setup()
 MiniMisc.setup_restore_cursor()
-vim.keymap.set(
-	"n",
-	"<leader>z",
-	MiniMisc.zoom,
-	{ desc = "Maximize current window" }
-)
+map_toggle("z", MiniMisc.zoom, "Maximize current window")
 
 require("mini.sessions").setup()
 vim.keymap.set("n", "<leader>ss", function()
