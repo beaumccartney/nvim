@@ -683,6 +683,19 @@ MiniDeps.add("neovim/nvim-lspconfig")
 MiniDeps.add("folke/lazydev.nvim")
 require("lazydev").setup()
 
+MiniDeps.add({
+	source = "Julian/lean.nvim",
+	depends = {
+		"neovim/nvim-lspconfig",
+		"nvim-lua/plenary.nvim",
+	},
+})
+require("lean").setup({ mappings = true })
+vim.api.nvim_create_autocmd("VimResized", {
+	callback = require("lean.infoview").reposition,
+	group = clear_augroup,
+})
+
 vim.api.nvim_create_autocmd("LspAttach", {
 	group    = clear_augroup,
 	callback = function(ev)
