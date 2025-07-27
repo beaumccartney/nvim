@@ -782,7 +782,8 @@ vim.diagnostic.config({
 vim.api.nvim_create_autocmd( "BufNew", {
 	callback = function(ev)
 		vim.diagnostic.enable(false, { bufnr = ev.buf })
-	end
+	end,
+	group = clear_augroup,
 })
 map_toggle("D", function()
 	local toggle_state = not vim.diagnostic.is_enabled({ bufnr = 0 })
