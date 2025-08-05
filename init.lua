@@ -746,6 +746,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end
 	end,
 })
+
+vim.lsp.config("tinymist", {
+	settings = { formatterMode = "typstyle" },
+})
 vim.lsp.enable({
 	"basedpyright",
 	"bashls",
