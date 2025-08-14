@@ -53,8 +53,6 @@ vim.opt.infercase = true
 vim.opt.pumheight = 5
 vim.opt.pumblend = 55
 
-vim.opt.winblend = 40
-
 vim.opt.foldmethod = "indent"
 vim.opt.foldnestmax = 10
 vim.opt.foldlevel = 99
