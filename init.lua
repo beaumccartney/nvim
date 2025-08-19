@@ -787,7 +787,7 @@ vim.diagnostic.config({
 	update_in_insert = true,
 	jump = { float = true },
 })
-vim.api.nvim_create_autocmd( "BufNew", {
+vim.api.nvim_create_autocmd( { "BufNew", "BufNewFile", "VimEnter" }, {
 	callback = function(ev)
 		vim.diagnostic.enable(false, { bufnr = ev.buf })
 	end,
