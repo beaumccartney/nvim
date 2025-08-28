@@ -125,7 +125,7 @@ if not vim.loop.fs_stat(mini_path) then
 		"git",
 		"clone",
 		"--filter=blob:none",
-		"https://github.com/echasnovski/mini.nvim",
+		"https://github.com/nvim-mini/mini.nvim",
 		mini_path,
 	}
 	vim.fn.system(clone_cmd)
@@ -800,7 +800,7 @@ map_toggle("D", function()
 	print((toggle_state and "   " or "no ") .. "diagnostics")
 end, "Toggle diagnostics")
 
--- credit: fraser and https://github.com/echasnovski/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
+-- credit: fraser and https://github.com/nvim-mini/mini.basics/blob/c31a4725710db9733e8a8edb420f51fd617d72a3/lua/mini/basics.lua#L600-L606
 vim.keymap.set("n", "<C-z>", "[s1z=", { desc = "Correct latest misspelled word" })
 vim.keymap.set(
 	"i",
