@@ -758,6 +758,7 @@ vim.lsp.enable({
 	"basedpyright",
 	"bashls",
 	"cssls",
+	"fish_lsp",
 	"gopls",
 	"html",
 	"harper_ls",
