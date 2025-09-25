@@ -923,7 +923,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 vim.api.nvim_create_autocmd("Filetype", {
-	pattern = "DressingInput,gitcommit",
+	pattern = "DressingInput,gitcommit,git",
 	group = clear_augroup,
 	callback = function()
 		vim.b.minivisits_disable     = true
