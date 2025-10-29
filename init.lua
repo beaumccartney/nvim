@@ -754,6 +754,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.lsp.config("tinymist", {
 	settings = { formatterMode = "typstyle" },
 })
+vim.lsp.config("harper_ls", {
+	settings = {
+		["harper-ls"] = {
+			-- linters = {},
+			dialect = "Canadian",
+		},
+	},
+
+})
 vim.lsp.enable({
 	"basedpyright",
 	"bashls",
