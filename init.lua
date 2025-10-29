@@ -761,7 +761,6 @@ vim.lsp.enable({
 	"fish_lsp",
 	"gopls",
 	"html",
-	"harper_ls",
 	"jsonls",
 	"lua_ls",
 	"tinymist",
