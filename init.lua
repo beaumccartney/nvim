@@ -473,7 +473,9 @@ end
 MiniDeps.add("brianhuster/live-preview.nvim")
 
 MiniDeps.add("hat0uma/csvview.nvim")
-require("csvview").setup()
+require("csvview").setup({
+	view = { display_mode = "border", },
+})
 
 MiniDeps.add("stevearc/oil.nvim")
 require("oil").setup({
