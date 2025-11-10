@@ -458,6 +458,9 @@ vim.g.scratchpad_location = vim.fn.stdpath("data") .. "/scratchpad"
 MiniDeps.add("FraserLee/ScratchPad")
 vim.keymap.set("n", "S", require("scratchpad").invoke, { desc = "Scratchpad" })
 
+MiniDeps.add("rafcamlet/nvim-luapad")
+require("luapad").setup()
+
 MiniDeps.add("chomosuke/typst-preview.nvim")
 do
 	local tinymist = vim.fn.exepath("tinymist")
