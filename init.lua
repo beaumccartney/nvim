@@ -439,6 +439,8 @@ map_toggle("g", function()
     print((MiniDiff.get_buf_data(0).overlay and "   " or "no ") .. "diff overlay")
 end, "Toggle diff overlay")
 
+require("mini.cmdline").setup()
+
 require("mini.completion").setup({
     delay = { completion = 9999, info = 0, signature = 0 },
     lsp_completion = { source_func = "completefunc" },
