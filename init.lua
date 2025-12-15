@@ -518,7 +518,6 @@ require("dressing").setup({
 
 MiniDeps.add({
 	source = "nvim-treesitter/nvim-treesitter",
-	checkout = "main",
 	hooks = {
 		post_checkout = function()
 			require("nvim-treesitter").update()
