@@ -771,7 +771,6 @@ vim.lsp.config("harper_ls", {
 
 })
 vim.lsp.enable({
-	"basedpyright",
 	"bashls",
 	"cssls",
 	"fish_lsp",
@@ -783,6 +782,7 @@ vim.lsp.enable({
 	"templ",
 	"tinymist",
 	"ts_ls",
+	"ty",
 	"yamlls",
 })
 
