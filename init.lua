@@ -303,6 +303,7 @@ vim.keymap.set(
 	{ desc = "Find diagnostics" }
 )
 vim.keymap.set("n", "<leader>fo", extra_pickers.options, { desc = "Find options" })
+vim.keymap.set("n", "<leader>fe", extra_pickers.explorer, { desc = "Find explorer" })
 vim.keymap.set("n", "<leader>fm", extra_pickers.manpages, { desc = "Find manpages" })
 vim.keymap.set(
 	"n",
