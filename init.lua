@@ -625,6 +625,11 @@ require("tokyonight").setup({
 MiniDeps.add("lukas-reineke/indent-blankline.nvim")
 require("ibl").setup({ scope = { enabled = false } })
 
+MiniDeps.add("mvllow/modes.nvim")
+require("modes").setup({
+	ignore = {},
+})
+
 vim.g.VM_maps = {
 	["Add Cursor Down"] = "<C-j>",
 	["Add Cursor Up"] = "<C-k>",
