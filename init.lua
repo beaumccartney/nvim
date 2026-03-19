@@ -785,6 +785,7 @@ vim.lsp.enable({
 	"html",
 	"jsonls",
 	"lua_ls",
+	"ruff",
 	"rust_analyzer",
 	"templ",
 	"tinymist",
