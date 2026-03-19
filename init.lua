@@ -84,6 +84,8 @@ vim.opt.switchbuf = "useopen,usetab"
 
 vim.opt.guifont = "Maple Mono NF"
 
+vim.g.ruff_makeprg_params = ""
+
 vim.filetype.add({
 	extension = {
 		mdpp = "markdown",
