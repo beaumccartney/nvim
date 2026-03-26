@@ -366,6 +366,17 @@ ai.setup({
 		e = extra_ai_spec.diagnostic(),
 	},
 })
+vim.api.nvim_create_autocmd("Filetype", {
+	pattern = "typst,plaintex",
+	group = clear_augroup,
+	callback = function()
+		vim.b.miniai_config = {
+			custom_textobjects = {
+				["$"] = { "%$().-()%$" },
+			},
+		}
+	end,
+})
 
 require("mini.misc").setup()
 MiniMisc.setup_restore_cursor()
