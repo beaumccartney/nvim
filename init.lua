@@ -522,15 +522,6 @@ require("oil").setup({
 })
 vim.keymap.set('n', '-', vim.cmd.Oil, { desc = "Open parent directory" })
 
-MiniDeps.add("stevearc/dressing.nvim")
-
-require("dressing").setup({
-	input = {
-		insert_only = false,
-		start_in_insert = false,
-	},
-})
-
 MiniDeps.add({
 	source = "nvim-treesitter/nvim-treesitter",
 	hooks = {
@@ -946,7 +937,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 vim.api.nvim_create_autocmd("Filetype", {
-	pattern = "DressingInput,gitcommit,git",
+	pattern = "gitcommit,git",
 	group = clear_augroup,
 	callback = function()
 		vim.b.minivisits_disable     = true
