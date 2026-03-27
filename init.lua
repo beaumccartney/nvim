@@ -275,12 +275,7 @@ require("mini.notify").setup({
 	},
 })
 
-require("mini.pick").setup({
-	mappings = {
-		refine = "<C-;>",
-		refine_marked = "<M-;>",
-	},
-})
+require("mini.pick").setup()
 local builtin = MiniPick.builtin
 local extra_pickers = MiniExtra.pickers
 
