@@ -986,7 +986,7 @@ vim.api.nvim_create_autocmd("Filetype", {
 	end,
 })
 
-vim.cmd.colorscheme("material")
+vim.cmd.colorscheme("gruvbox-material")
 
 local nvim_local_file = "nvim-local.lua"
 if vim.uv.fs_stat(nvim_local_file) then
