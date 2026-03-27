@@ -1,10 +1,44 @@
 -- TODO:
 -- do cooler stuff with mini.pick
 
-local clear_augroup = vim.api.nvim_create_augroup("augroup", { clear = true })
+local path_package = vim.fs.joinpath(vim.fn.stdpath("data"), "site")
+local mini_path =
+	vim.fs.joinpath(path_package, "pack", "deps", "start", "mini.nvim")
+
+if vim.env.NVIM_PROFILE then
+	vim.cmd.packadd("snacks.nvim")
+	require("snacks.profiler").startup({})
+end
+
+-- Clone 'mini.nvim' manually in a way that it gets managed by 'mini.deps'
+if not vim.uv.fs_stat(mini_path) then
+	vim.cmd('echo "Installing `mini.nvim`" | redraw')
+	local clone_cmd = {
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/nvim-mini/mini.nvim",
+		mini_path,
+	}
+	vim.fn.system(clone_cmd)
+	vim.cmd("packadd mini.nvim | helptags ALL")
+	vim.cmd('echo "Installed `mini.nvim`" | redraw')
+end
 
 -- apparently I have to put this before the package manager
 vim.g.mapleader = " "
+
+-- Set up 'mini.deps' (customize to your liking)
+require("mini.deps").setup({ path = { package = path_package } })
+
+MiniDeps.add("folke/snacks.nvim")
+require("snacks").setup({
+	input = { enable = true, },
+	statuscolumn = { enable = true, },
+	image = { enable = true, },
+})
+
+local clear_augroup = vim.api.nvim_create_augroup("augroup", { clear = true })
 
 -- strangely enough this contains what shell I'm using - huh
 -- TODO: check if fish exists and use it if so
@@ -117,26 +151,6 @@ end
 local function in_cmdwin()
 	return vim.fn.getcmdwintype() ~= ""
 end
-
--- Clone 'mini.nvim' manually in a way that it gets managed by 'mini.deps'
-local path_package = vim.fn.stdpath("data") .. "/site/"
-local mini_path = path_package .. "pack/deps/start/mini.nvim"
-if not vim.loop.fs_stat(mini_path) then
-	vim.cmd('echo "Installing `mini.nvim`" | redraw')
-	local clone_cmd = {
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/nvim-mini/mini.nvim",
-		mini_path,
-	}
-	vim.fn.system(clone_cmd)
-	vim.cmd("packadd mini.nvim | helptags ALL")
-	vim.cmd('echo "Installed `mini.nvim`" | redraw')
-end
-
--- Set up 'mini.deps' (customize to your liking)
-require("mini.deps").setup({ path = { package = path_package } })
 
 -- early because other plugins depend on these
 require("mini.icons").setup()
@@ -521,6 +535,21 @@ require("oil").setup({
 	cleanup_delay_ms = 0,
 })
 vim.keymap.set('n', '-', vim.cmd.Oil, { desc = "Open parent directory" })
+
+-- communicate renaming/moving a file in oil to the language server so it can
+-- adjust imports
+vim.api.nvim_create_autocmd("User", {
+	pattern  = "OilActionsPost",
+	group    = clear_augroup,
+	callback = function(event)
+		if event.data.actions[1].type == "move" then
+			Snacks.rename.on_rename_file(
+				event.data.actions[1].src_url,
+				event.data.actions[1].dest_url
+			)
+		end
+	end,
+})
 
 MiniDeps.add({
 	source = "nvim-treesitter/nvim-treesitter",
