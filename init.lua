@@ -1,37 +1,77 @@
 -- TODO:
 -- do cooler stuff with mini.pick
 
-local path_package = vim.fs.joinpath(vim.fn.stdpath("data"), "site")
-local mini_path =
-	vim.fs.joinpath(path_package, "pack", "deps", "start", "mini.nvim")
-
 if vim.env.NVIM_PROFILE then
 	vim.cmd.packadd("snacks.nvim")
 	require("snacks.profiler").startup({})
 end
 
--- Clone 'mini.nvim' manually in a way that it gets managed by 'mini.deps'
-if not vim.uv.fs_stat(mini_path) then
-	vim.cmd('echo "Installing `mini.nvim`" | redraw')
-	local clone_cmd = {
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/nvim-mini/mini.nvim",
-		mini_path,
-	}
-	vim.fn.system(clone_cmd)
-	vim.cmd("packadd mini.nvim | helptags ALL")
-	vim.cmd('echo "Installed `mini.nvim`" | redraw')
-end
 
 -- apparently I have to put this before the package manager
 vim.g.mapleader = " "
 
--- Set up 'mini.deps' (customize to your liking)
-require("mini.deps").setup({ path = { package = path_package } })
+vim.api.nvim_create_autocmd("PackChanged", {
+	callback = function(ev)
+		local name, kind = ev.data.spec.name, ev.data.kind
+		if name == "nvim-treesitter" and kind == "update" then
+			if not ev.data.active then
+				vim.cmd.packadd("nvim-treesitter")
+			end
+			vim.cmd.TSUpdate()
+		end
+	end,
+})
 
-MiniDeps.add("folke/snacks.nvim")
+vim.pack.add({
+	"https://github.com/nvim-mini/mini.nvim",
+	"https://github.com/folke/snacks.nvim",
+
+	"https://github.com/ludovicchabant/vim-gutentags",
+
+	"https://github.com/tpope/vim-dispatch",
+	"https://github.com/tpope/vim-abolish",
+
+	"https://github.com/tpope/vim-fugitive",
+	"https://github.com/tpope/vim-rhubarb",
+	"https://github.com/junegunn/gv.vim",
+
+	"https://github.com/FraserLee/ScratchPad",
+	"https://github.com/rafcamlet/nvim-luapad",
+
+	"https://github.com/chomosuke/typst-preview.nvim",
+	"https://github.com/brianhuster/live-preview.nvim",
+	"https://github.com/hat0uma/csvview.nvim",
+
+	"https://github.com/stevearc/oil.nvim",
+
+	"https://github.com/nvim-treesitter/nvim-treesitter",
+	"https://github.com/HiPhish/rainbow-delimiters.nvim",
+	"https://github.com/nvim-treesitter/nvim-treesitter-context",
+
+	"https://github.com/sainnhe/gruvbox-material",
+	"https://github.com/marko-cerovac/material.nvim",
+	"https://github.com/folke/tokyonight.nvim",
+
+	"https://github.com/lukas-reineke/indent-blankline.nvim",
+	"https://github.com/mvllow/modes.nvim",
+	"https://github.com/rainbowhxch/beacon.nvim",
+
+	"https://github.com/rainbowhxch/accelerated-jk.nvim",
+	"https://github.com/mg979/vim-visual-multi",
+	"https://github.com/kevinhwang91/nvim-bqf",
+
+	"https://github.com/beaumccartney/jai.vim",
+	"https://github.com/stevearc/conform.nvim",
+
+	"https://github.com/neovim/nvim-lspconfig",
+	"https://github.com/folke/lazydev.nvim",
+
+
+	"https://github.com/nvim-lua/plenary.nvim", -- needed for lean.nvim
+	"https://github.com/Julian/lean.nvim",
+})
+
+
 require("snacks").setup({
 	input = { enable = true, },
 	statuscolumn = { enable = true, },
@@ -472,23 +512,12 @@ require("mini.completion").setup({
     window = { signature = { width = 120 } },
 })
 
-MiniDeps.add("ludovicchabant/vim-gutentags")
-
-MiniDeps.add("tpope/vim-dispatch")
-MiniDeps.add("tpope/vim-abolish")
-MiniDeps.add("tpope/vim-fugitive")
-MiniDeps.add("tpope/vim-rhubarb")
-MiniDeps.add("junegunn/gv.vim")
-
 vim.g.scratchpad_autostart = 0
 vim.g.scratchpad_location = vim.fn.stdpath("data") .. "/scratchpad"
-MiniDeps.add("FraserLee/ScratchPad")
 vim.keymap.set("n", "S", require("scratchpad").invoke, { desc = "Scratchpad" })
 
-MiniDeps.add("rafcamlet/nvim-luapad")
 require("luapad").setup()
 
-MiniDeps.add("chomosuke/typst-preview.nvim")
 do
 	local tinymist = vim.fn.exepath("tinymist")
 	local websocat = vim.fn.exepath("websocat")
@@ -500,14 +529,10 @@ do
 	})
 end
 
-MiniDeps.add("brianhuster/live-preview.nvim")
-
-MiniDeps.add("hat0uma/csvview.nvim")
 require("csvview").setup({
 	view = { display_mode = "border", },
 })
 
-MiniDeps.add("stevearc/oil.nvim")
 require("oil").setup({
 	columns = {
 		"icon",
@@ -547,14 +572,6 @@ vim.api.nvim_create_autocmd("User", {
 	end,
 })
 
-MiniDeps.add({
-	source = "nvim-treesitter/nvim-treesitter",
-	hooks = {
-		post_checkout = function()
-			require("nvim-treesitter").update()
-		end,
-	},
-})
 do
 	local treesitter = require("nvim-treesitter")
 	treesitter.install({
@@ -623,9 +640,6 @@ do
 	})
 end
 
-MiniDeps.add("HiPhish/rainbow-delimiters.nvim")
-
-MiniDeps.add("nvim-treesitter/nvim-treesitter-context")
 require("treesitter-context").setup({
 	multiline_threshold = 4,
 	trim_scope = "inner",
@@ -634,10 +648,8 @@ require("treesitter-context").setup({
 
 vim.g.gruvbox_material_foreground = "original"
 vim.g.gruvbox_material_background = "hard"
-MiniDeps.add("sainnhe/gruvbox-material")
 
 vim.g.material_style = "deep ocean"
-MiniDeps.add("marko-cerovac/material.nvim")
 require("material").setup({
 	plugins = {
 		"indent-blankline",
@@ -646,15 +658,12 @@ require("material").setup({
 	},
 })
 
-MiniDeps.add("folke/tokyonight.nvim")
 require("tokyonight").setup({
 	style = "night",
 })
 
-MiniDeps.add("lukas-reineke/indent-blankline.nvim")
 require("ibl").setup({ scope = { enabled = false } })
 
-MiniDeps.add("mvllow/modes.nvim")
 require("modes").setup({
 	ignore = {},
 })
@@ -663,25 +672,16 @@ vim.g.VM_maps = {
 	["Add Cursor Down"] = "<C-j>",
 	["Add Cursor Up"] = "<C-k>",
 }
-MiniDeps.add("mg979/vim-visual-multi")
-
--- highlight cursor after large jump
-MiniDeps.add("rainbowhxch/beacon.nvim")
 
 -- fast j and k YEAH BUDDY
 -- holding j, k, w, b, W, B, etc goes fast after a while
-MiniDeps.add("rainbowhxch/accelerated-jk.nvim")
 require("accelerated-jk").setup({
 	acceleration_motions = { "w", "b", "W", "B" },
 })
 
 -- jai syntax-highlighting + folds + whatever
 vim.g.jai_compiler = "jai"
-MiniDeps.add("beaumccartney/jai.vim")
 
-MiniDeps.add("kevinhwang91/nvim-bqf")
-
-MiniDeps.add("stevearc/conform.nvim")
 local conform = require("conform")
 local prettier_spec = { "prettierd", "prettier", stop_after_first = true }
 conform.setup({
@@ -710,18 +710,8 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-MiniDeps.add("neovim/nvim-lspconfig")
-
-MiniDeps.add("folke/lazydev.nvim")
 require("lazydev").setup()
 
-MiniDeps.add({
-	source = "Julian/lean.nvim",
-	depends = {
-		"neovim/nvim-lspconfig",
-		"nvim-lua/plenary.nvim",
-	},
-})
 require("lean").setup({ mappings = true })
 vim.api.nvim_create_autocmd("VimResized", {
 	callback = require("lean.infoview").reposition,
