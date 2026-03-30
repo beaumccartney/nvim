@@ -644,6 +644,7 @@ do
 end
 
 require("treesitter-context").setup({
+	multiwindow = true,
 	multiline_threshold = 4,
 	trim_scope = "inner",
 	mode = "topline",
