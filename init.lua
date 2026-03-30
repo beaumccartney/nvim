@@ -6,6 +6,9 @@ if vim.env.NVIM_PROFILE then
 	require("snacks.profiler").startup({})
 end
 
+vim.cmd.packadd("nvim.difftool")
+vim.cmd.packadd("nvim.undotree")
+vim.cmd.packadd("nvim.tohtml")
 
 -- apparently I have to put this before the package manager
 vim.g.mapleader = " "
@@ -146,7 +149,7 @@ vim.opt.fixeol = false
 vim.opt.nrformats:append("alpha")
 
 vim.opt.complete:append("i,d,f")
-vim.opt.completeopt = "menuone,fuzzy,preview,noselect"
+vim.opt.completeopt = "menuone,fuzzy,preview,noselect,nearest"
 
 vim.opt.virtualedit = "block"
 
@@ -630,8 +633,8 @@ do
 		callback = function(ev)
 			-- TODO: if longest line in buffer is too long kill
 			if vim.api.nvim_buf_line_count(ev.buf) < 4096 then
-				local ok, parser = pcall(vim.treesitter.get_parser, ev.buf)
-				if ok and parser then
+				local parser, message = vim.treesitter.get_parser(ev.buf)
+				if parser then
 					vim.treesitter.start(ev.buf)
 					-- vim.bo[ev.buf].syntax = 'ON'
 				end
@@ -729,11 +732,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 				lhs  = "<leader>gD",
 				rhs  = vim.lsp.buf.declaration,
 				desc = "Goto declaration",
-			},
-			["textDocument/typeDefinition"] = {
-				lhs  = "<leader>gt",
-				rhs  = vim.lsp.buf.type_definition,
-				desc = "Goto type definition",
 			},
 			["callHierarchy/incomingCalls"] = {
 				lhs  = "<leader>ci",
