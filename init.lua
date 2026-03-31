@@ -419,7 +419,7 @@ ai.setup({
 		e = extra_ai_spec.diagnostic(),
 	},
 })
-vim.api.nvim_create_autocmd("Filetype", {
+vim.api.nvim_create_autocmd("FileType", {
 	pattern = "typst,plaintex",
 	group = clear_augroup,
 	callback = function()
@@ -627,7 +627,7 @@ do
 		"yaml",
 	})
 
-	vim.api.nvim_create_autocmd("Filetype", {
+	vim.api.nvim_create_autocmd("FileType", {
 		pattern  = "*",
 		group    = clear_augroup,
 		callback = function(ev)
@@ -928,7 +928,7 @@ vim.keymap.set("n", "k", "<Plug>(accelerated_jk_gk)")
 vim.keymap.set("v", "j", "gj")
 vim.keymap.set("v", "k", "gk")
 
-vim.api.nvim_create_autocmd("Filetype", {
+vim.api.nvim_create_autocmd("FileType", {
 	pattern = "*",
 	group = clear_augroup,
 	callback = function()
@@ -950,7 +950,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 		vim.hl.on_yank({ timeout = 100 })
 	end,
 })
-vim.api.nvim_create_autocmd("Filetype", {
+vim.api.nvim_create_autocmd("FileType", {
 	pattern = "gitcommit,git",
 	group = clear_augroup,
 	callback = function()
@@ -959,7 +959,7 @@ vim.api.nvim_create_autocmd("Filetype", {
 	end,
 })
 
-vim.api.nvim_create_autocmd("Filetype", {
+vim.api.nvim_create_autocmd("FileType", {
 	pattern = "text,markdown,gitcommit",
 	group = clear_augroup,
 	callback = function()
