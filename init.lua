@@ -418,6 +418,14 @@ ai.setup({
 		g = extra_ai_spec.buffer(),
 		e = extra_ai_spec.diagnostic(),
 	},
+
+	-- free up incremental selection textobjects "an" and "in"
+	mappings = {
+		around_next = "aN",
+		inside_next = "iN",
+		around_last = "aL",
+		inside_last = "iL",
+	}
 })
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "typst,plaintex",
