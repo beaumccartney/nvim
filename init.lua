@@ -6,6 +6,7 @@ if vim.env.NVIM_PROFILE then
 	require("snacks.profiler").startup({})
 end
 
+vim.cmd.packadd("cfilter")
 vim.cmd.packadd("nvim.difftool")
 vim.cmd.packadd("nvim.undotree")
 vim.cmd.packadd("nvim.tohtml")
