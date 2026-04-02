@@ -326,6 +326,7 @@ local extra_pickers = MiniExtra.pickers
 vim.keymap.set("n", "<leader>ff", builtin.files, { desc = "Find files" })
 vim.keymap.set("n", "<leader>fh", builtin.help, { desc = "Find help" })
 vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Find buffers" })
+vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "Resume latest picker" })
 
 -- TODO: make cword maps use word highlighted by visual if applicable
 -- TODO: leader-8 find cword in the current buffer
