@@ -643,11 +643,8 @@ do
 		callback = function(ev)
 			-- TODO: if longest line in buffer is too long kill
 			if vim.api.nvim_buf_line_count(ev.buf) < 4096 then
-				local parser, message = vim.treesitter.get_parser(ev.buf)
-				if parser then
-					vim.treesitter.start(ev.buf)
-					-- vim.bo[ev.buf].syntax = 'ON'
-				end
+				pcall(vim.treesitter.start, ev.buf)
+				-- vim.bo[ev.buf].syntax = 'ON'
 			end
 		end,
 	})
