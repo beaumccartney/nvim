@@ -11,6 +11,8 @@ vim.cmd.packadd("nvim.difftool")
 vim.cmd.packadd("nvim.undotree")
 vim.cmd.packadd("nvim.tohtml")
 
+require("vim._core.ui2").enable({})
+
 -- apparently I have to put this before the package manager
 vim.g.mapleader = " "
 
