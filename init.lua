@@ -87,12 +87,6 @@ require("snacks").setup({
 
 local clear_augroup = vim.api.nvim_create_augroup("augroup", { clear = true })
 
--- strangely enough this contains what shell I'm using - huh
--- TODO: check if fish exists and use it if so
-if vim.env.STARSHIP_SHELL then
-	vim.opt.shell = vim.env.STARSHIP_SHELL
-end
-
 vim.opt.autoread = true
 vim.opt.autowrite = true
 vim.opt.autowriteall = true
