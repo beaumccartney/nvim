@@ -34,6 +34,7 @@ vim.pack.add({
 
 	"https://github.com/tpope/vim-dispatch",
 	"https://github.com/tpope/vim-abolish",
+	"https://github.com/tpope/vim-endwise",
 
 	"https://github.com/tpope/vim-fugitive",
 	"https://github.com/tpope/vim-rhubarb",
