@@ -582,70 +582,67 @@ vim.api.nvim_create_autocmd("User", {
 	end,
 })
 
-do
-	local treesitter = require("nvim-treesitter")
-	treesitter.install({
-		"asm",
-		"bash",
-		"c",
-		"cpp",
-		"css",
-		"csv",
-		"diff",
-		"dockerfile",
-		"fish",
-		"git_config",
-		"git_rebase",
-		"gitattributes",
-		"gitcommit",
-		"gitignore",
-		"go",
-		"gomod",
-		"gosum",
-		"gowork",
-		"hlsl",
-		"html",
-		"javascript",
-		"jsdoc",
-		"json",
-		"json5",
-		"just",
-		"lua",
-		"luadoc",
-		"make",
-		"markdown",
-		"markdown_inline",
-		"objc",
-		"odin",
-		"printf",
-		"python",
-		"regex",
-		"requirements",
-		"rust",
-		"scss",
-		"templ",
-		"todotxt",
-		"toml",
-		"tsx",
-		"typescript",
-		"typst",
-		"vim",
-		"vimdoc",
-		"yaml",
-	})
+require("nvim-treesitter").install({
+	"asm",
+	"bash",
+	"c",
+	"cpp",
+	"css",
+	"csv",
+	"diff",
+	"dockerfile",
+	"fish",
+	"git_config",
+	"git_rebase",
+	"gitattributes",
+	"gitcommit",
+	"gitignore",
+	"go",
+	"gomod",
+	"gosum",
+	"gowork",
+	"hlsl",
+	"html",
+	"javascript",
+	"jsdoc",
+	"json",
+	"json5",
+	"just",
+	"lua",
+	"luadoc",
+	"make",
+	"markdown",
+	"markdown_inline",
+	"objc",
+	"odin",
+	"printf",
+	"python",
+	"regex",
+	"requirements",
+	"rust",
+	"scss",
+	"templ",
+	"todotxt",
+	"toml",
+	"tsx",
+	"typescript",
+	"typst",
+	"vim",
+	"vimdoc",
+	"yaml",
+})
 
-	vim.api.nvim_create_autocmd("FileType", {
-		pattern  = "*",
-		group    = clear_augroup,
-		callback = function(ev)
-			-- TODO: if longest line in buffer is too long kill
-			if vim.api.nvim_buf_line_count(ev.buf) < 4096 then
-				pcall(vim.treesitter.start, ev.buf)
-				-- vim.bo[ev.buf].syntax = 'ON'
-			end
-		end,
-	})
-end
+vim.api.nvim_create_autocmd("FileType", {
+	pattern  = "*",
+	group    = clear_augroup,
+	callback = function(ev)
+		-- TODO: if longest line in buffer is too long kill
+		if vim.api.nvim_buf_line_count(ev.buf) < 4096 then
+			pcall(vim.treesitter.start, ev.buf)
+			vim.bo[ev.buf].syntax = "OFF"
+		end
+	end,
+})
 
 require("treesitter-context").setup({
 	multiwindow = true,
