@@ -175,6 +175,11 @@ vim.filetype.add({
 	},
 })
 
+---Wrapper around [vim.keymap.set](lua://vim.keymap.set) that maps "\\" .. <lhs> to the provided rhs
+---@param lhs string Left hand side of the mapping, which will be prefixed with a literal backslash '\\'
+---@param rhs string|function Right hand side of the mapping
+---@param desc string Description of the keymap
+---@param other_opts? vim.keymap.set.Opts any other options to pass to [vim.keymap.set](lua://vim.keymap.set)
 local function map_toggle(lhs, rhs, desc, other_opts)
 	local opts = other_opts and other_opts or {}
 	if desc then
