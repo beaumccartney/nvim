@@ -437,6 +437,7 @@ starter.setup({
 		starter.sections.sessions(),
 		starter.sections.recent_files(4, true, false),
 		starter.sections.builtin_actions(),
+		starter.sections.pick(),
 	},
 })
 
