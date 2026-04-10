@@ -370,8 +370,8 @@ ai.setup({
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "typst,plaintex",
 	group = clear_augroup,
-	callback = function()
-		vim.b.miniai_config = {
+	callback = function(ev)
+		vim.b[ev.buf].miniai_config = {
 			custom_textobjects = {
 				["$"] = { "%$().-()%$" },
 			},
@@ -652,8 +652,8 @@ conform.setup({
 vim.api.nvim_create_autocmd("FileType", {
 	pattern  = vim.tbl_keys(conform.formatters_by_ft),
 	group    = clear_augroup,
-	callback = function()
-		vim.opt_local.formatexpr = "v:lua.require'conform'.formatexpr()"
+	callback = function(ev)
+		vim.bo[ev.buf].formatexpr = "v:lua.require'conform'.formatexpr()"
 	end,
 })
 
@@ -905,8 +905,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "gitcommit,git",
 	group = clear_augroup,
-	callback = function()
-		vim.b.minitrailspace_disable = true
+	callback = function(ev)
+		vim.b[ev.buf].minitrailspace_disable = true
 	end,
 })
 
