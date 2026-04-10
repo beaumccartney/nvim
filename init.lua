@@ -303,13 +303,6 @@ require("mini.surround").setup({
 	n_lines = 200,
 })
 
-require("mini.notify").setup({
-	lsp_progress = {
-		-- enable = false,
-		duration_last = 350,
-	},
-})
-
 require("mini.pick").setup()
 local builtin = MiniPick.builtin
 local extra_pickers = MiniExtra.pickers
