@@ -761,6 +761,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
 				print((new and "   " or "no ") .. "inlay hints")
 			end, "Toggle inlay hints", { buffer = ev.buf })
 		end
+		if client:supports_method("textDocument/codeLens") then
+			map_toggle("L", function()
+				local enabled = vim.lsp.codelens.is_enabled({ bufnr = ev.buf })
+				local new = not enabled
+				vim.lsp.codelens.enable(new, { bufnr = ev.buf })
+
+				print((new and "   " or "no ") .. "codelens")
+			end, "Toggle codelens", { buffer = ev.buf })
+		end
 	end,
 })
 
