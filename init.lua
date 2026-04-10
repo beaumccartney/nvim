@@ -803,19 +803,7 @@ vim.keymap.set("n", "[W", "<Cmd>wincmd t<CR>", { desc = "Top left window" })
 vim.keymap.set("n", "<ESC>", function()
 	vim.cmd.nohlsearch()
 	MiniJump.stop_jumping()
-
-	if in_cmdwin() then
-		vim.cmd.close()
-	else
-		vim.cmd.cclose()
-		vim.cmd.lclose()
-		vim.cmd.pclose()
-		vim.cmd.fclose()
-		if vim.o.filetype ~= "help" then
-			vim.cmd.helpclose()
-		end
-	end
-end, { desc = "Clear all windows and highlighting state" })
+end, { desc = "Clear highlighting state" })
 vim.keymap.set({ "n", "x" }, "gy", '"+y', { desc = "Copy to system clipboard" })
 vim.keymap.set({ "n", "x" }, "gY", '"+y$', { desc = "Copy to end of line to system clipboard" })
 vim.keymap.set("n", "gp", '"+p', { desc = "Paste from system clipboard" })
