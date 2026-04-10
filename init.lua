@@ -87,78 +87,78 @@ require("snacks").setup({
 
 local clear_augroup = vim.api.nvim_create_augroup("augroup", { clear = true })
 
-vim.opt.autoread = true
-vim.opt.autowrite = true
-vim.opt.autowriteall = true
+vim.o.autoread = true
+vim.o.autowrite = true
+vim.o.autowriteall = true
 
-vim.opt.number = true
-vim.opt.relativenumber = true
+vim.o.number = true
+vim.o.relativenumber = true
 
-vim.opt.shiftwidth = 0 -- indent is just the length of one tab
-vim.opt.expandtab = false
-vim.opt.smarttab = true
-vim.opt.autoindent = true
-vim.opt.smartindent = true
+vim.o.shiftwidth = 0 -- indent is just the length of one tab
+vim.o.expandtab = false
+vim.o.smarttab = true
+vim.o.autoindent = true
+vim.o.smartindent = true
 
 vim.opt.cinoptions:append("l1,L0,=0,Ps,(s,m1")
 
-vim.opt.fileformat = "unix"
-vim.opt.fileformats = "unix,dos"
+vim.o.fileformat = "unix"
+vim.o.fileformats = "unix,dos"
 
-vim.opt.breakindent = true
-vim.opt.breakindentopt = "list:-1"
-vim.opt.linebreak = true
-vim.opt.showbreak = "+++ "
+vim.o.breakindent = true
+vim.o.breakindentopt = "list:-1"
+vim.o.linebreak = true
+vim.o.showbreak = "+++ "
 
-vim.opt.scrolloff = 10
-vim.opt.sidescrolloff = 8
-vim.opt.colorcolumn = "81"
-vim.opt.splitbelow = true
-vim.opt.splitright = true
+vim.o.scrolloff = 10
+vim.o.sidescrolloff = 8
+vim.o.colorcolumn = "81"
+vim.o.splitbelow = true
+vim.o.splitright = true
 
-vim.opt.hidden = true
-vim.opt.swapfile = false
-vim.opt.undofile = true
+vim.o.hidden = true
+vim.o.swapfile = false
+vim.o.undofile = true
 
-vim.opt.incsearch = true
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-vim.opt.infercase = true
+vim.o.incsearch = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
+vim.o.infercase = true
 
-vim.opt.pumheight = 5
-vim.opt.pumblend = 55
+vim.o.pumheight = 5
+vim.o.pumblend = 55
 
-vim.opt.foldmethod = "indent"
-vim.opt.foldnestmax = 10
-vim.opt.foldlevel = 99
+vim.o.foldmethod = "indent"
+vim.o.foldnestmax = 10
+vim.o.foldlevel = 99
 vim.g.markdown_folding = 1
 
-vim.opt.cursorline = true
-vim.opt.cursorcolumn = true
+vim.o.cursorline = true
+vim.o.cursorcolumn = true
 
-vim.opt.cmdheight = 1
+vim.o.cmdheight = 1
 
-vim.opt.signcolumn="yes"
+vim.o.signcolumn="yes"
 
-vim.opt.showmode = false
+vim.o.showmode = false
 
-vim.opt.fixeol = false
+vim.o.fixeol = false
 
 vim.opt.nrformats:append("alpha")
 
 vim.opt.complete:append("i,d,f")
-vim.opt.completeopt = "menuone,fuzzy,preview,noselect,nearest"
+vim.o.completeopt = "menuone,fuzzy,preview,noselect,nearest"
 
-vim.opt.virtualedit = "block"
+vim.o.virtualedit = "block"
 
-vim.opt.wrap = false
+vim.o.wrap = false
 
-vim.opt.listchars = "tab:> ,extends:…,precedes:…,nbsp:␣" -- Define which helper symbols to show
-vim.opt.list = true -- Show some helper symbols
+vim.o.listchars = "tab:> ,extends:…,precedes:…,nbsp:␣" -- Define which helper symbols to show
+vim.o.list = true -- Show some helper symbols
 
-vim.opt.switchbuf = "useopen,usetab"
+vim.o.switchbuf = "useopen,usetab"
 
-vim.opt.guifont = "Maple Mono NF"
+vim.o.guifont = "Maple Mono NF"
 
 vim.g.ruff_makeprg_params = ""
 
