@@ -348,44 +348,6 @@ vim.keymap.set(
 vim.keymap.set("n", "<leader>fq", function()
 	extra_pickers.list({ scope = "quickfix" })
 end, { desc = "Find quickfix list" })
-vim.keymap.set(
-	"n",
-	"<leader>fv",
-	extra_pickers.visit_paths,
-	{ desc = "Find visit files" }
-)
-vim.keymap.set(
-	"n",
-	"<leader>fl",
-	extra_pickers.visit_labels,
-	{ desc = "Find visit labels" }
-)
-
-require("mini.visits").setup()
-vim.keymap.set(
-	"n",
-	"<leader>vv",
-	MiniVisits.select_path,
-	{ desc = "Select visit file" }
-)
-vim.keymap.set(
-	"n",
-	"<leader>vl",
-	MiniVisits.select_label,
-	{ desc = "Select visit path" }
-)
-vim.keymap.set(
-	"n",
-	"<leader>va",
-	MiniVisits.add_label,
-	{ desc = "Add visit label" }
-)
-vim.keymap.set(
-	"n",
-	"<leader>vd",
-	MiniVisits.remove_label,
-	{ desc = "Remove visit label" }
-)
 
 local ai = require("mini.ai")
 local extra_ai_spec = MiniExtra.gen_ai_spec
@@ -944,7 +906,6 @@ vim.api.nvim_create_autocmd("FileType", {
 	pattern = "gitcommit,git",
 	group = clear_augroup,
 	callback = function()
-		vim.b.minivisits_disable     = true
 		vim.b.minitrailspace_disable = true
 	end,
 })
