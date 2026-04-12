@@ -73,8 +73,6 @@ vim.pack.add({
 	"https://github.com/neovim/nvim-lspconfig",
 	"https://github.com/folke/lazydev.nvim",
 
-
-	"https://github.com/nvim-lua/plenary.nvim", -- needed for lean.nvim
 	"https://github.com/Julian/lean.nvim",
 
 	"https://github.com/wakatime/vim-wakatime", -- track time spent for billable hours
