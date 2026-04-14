@@ -41,7 +41,7 @@
       "src": "https://github.com/folke/lazydev.nvim"
     },
     "lean.nvim": {
-      "rev": "52226f50d92b5f3e97c752151b0e00ad9d70b231",
+      "rev": "7b9ffedd92f93f7ce8eae5c71fdba8bed242ae63",
       "src": "https://github.com/Julian/lean.nvim"
     },
     "live-preview.nvim": {
