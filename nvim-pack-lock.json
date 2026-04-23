@@ -41,8 +41,9 @@
       "src": "https://github.com/folke/lazydev.nvim"
     },
     "lean.nvim": {
-      "rev": "7b9ffedd92f93f7ce8eae5c71fdba8bed242ae63",
-      "src": "https://github.com/Julian/lean.nvim"
+      "rev": "b7b330a9dd324c0d9d57bb7d9dcbaf871403d3ed",
+      "src": "https://github.com/Julian/lean.nvim",
+      "version": "'v2026.4.1'"
     },
     "live-preview.nvim": {
       "rev": "c1fcf75c5f9c9c01dd392852de44204b60f1b5b1",
