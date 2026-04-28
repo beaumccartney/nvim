@@ -78,7 +78,7 @@ vim.pack.add({
 		version = "v2026.4.1",
 	},
 
-	"https://github.com/wakatime/vim-wakatime", -- track time spent for billable hours
+	"https://github.com/ActivityWatch/aw-watcher-vim", -- track time spent for billable hours
 })
 
 

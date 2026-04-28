@@ -8,6 +8,10 @@
       "rev": "8fb5dad4ccc1811766cebf16b544038aeeb7806f",
       "src": "https://github.com/rainbowhxch/accelerated-jk.nvim"
     },
+    "aw-watcher-vim": {
+      "rev": "4ba86d05a940574000c33f280fd7f6eccc284331",
+      "src": "https://github.com/ActivityWatch/aw-watcher-vim"
+    },
     "beacon.nvim": {
       "rev": "d02ee7dfcc999537c2f09abdf667aab52f8648f3",
       "src": "https://github.com/rainbowhxch/beacon.nvim"
