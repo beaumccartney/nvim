@@ -511,21 +511,6 @@ require("oil").setup({
 })
 vim.keymap.set('n', '-', vim.cmd.Oil, { desc = "Open parent directory" })
 
--- communicate renaming/moving a file in oil to the language server so it can
--- adjust imports
-vim.api.nvim_create_autocmd("User", {
-	pattern  = "OilActionsPost",
-	group    = clear_augroup,
-	callback = function(event)
-		if event.data.actions[1].type == "move" then
-			Snacks.rename.on_rename_file(
-				event.data.actions[1].src_url,
-				event.data.actions[1].dest_url
-			)
-		end
-	end,
-})
-
 require("nvim-treesitter").install({
 	"asm",
 	"bash",
