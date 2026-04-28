@@ -85,7 +85,6 @@ vim.pack.add({
 require("snacks").setup({
 	input = { enable = true, },
 	statuscolumn = { enable = true, },
-	image = { enable = true, },
 })
 
 local clear_augroup = vim.api.nvim_create_augroup("augroup", { clear = true })
